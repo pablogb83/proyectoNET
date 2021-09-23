@@ -5722,11 +5722,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\Desktop\\api.Net\\ProyectoNET\\Commander.csproj",
+      "projectUniqueName": "C:\\Users\\pablo\\Desktop\\proyectoNET\\Commander.csproj",
       "projectName": "Commander",
-      "projectPath": "C:\\Users\\pablo\\Desktop\\api.Net\\ProyectoNET\\Commander.csproj",
+      "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\Commander.csproj",
       "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\Desktop\\api.Net\\ProyectoNET\\obj\\",
+      "outputPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
