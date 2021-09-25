@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoNET.Data;
 
 namespace ProyectoNET.Migrations
 {
     [DbContext(typeof(CommanderContext))]
-    partial class CommanderContextModelSnapshot : ModelSnapshot
+    [Migration("20210925210951_TableUsuario")]
+    partial class TableUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

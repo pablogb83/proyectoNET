@@ -41,6 +41,8 @@ namespace ProyectoNET
 
             services.AddScoped<IInstitucionRepo, SqlInstitucionRepo>();
 
+            services.AddScoped<IUsuarioRepo, SqlUsuarioRepo>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Commander", Version = "v1" });
