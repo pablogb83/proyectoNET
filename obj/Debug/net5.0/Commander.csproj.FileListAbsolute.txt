@@ -196,3 +196,4 @@ C:\Users\pablo\Desktop\proyectoNET\obj\Debug\net5.0\Commander.dll
 C:\Users\pablo\Desktop\proyectoNET\obj\Debug\net5.0\ref\Commander.dll
 C:\Users\pablo\Desktop\proyectoNET\obj\Debug\net5.0\Commander.pdb
 C:\Users\pablo\Desktop\proyectoNET\obj\Debug\net5.0\Commander.genruntimeconfig.cache
+C:\Users\pablo\Desktop\proyectoNET\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

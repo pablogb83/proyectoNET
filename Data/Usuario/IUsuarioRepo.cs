@@ -9,9 +9,10 @@ namespace ProyectoNET.Data
 
         IEnumerable<Usuario> GetAllUsuarios();
         Usuario GetUsuarioById(int Id);
-        void CreateUsuario(Usuario usr);
-        void UpdateUsuario(Usuario usr);
+        void CreateUsuario(Usuario usr, string password);
+        void UpdateUsuario(Usuario usr, string password = null);
         void DeleteUsuario(Usuario usr);
+        Usuario Autenticar(string email, string password);
 
     }
 }

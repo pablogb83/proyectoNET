@@ -2,14 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoNET.Dtos.Usuarios
 {
-    public class UsuarioCreateDto
-    {   
-        
+    public class UsuarioAutenticateDto
+    {
         [Required]
-        [EmailAddress]
         public string Email { get; set; }
+
         [Required]
-        public string PasswordPlano { get; set; }
-        
+        public string Password { get; set; }
     }
 }
