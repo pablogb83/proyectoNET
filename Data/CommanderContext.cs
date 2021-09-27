@@ -11,5 +11,6 @@ namespace ProyectoNET.Data
         }
 
         public DbSet<Institucion> Instituciones { get; set; }
+        public DbSet<Usuario> Usuarios { get ; set; }
     }
 }
