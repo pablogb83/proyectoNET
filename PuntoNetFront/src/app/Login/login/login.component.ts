@@ -44,9 +44,9 @@ export class LoginComponent implements OnInit {
         if(this.isLoggedIn){
           console.log('Logueado')
         }
-        // this.router.navigateByUrl('/').then(()=>{
-        //   window.location.reload();
-        // });
+         this.router.navigateByUrl('/').then(()=>{
+           window.location.reload();
+         });
       },
       err => {
         console.log(4);
