@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit()"  #f="ngForm">
+    <section class="title">
+        <h3>Use sus credenciales para iniciar sesión</h3>
+    </section>
+    <div class="form-group">
+        <label for="username" class="clr-control-label">Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" required #username="ngModel" />
+    </div>
+    <div>
+        <label for="password" class="clr-control-label">Contraseña</label>
+        <input   type="password" class="form-control" name="password" [(ngModel)]="form.password" required  minlength="4"   #password="ngModel"/>
+    </div>
+    <br>
+    <div class="form-group">
+    <button class="btn btn-primary">Login</button>
+    </div>
+</form>
+
+

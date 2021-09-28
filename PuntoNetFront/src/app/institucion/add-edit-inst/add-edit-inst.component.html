@@ -1,0 +1,27 @@
+<div class="form-froup row">
+
+    <label class="col-sm-2 col-form-label">Nombre Institucion</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="nombre"
+        placeholder="Nombre institucion">
+    </div>
+    <label class="col-sm-2 col-form-label">Direccion</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="direccion"
+        placeholder="direccion">
+    </div>
+    <label class="col-sm-2 col-form-label">Telefono</label>
+    <div class="col-sm-10">
+        <input type="text" class="form-control" [(ngModel)]="telefono"
+        placeholder="telefono">
+    </div>
+    
+</div>
+
+<button (click)="agregarInstitucion()" *ngIf="inst.id==0" class="btn btn-primary">
+    Agregar
+</button>
+
+<button (click)="updateInstitucion()" *ngIf="inst.id!=0" class="btn btn-primary">
+    Actualizar
+</button>
