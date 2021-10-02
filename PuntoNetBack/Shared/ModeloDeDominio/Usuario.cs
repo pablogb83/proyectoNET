@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace Shared.ModeloDeDominio
 {
-    public class Institucion
+    public class Usuario
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(250)]
-        public string Nombre { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
         [Required]
-        public string Direccion { get; set; }
-        [Required]
-        public string Telefono { get; set; }
+        public byte[] Password { get; set; }
+        public byte[] PasswordSalt { get; set; }
     }
 }

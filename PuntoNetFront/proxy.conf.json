@@ -1,6 +1,10 @@
 {
     "/api": {
+<<<<<<< HEAD
       "target": "https://localhost:5001",
+=======
+      "target": "https://localhost:44396",
+>>>>>>> Pablo
       "secure": false,
       "logLevel": "debug",
       "changeOrigin": true

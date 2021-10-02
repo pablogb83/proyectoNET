@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.IBL
+namespace DataAccessLayer.IDAL
 {
-    public interface IBL_Institucion
+    public interface IDAL_Institucion
     {
         bool SaveChanges();
 
