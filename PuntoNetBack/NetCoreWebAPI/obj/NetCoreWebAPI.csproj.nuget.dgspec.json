@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj": {}
+    "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj": {
+    "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj",
         "projectName": "BusinessLayer",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj",
-        "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\obj\\",
+        "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj",
+        "packagesPath": "C:\\Users\\arena\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\arena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,11 +28,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj"
               },
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
               }
             }
           }
@@ -61,21 +61,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
+    "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectUniqueName": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj",
         "projectName": "DataAccessLayer",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj",
-        "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\obj\\",
+        "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj",
+        "packagesPath": "C:\\Users\\arena\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\arena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -89,8 +89,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
               }
             }
           }
@@ -163,21 +163,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj": {
+    "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
         "projectName": "NetCoreWebAPI",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
-        "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\obj\\",
+        "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+        "packagesPath": "C:\\Users\\arena\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\arena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -191,14 +191,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj"
               },
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj"
               },
-              "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-                "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+              "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
               }
             }
           }
@@ -266,21 +266,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
+    "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
+        "projectUniqueName": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
-        "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\obj\\",
+        "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
+        "packagesPath": "C:\\Users\\arena\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\arena\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -320,7 +320,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

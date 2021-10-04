@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\pablo\\.nuget\\packages\\": {}
+    "C:\\Users\\arena\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
+      "projectUniqueName": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
       "projectName": "Shared",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
-      "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\obj\\",
+      "projectPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
+      "packagesPath": "C:\\Users\\arena\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\arena\\Desktop\\Tecnologo en Informatica\\6to semestre\\.NET\\Lab .NET\\LABORATORIO .NET\\proyectoNET\\PuntoNetBack\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\arena\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

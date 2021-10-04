@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.ModeloDeDominio
 {
-    public class Usuario
+    public class Usuario : Persona
     {
         [Key]
         public int Id { get; set; }
@@ -17,5 +17,7 @@ namespace Shared.ModeloDeDominio
         [Required]
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
+
+
     }
 }
