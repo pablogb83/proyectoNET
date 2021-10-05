@@ -7986,11 +7986,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
       "projectName": "NetCoreWebAPI",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+      "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
       "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\obj\\",
+      "outputPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8007,14 +8007,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj"
+            "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj": {
+              "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj"
             },
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj"
+            "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj"
             },
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+            "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
             }
           }
         }

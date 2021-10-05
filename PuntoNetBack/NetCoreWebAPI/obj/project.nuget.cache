@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cu7Mmg9U/zk0zCPDDF+f3hop8+KPNW8H0x/OGNJ/shPOu0P/EuwF1dmL7c6H+UWb4dPFmtaqU1OdP3tBraUtAQ==",
+  "dgSpecHash": "BFSEvzlqTSuR9myOrZA0KT8lQYbkEbom0Ii8tGZ4mhvCnfou8OTBrh/Ulxl9+Q8MYGLheZA6oX114YVcCXB3oA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+  "projectFilePath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pablo\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\pablo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",

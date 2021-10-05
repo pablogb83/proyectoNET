@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
+      "projectUniqueName": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
       "projectName": "Shared",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
+      "projectPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
       "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\obj\\",
+      "outputPath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",

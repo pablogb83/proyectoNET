@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2i8jIqyGDKMWAb2A1cxQKWZzmuZlxx6AsxLcj6BZxqtmxP4xjWtj0Lj/sMaYaBZU7dlhZBiHGHEyEYX5E5cJaA==",
+  "dgSpecHash": "VtrausFspgbmVNHpwaZ7dN6uxvvhEuB0VqFwnWDxP2Bq/ygFgF+g0MK07SkkqncQWes4ii9BqWSMdWTwfRPM7w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj",
+  "projectFilePath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pablo\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\pablo\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

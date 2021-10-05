@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Y/Dop4QREKmyE/1ZTsXLQTHjhQrdA4YVNjQ7sd0RMGhWFsPYonIaK2rbx4dd9Xwd7KonfiKhLDrQ/8g55qujOA==",
+  "dgSpecHash": "/MVl1FPQVDcuZaqB1HqOuql7y0ucXQbkGgsrQshPHOC9a86CT5wRBz1eJqtgzBPnkQBkkXwyR7VK8wePdFPLtw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj",
+  "projectFilePath": "C:\\Users\\pablo\\Desktop\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pablo\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\pablo\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.10\\microsoft.aspnetcore.authentication.jwtbearer.5.0.10.nupkg.sha512",
