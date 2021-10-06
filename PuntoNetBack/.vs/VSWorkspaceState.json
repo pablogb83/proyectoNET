@@ -1,9 +1,0 @@
-{
-  "ExpandedNodes": [
-    "",
-    "\\BusinessLayer",
-    "\\DataAccessLayer"
-  ],
-  "SelectedNode": "\\DataAccessLayer\\WebAPIContext.cs",
-  "PreviewInSolutionExplorer": false
-}
