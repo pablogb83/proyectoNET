@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {}
+    "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
+    "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj",
-        "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\obj\\",
+        "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

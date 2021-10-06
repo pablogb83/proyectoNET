@@ -7551,19 +7551,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD:NetRest/obj/project.assets.json
-      "projectUniqueName": "C:\\Users\\admin\\Desktop\\Tecnologo\\Semestre 6\\Taller .NET\\Proyectos  .NET\\proyectoNET\\Commander.csproj",
-      "projectName": "Commander",
-      "projectPath": "C:\\Users\\admin\\Desktop\\Tecnologo\\Semestre 6\\Taller .NET\\Proyectos  .NET\\proyectoNET\\Commander.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Desktop\\Tecnologo\\Semestre 6\\Taller .NET\\Proyectos  .NET\\proyectoNET\\obj\\",
-=======
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj",
       "projectName": "BusinessLayer",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj",
-      "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\obj\\",
->>>>>>> origin/Pablo:PuntoNetBack/BusinessLayer/obj/project.assets.json
+      "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7580,11 +7572,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj"
             },
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
             }
           }
         }

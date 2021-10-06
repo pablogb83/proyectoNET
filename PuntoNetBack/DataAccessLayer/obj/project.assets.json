@@ -7621,19 +7621,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pablo\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj",
       "projectName": "DataAccessLayer",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj",
-      "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\obj\\",
+      "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7647,8 +7647,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
             }
           }
         }

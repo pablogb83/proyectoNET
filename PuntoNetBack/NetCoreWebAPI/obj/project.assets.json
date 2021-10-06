@@ -7981,19 +7981,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pablo\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
       "projectName": "NetCoreWebAPI",
-      "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
-      "packagesPath": "C:\\Users\\pablo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\NetCoreWebAPI\\obj\\",
+      "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\NetCoreWebAPI.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8007,14 +8007,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\BusinessLayer\\BusinessLayer.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\BusinessLayer\\BusinessLayer.csproj"
             },
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\DataAccessLayer\\DataAccessLayer.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\DataAccessLayer\\DataAccessLayer.csproj"
             },
-            "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj": {
-              "projectPath": "C:\\Users\\pablo\\source\\repos\\NetCoreWebAPI\\Shared\\Shared.csproj"
+            "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\Shared\\Shared.csproj"
             }
           }
         }
@@ -8085,5 +8085,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema al leer el archivo de caché C:\\Users\\admin\\Desktop\\Proyecto .NET\\proyectoNET\\PuntoNetBack\\NetCoreWebAPI\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
