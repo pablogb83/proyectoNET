@@ -18,5 +18,6 @@ namespace Shared.ModeloDeDominio
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
+        public ICollection<Usuario> usuarios { get; set; } = new List<Usuario>();
     }
 }

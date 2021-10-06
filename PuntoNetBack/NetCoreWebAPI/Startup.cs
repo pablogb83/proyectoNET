@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NetCoreWebAPI.Middleware;
+using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +42,14 @@ namespace NetCoreWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebAPIContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection"))
-           );
-
             services.AddControllers();
+
+            services.AddScoped<TenantInfo>();
+            services.UseDiscriminatorColumn(Configuration);
+
+            //services.AddDbContext<WebAPIContext>(options =>
+              // options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -109,6 +114,8 @@ namespace NetCoreWebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NetCoreWebAPI v1"));
             }
+
+            app.UseMiddleware<TenantInfoMiddleware>();
 
             app.UseHttpsRedirection();
 

@@ -12,7 +12,7 @@ namespace DataAccessLayer.IDAL
         bool SaveChanges();
         IEnumerable<Usuario> GetAllUsuarios();
         Usuario GetUsuarioById(int Id);
-        void CreateUsuario(Usuario usr, string password);
+        void CreateUsuario(Usuario usr, string password, int idInst);
         void UpdateUsuario(Usuario usr, string password = null);
         void DeleteUsuario(Usuario usr);
         Usuario Autenticar(string email, string password);

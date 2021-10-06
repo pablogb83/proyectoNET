@@ -10,7 +10,7 @@ namespace DataAccessLayer
 {
     public class WebAPIContext : DbContext
     {
-        public WebAPIContext(DbContextOptions<WebAPIContext> options) : base(options)
+        public WebAPIContext(DbContextOptions options) : base(options)
         {
         }
 

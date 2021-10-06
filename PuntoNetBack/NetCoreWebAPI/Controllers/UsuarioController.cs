@@ -5,6 +5,7 @@ using DataAccessLayer.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.ModeloDeDominio;
@@ -91,9 +92,10 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<UsuarioReadDto> CreateUsuario([FromBody] UsuarioCreateDto usuarioCreateDto)
         {
             var UsuarioModel = _mapper.Map<Usuario>(usuarioCreateDto);
+            var tenantInfo = HttpContext.RequestServices.GetRequiredService<TenantInfo>();
             try
             {
-                _bl.CreateUsuario(UsuarioModel, usuarioCreateDto.PasswordPlano);
+                _bl.CreateUsuario(UsuarioModel, usuarioCreateDto.PasswordPlano, tenantInfo.Id);
                 _bl.SaveChanges();
 
                 var UsuarioReadDto = _mapper.Map<UsuarioReadDto>(UsuarioModel);

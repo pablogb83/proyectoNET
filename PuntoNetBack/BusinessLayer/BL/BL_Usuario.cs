@@ -22,9 +22,9 @@ namespace BusinessLayer.BL
             return _dal.Autenticar(email, password);
         }
 
-        public void CreateUsuario(Usuario usr, string password)
+        public void CreateUsuario(Usuario usr, string password, int idInst)
         {
-            _dal.CreateUsuario(usr, password);
+            _dal.CreateUsuario(usr, password, idInst);
         }
 
         public void DeleteUsuario(Usuario usr)
