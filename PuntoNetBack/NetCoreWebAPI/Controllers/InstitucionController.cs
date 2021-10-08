@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Instituciones;
+using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
@@ -30,6 +31,7 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<InstitucionesReadDto>> GetAllInstituciones()
         {
             var instituciones = _bl.GetAllInstituciones();
+            var tenantInfo = HttpContext.GetMultiTenantContext<Finbuckle.MultiTenant.TenantInfo>()?.TenantInfo;
             return Ok(_mapper.Map<IEnumerable<InstitucionesReadDto>>(instituciones));
         }
 

@@ -3,9 +3,11 @@ using BusinessLayer.IBL;
 using DataAccessLayer;
 using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
+using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NetCoreWebAPI.Middleware;
-using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,7 @@ namespace NetCoreWebAPI
     {
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration Configuration;
+        private HttpContext context;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -44,11 +47,13 @@ namespace NetCoreWebAPI
         {
             services.AddControllers();
 
-            services.AddScoped<TenantInfo>();
-            services.UseDiscriminatorColumn(Configuration);
+            //services.AddScoped<TenantInfo>();
+            //services.UseDiscriminatorColumn(Configuration);
 
-            //services.AddDbContext<WebAPIContext>(options =>
-              // options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+            //services.AddMultiTenant<TenantInfo>().WithStaticStrategy("1").WithEFCoreStore<MultiTenantStoreDbContext>();
+            object p = services.AddMultiTenant<TenantInfo>().WithEFCoreStore<MultiTenantStoreDbContext, TenantInfo>().WithHeaderStrategy();
+            services.AddDbContext<WebAPIContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -102,6 +107,35 @@ namespace NetCoreWebAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NetCoreWebAPI", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                      new OpenApiSecurityScheme
+                      {
+                        Reference = new OpenApiReference
+                          {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                          },
+                          Scheme = "oauth2",
+                          Name = "Bearer",
+                          In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 
@@ -115,7 +149,9 @@ namespace NetCoreWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NetCoreWebAPI v1"));
             }
 
-            app.UseMiddleware<TenantInfoMiddleware>();
+            app.UseMultiTenant();
+
+            //app.UseMiddleware<TenantInfoMiddleware>();
 
             app.UseHttpsRedirection();
 

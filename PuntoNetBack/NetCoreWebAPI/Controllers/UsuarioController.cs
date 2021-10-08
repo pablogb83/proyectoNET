@@ -92,10 +92,9 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<UsuarioReadDto> CreateUsuario([FromBody] UsuarioCreateDto usuarioCreateDto)
         {
             var UsuarioModel = _mapper.Map<Usuario>(usuarioCreateDto);
-            var tenantInfo = HttpContext.RequestServices.GetRequiredService<TenantInfo>();
             try
             {
-                _bl.CreateUsuario(UsuarioModel, usuarioCreateDto.PasswordPlano, tenantInfo.Id);
+                _bl.CreateUsuario(UsuarioModel, usuarioCreateDto.PasswordPlano);
                 _bl.SaveChanges();
 
                 var UsuarioReadDto = _mapper.Map<UsuarioReadDto>(UsuarioModel);

@@ -37,7 +37,7 @@ namespace DataAccessLayer.DAL
             return user;
         }
 
-        public void CreateUsuario(Usuario usr, string password, int idInst)
+        public void CreateUsuario(Usuario usr, string password)
         {
             if (usr == null)
             {
@@ -55,7 +55,6 @@ namespace DataAccessLayer.DAL
 
             usr.Password = passwordHash;
             usr.PasswordSalt = passwordSalt;
-            usr.institucion = _context.Instituciones.Find(idInst);
             _context.Usuarios.Add(usr);
         }
 

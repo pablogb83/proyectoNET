@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Shared.ModeloDeDominio;
+﻿using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace NetCoreWebAPI.Middleware
 {
@@ -19,22 +17,7 @@ namespace NetCoreWebAPI.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var tenantInfo = context.RequestServices.GetRequiredService<TenantInfo>();
-            var tenantId = context.Request.Headers["Tenant"];
-
-            if (!string.IsNullOrEmpty(tenantId))
-            {
-                tenantInfo.Id = Int32.Parse(tenantId);
-
-
-                // Call the next delegate/middleware in the pipeline
-                await _next(context);
-            }
-            else
-            {
-                //responder algo
-            }
-
+            await _next(context);
         }
     }
 }

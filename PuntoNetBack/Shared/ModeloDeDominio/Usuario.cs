@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Finbuckle.MultiTenant;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shared.ModeloDeDominio
 {
+    [MultiTenant]
     public class Usuario
     {
         [Key]

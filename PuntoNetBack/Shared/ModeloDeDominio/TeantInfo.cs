@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Finbuckle.MultiTenant;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shared.ModeloDeDominio
 {
-    public class TenantInfo
+    public class TenantInfo: ITenantInfo
     {
-        public int Id { get; set; }
+        public string Identifier { get; set; }
+        public string Name { get ; set; }
+        public string ConnectionString { get ; set; }
+        public string Id { get ; set; }
     }
 }
