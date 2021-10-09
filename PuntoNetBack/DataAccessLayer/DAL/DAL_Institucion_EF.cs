@@ -10,9 +10,9 @@ namespace DataAccessLayer.DAL
 {
     public class DAL_Institucion_EF : IDAL_Institucion
     {
-        private readonly WebAPIContext _context;
+        private readonly MultiTenantStoreDbContext _context;
 
-        public DAL_Institucion_EF(WebAPIContext context)
+        public DAL_Institucion_EF(MultiTenantStoreDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,6 @@ namespace DataAccessLayer.DAL
             {
                 throw new ArgumentNullException(nameof(inst));
             }
-
             _context.Instituciones.Add(inst);
         }
 
@@ -41,7 +40,7 @@ namespace DataAccessLayer.DAL
             return _context.Instituciones.ToList();
         }
 
-        public Institucion GetInstitucionById(int Id)
+        public Institucion GetInstitucionById(string Id)
         {
             return _context.Instituciones.FirstOrDefault(p => p.Id == Id);
         }

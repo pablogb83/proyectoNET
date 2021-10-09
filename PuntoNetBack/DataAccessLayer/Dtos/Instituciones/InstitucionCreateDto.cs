@@ -11,11 +11,11 @@ namespace DataAccessLayer.Dtos.Instituciones
     {
         [Required]
         [MaxLength(250)]
-        public string Nombre { get; set; }
+        public string Name { get; set; }
         [Required]
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
-
+        public string ConnectionString { get; set; }
     }
 }

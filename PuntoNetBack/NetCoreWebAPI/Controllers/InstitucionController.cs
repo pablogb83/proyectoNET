@@ -31,13 +31,12 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<InstitucionesReadDto>> GetAllInstituciones()
         {
             var instituciones = _bl.GetAllInstituciones();
-            var tenantInfo = HttpContext.GetMultiTenantContext<Finbuckle.MultiTenant.TenantInfo>()?.TenantInfo;
             return Ok(_mapper.Map<IEnumerable<InstitucionesReadDto>>(instituciones));
         }
 
         //GET api/instituciones/{id}
         [HttpGet("{id}", Name = "GetInstitucionById")]
-        public ActionResult<InstitucionesReadDto> GetInstitucionById(int id)
+        public ActionResult<InstitucionesReadDto> GetInstitucionById(string id)
         {
             var institucion = _bl.GetInstitucionById(id);
             if (institucion != null)
@@ -54,16 +53,18 @@ namespace NetCoreWebAPI.Controllers
             var institucionModel = _mapper.Map<Institucion>(instituionCreateDto);
             _bl.CreateInstitucion(institucionModel);
             _bl.SaveChanges();
-
             var institucionReadDto = _mapper.Map<InstitucionesReadDto>(institucionModel);
-
+            //CHANCHADA MANUAL
+            institucionModel.Identifier = institucionModel.Id;
+            _bl.UpdateInstitucion(institucionModel);
+            _bl.SaveChanges();
             return CreatedAtRoute(nameof(GetInstitucionById), new { Id = institucionReadDto.Id }, institucionReadDto);
             //return Ok(commandReadDto);
         }
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateInstitucion(int id, InstitucionUpdateDto institucionUpdateDto)
+        public ActionResult UpdateInstitucion(string id, InstitucionUpdateDto institucionUpdateDto)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)
@@ -78,7 +79,7 @@ namespace NetCoreWebAPI.Controllers
 
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialInstitucionUpdtate(int id, JsonPatchDocument<InstitucionUpdateDto> patchDoc)
+        public ActionResult PartialInstitucionUpdtate(string id, JsonPatchDocument<InstitucionUpdateDto> patchDoc)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)
@@ -100,7 +101,7 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteInstitucion(int id)
+        public ActionResult DeleteInstitucion(string id)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)

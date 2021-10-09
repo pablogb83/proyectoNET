@@ -32,7 +32,7 @@ namespace BusinessLayer.BL
             return _dal.GetAllInstituciones();
         }
 
-        public Institucion GetInstitucionById(int Id)
+        public Institucion GetInstitucionById(string Id)
         {
             return _dal.GetInstitucionById(Id);
         }

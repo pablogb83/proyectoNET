@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations
 {
-    [DbContext(typeof(WebAPIContext))]
-    [Migration("20210929160103_TableUsuarios")]
-    partial class TableUsuarios
+    [DbContext(typeof(MultiTenantStoreDbContext))]
+    [Migration("20211009154311_InstitucionTenantIdentifier")]
+    partial class InstitucionTenantIdentifier
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,16 +23,24 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Institucion", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("ConnectionString")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
@@ -43,7 +51,10 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Instituciones");
+                    b.HasIndex("Identifier")
+                        .IsUnique();
+
+                    b.ToTable("Institucion");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
@@ -64,9 +75,23 @@ namespace DataAccessLayer.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("institucionId")
+                        .HasColumnType("nvarchar(64)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("institucionId");
+
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
+                {
+                    b.HasOne("Shared.ModeloDeDominio.Institucion", "institucion")
+                        .WithMany()
+                        .HasForeignKey("institucionId");
+
+                    b.Navigation("institucion");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,7 +12,7 @@ namespace DataAccessLayer.IDAL
         bool SaveChanges();
 
         IEnumerable<Institucion> GetAllInstituciones();
-        Institucion GetInstitucionById(int Id);
+        Institucion GetInstitucionById(string Id);
         void CreateInstitucion(Institucion inst);
         void UpdateInstitucion(Institucion inst);
         void DeleteInstitucion(Institucion inst);

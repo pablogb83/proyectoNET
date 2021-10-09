@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccessLayer.Migrations
+namespace DataAccessLayer.Migrations.WebAPI
 {
     [DbContext(typeof(WebAPIContext))]
     partial class WebAPIContextModelSnapshot : ModelSnapshot
@@ -18,31 +18,6 @@ namespace DataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Institucion", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Direccion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Instituciones");
-                });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
                 {
@@ -67,31 +42,12 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int?>("institucionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("institucionId");
 
                     b.ToTable("Usuarios");
 
                     b
                         .HasAnnotation("Finbuckle:MultiTenant", true);
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
-                {
-                    b.HasOne("Shared.ModeloDeDominio.Institucion", "institucion")
-                        .WithMany("usuarios")
-                        .HasForeignKey("institucionId");
-
-                    b.Navigation("institucion");
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Institucion", b =>
-                {
-                    b.Navigation("usuarios");
                 });
 #pragma warning restore 612, 618
         }

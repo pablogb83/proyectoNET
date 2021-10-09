@@ -19,6 +19,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NetCoreWebAPI.Middleware;
+using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,6 @@ namespace NetCoreWebAPI
     {
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration Configuration;
-        private HttpContext context;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -51,7 +51,7 @@ namespace NetCoreWebAPI
             //services.UseDiscriminatorColumn(Configuration);
 
             //services.AddMultiTenant<TenantInfo>().WithStaticStrategy("1").WithEFCoreStore<MultiTenantStoreDbContext>();
-            object p = services.AddMultiTenant<TenantInfo>().WithEFCoreStore<MultiTenantStoreDbContext, TenantInfo>().WithHeaderStrategy();
+            object p = services.AddMultiTenant<Institucion>().WithEFCoreStore<MultiTenantStoreDbContext, Institucion>().WithHeaderStrategy("Tenant");
             services.AddDbContext<WebAPIContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
 

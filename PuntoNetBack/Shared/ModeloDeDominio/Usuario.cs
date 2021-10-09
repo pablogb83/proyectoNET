@@ -19,6 +19,5 @@ namespace Shared.ModeloDeDominio
         [Required]
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public Institucion institucion { get; set; }
     }
 }

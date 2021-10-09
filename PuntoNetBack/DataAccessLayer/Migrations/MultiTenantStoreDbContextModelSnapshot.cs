@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccessLayer.Migrations.MultiTenantStoreDb
+namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MultiTenantStoreDbContext))]
     partial class MultiTenantStoreDbContextModelSnapshot : ModelSnapshot
@@ -18,19 +18,31 @@ namespace DataAccessLayer.Migrations.MultiTenantStoreDb
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Finbuckle.MultiTenant.TenantInfo", b =>
+            modelBuilder.Entity("Shared.ModeloDeDominio.Institucion", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("ConnectionString")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Identifier")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -39,7 +51,7 @@ namespace DataAccessLayer.Migrations.MultiTenantStoreDb
                         .IsUnique()
                         .HasFilter("[Identifier] IS NOT NULL");
 
-                    b.ToTable("TenantInfo");
+                    b.ToTable("Institucion");
                 });
 #pragma warning restore 612, 618
         }

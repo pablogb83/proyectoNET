@@ -9,9 +9,13 @@ namespace DataAccessLayer.Dtos.Instituciones
     public class InstitucionesReadDto
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string Identifier { get; set; }
+
+        public string Name { get; set; }
+
+        public string ConnectionString { get; set; }
 
         public string Direccion { get; set; }
 

@@ -1,23 +1,23 @@
-﻿using System;
+﻿using Finbuckle.MultiTenant;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shared.ModeloDeDominio
 {
-    public class Institucion
+    [Table("Institucion")]
+    public class Institucion : ITenantInfo
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
+        public string Identifier { get; set; }
         [Required]
         [MaxLength(250)]
-        public string Nombre { get; set; }
+        public string Name { get; set; }
+        public string ConnectionString { get; set; }
         [Required]
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
-        public ICollection<Usuario> usuarios { get; set; } = new List<Usuario>();
     }
 }
