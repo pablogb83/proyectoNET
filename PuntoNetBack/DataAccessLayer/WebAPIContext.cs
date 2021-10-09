@@ -15,6 +15,10 @@ namespace DataAccessLayer
         {
         }
         public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<PuertaAcceso> PuertaAccesos { get; set; }
+        public virtual DbSet<Edificio> Edificios { get; set; }
+
 
     }
 }

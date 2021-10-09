@@ -4,14 +4,16 @@ using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations.WebAPI
 {
     [DbContext(typeof(WebAPIContext))]
-    partial class WebAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20211009222208_nuevas entidades")]
+    partial class nuevasentidades
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,12 +71,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<int?>("edificioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("edificioId");
 
                     b.ToTable("PuertaAccesos");
 
@@ -143,15 +140,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.PuertaAcceso", b =>
-                {
-                    b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
-                        .WithMany("puerta_accesos")
-                        .HasForeignKey("edificioId");
-
-                    b.Navigation("edificio");
-                });
-
             modelBuilder.Entity("Shared.ModeloDeDominio.Role", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Usuario", "usuario")
@@ -159,11 +147,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasForeignKey("usuarioId");
 
                     b.Navigation("usuario");
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
-                {
-                    b.Navigation("puerta_accesos");
                 });
 #pragma warning restore 612, 618
         }
