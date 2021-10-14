@@ -19,5 +19,7 @@ namespace Shared.ModeloDeDominio
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
+        //public Suscripcion Suscripcion { get; set; }
+        public bool Activa { get; set; }
     }
 }

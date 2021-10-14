@@ -1,10 +1,5 @@
 ﻿using Finbuckle.MultiTenant;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shared.ModeloDeDominio
 {
@@ -19,5 +14,7 @@ namespace Shared.ModeloDeDominio
         [Required]
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
+        [Required]
+        public string TenantId { get; set; }
     }
 }

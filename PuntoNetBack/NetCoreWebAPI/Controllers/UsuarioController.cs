@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,8 @@ namespace NetCoreWebAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim("TenantId", user.TenantId)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -63,14 +65,18 @@ namespace NetCoreWebAPI.Controllers
             {
                 Id = user.Id,
                 Email = user.Email,
-                Token = tokenString
+                Token = tokenString,
+                TenantId = user.TenantId
             });
         }
 
         //GET api/usuarios
+
+        [A1AuthorizePermission(Permissions = "CanRead")]
         [HttpGet]
         public ActionResult<IEnumerable<UsuarioReadDto>> GetAllUsuarios()
         {
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var Usuario = _bl.GetAllUsuarios();
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));
         }

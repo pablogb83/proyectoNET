@@ -24,6 +24,8 @@ namespace DataAccessLayer.DAL
                 return null;
 
             var user = _context.Usuarios.SingleOrDefault(x => x.Email == email);
+            Console.WriteLine(user.TenantId);
+            
 
             // check if username exists
             if (user == null)

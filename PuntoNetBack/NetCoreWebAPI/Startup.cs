@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NetCoreWebAPI.Helpers;
 using NetCoreWebAPI.Middleware;
 using Shared.ModeloDeDominio;
 using System;
@@ -45,8 +46,8 @@ namespace NetCoreWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddHttpClient();
             //services.AddScoped<TenantInfo>();
             //services.UseDiscriminatorColumn(Configuration);
 
@@ -58,7 +59,13 @@ namespace NetCoreWebAPI
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer();
+            /*
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -94,7 +101,7 @@ namespace NetCoreWebAPI
                     ValidateAudience = false
                 };
             });
-
+            */
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Inyeccion de dependencias
@@ -102,6 +109,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Usuario, BL_Usuario>();
             services.AddScoped<IDAL_Institucion, DataAccessLayer.DAL.DAL_Institucion_EF>();
             services.AddScoped<IBL_Institucion, BL_Institucion>();
+            services.AddScoped<IDAL_Registro, DataAccessLayer.DAL.DAL_Registro_EF>();
+            services.AddScoped<IBL_Registro, BL_Registro>();
 
 
             services.AddSwaggerGen(c =>
@@ -151,7 +160,7 @@ namespace NetCoreWebAPI
 
             app.UseMultiTenant();
 
-            //app.UseMiddleware<TenantInfoMiddleware>();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -163,8 +172,8 @@ namespace NetCoreWebAPI
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
