@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
+using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DataAccessLayer.DAL
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Usuarios.SingleOrDefault(x => x.Email == email);
+            var user = _context.Usuarios.IgnoreQueryFilters().SingleOrDefault(x => x.Email == email);
             Console.WriteLine(user.TenantId);
             
 

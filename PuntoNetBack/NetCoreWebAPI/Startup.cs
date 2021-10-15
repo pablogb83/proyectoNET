@@ -23,6 +23,7 @@ using NetCoreWebAPI.Middleware;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,24 +53,32 @@ namespace NetCoreWebAPI
             //services.UseDiscriminatorColumn(Configuration);
 
             //services.AddMultiTenant<TenantInfo>().WithStaticStrategy("1").WithEFCoreStore<MultiTenantStoreDbContext>();
-            object p = services.AddMultiTenant<Institucion>().WithEFCoreStore<MultiTenantStoreDbContext, Institucion>().WithHeaderStrategy("Tenant");
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.Configure<AppSettings>(appSettingsSection);
+            services.AddMultiTenant<Institucion>().WithDelegateStrategy(async context =>
+            {
+                var httpContext = context as HttpContext;
+                var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+                string tenantId = new Util().decodeToken(httpContext, token, key);
+                return tenantId;
+            }).WithEFCoreStore<MultiTenantStoreDbContext, Institucion>();
             services.AddDbContext<WebAPIContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
 
             // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+        
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer();
-            /*
+            
             // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
+         
+            /*services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -100,8 +109,8 @@ namespace NetCoreWebAPI
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
-            });
-            */
+            });*/
+            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Inyeccion de dependencias
@@ -158,9 +167,9 @@ namespace NetCoreWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NetCoreWebAPI v1"));
             }
 
-            app.UseMultiTenant();
+            //app.UseMiddleware<JwtMiddleware>();
 
-            app.UseMiddleware<JwtMiddleware>();
+            app.UseMultiTenant();
 
             app.UseHttpsRedirection();
 

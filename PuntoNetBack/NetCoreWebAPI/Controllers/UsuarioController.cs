@@ -2,7 +2,6 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Usuarios;
 using DataAccessLayer.Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +35,6 @@ namespace NetCoreWebAPI.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] UsuarioAutenticateDto model)
         {
@@ -72,7 +70,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarios
 
-        [A1AuthorizePermission(Permissions = "CanRead")]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<UsuarioReadDto>> GetAllUsuarios()
         {

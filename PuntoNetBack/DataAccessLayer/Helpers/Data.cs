@@ -48,13 +48,16 @@ namespace DataAccessLayer.Helpers
 
     public class SuscriptionInfo
     {
-        public SuscriptionInfo()
+        public SuscriptionInfo(string custom)
         {
             plan_id = "P-97818393X7850501NMFRB3JQ";
             application_context = new ApplicationContext();
+            custom_id = custom;
         }
 
         public string plan_id { get; set; }
+
+        public string custom_id { get; set; }
         public ApplicationContext application_context { get; set; }
     }
 
@@ -157,6 +160,8 @@ namespace DataAccessLayer.Helpers
         public string quantity { get; set; }
         public Subscriber subscriber { get; set; }
         public DateTime create_time { get; set; }
+
+        public string custom_id { get; set; }
         public bool plan_overridden { get; set; }
         public ShippingAmount shipping_amount { get; set; }
         public DateTime start_time { get; set; }

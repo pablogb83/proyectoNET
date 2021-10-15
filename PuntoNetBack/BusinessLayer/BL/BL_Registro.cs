@@ -18,9 +18,9 @@ namespace BusinessLayer.BL
             _dal = dal;
         }
 
-        public string CrearSuscripcion()
+        public string CrearSuscripcion(string inst)
         {
-            return _dal.CrearSuscripcionAsync();
+            return _dal.CrearSuscripcionAsync(inst);
         }
         public bool AuthorizePayment(IHeaderDictionary headers, PaypalSuscriptionActivated body)
         {

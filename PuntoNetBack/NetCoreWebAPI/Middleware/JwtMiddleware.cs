@@ -53,9 +53,10 @@ namespace NetCoreWebAPI.Middleware
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "Id").Value);
-
+                string tenantId = jwtToken.Claims.First(x => x.Type == "TenantId").Value;
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetUsuarioById(userId);
+                context.Items["User"] = userId;
+                context.Items["TenantId"] = tenantId;
             }
             catch
             {

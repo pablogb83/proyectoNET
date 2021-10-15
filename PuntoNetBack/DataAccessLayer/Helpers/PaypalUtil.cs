@@ -33,11 +33,11 @@ namespace DataAccessLayer.Helpers
             TokenInfo obj = JsonConvert.DeserializeObject<TokenInfo>(content);
             return obj.access_token;
         }
-        public string createSuscription(string  token)
+        public string createSuscription(string  token, string inst)
         {
             var client = new RestClient("https://api-m.sandbox.paypal.com/v1/billing/subscriptions") { Encoding = Encoding.UTF8 };
             client.AddDefaultHeader("Authorization", string.Format("Bearer {0}", token));
-            SuscriptionInfo body = new SuscriptionInfo();
+            SuscriptionInfo body = new SuscriptionInfo(inst);
             var authRequest = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
             authRequest.RequestFormat = DataFormat.Json;
             authRequest.AddJsonBody(body);
@@ -58,6 +58,7 @@ namespace DataAccessLayer.Helpers
             string transmission_id = headers["paypal-transmission-id"];
             string transmission_sig = headers["paypal-transmission-sig"];
             string transmission_time = headers["paypal-transmission-time"];
+            string codyJson = Newtonsoft.Json.JsonConvert.SerializeObject(body);
             VerificationBody verBody = new VerificationBody(auth_algo, cert_url, transmission_id, transmission_sig, transmission_time, body);
             authRequest.AddJsonBody(verBody);
             var authResponse = client.Execute(authRequest);
@@ -65,7 +66,6 @@ namespace DataAccessLayer.Helpers
             var verification_status = status["verification_status"];
             if (verification_status.ToString().Equals("SUCCESS"))
             {
-                Console.WriteLine("OK");
                 return true;
             }
             return false;
