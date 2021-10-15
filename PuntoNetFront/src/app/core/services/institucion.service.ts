@@ -28,7 +28,6 @@ export class InstitucionService {
      return this.http.put(AUTH_API + id,  val);
   }
 
-
   deleteInst(val:any){
     return this.http.delete(AUTH_API + val);
   }

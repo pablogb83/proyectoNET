@@ -1,12 +1,19 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import * as moment from 'moment';
 import 'rxjs/add/operator/delay';
 
 import { environment } from '../../../environments/environment';
-import { of, EMPTY } from 'rxjs';
+import { of, EMPTY, Observable } from 'rxjs';
+
+const AUTH_API = '/api/usuarios/authenticate/';
+
+const httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+  
 
 @Injectable({
     providedIn: 'root'
@@ -17,9 +24,16 @@ export class AuthenticationService {
         @Inject('LOCALSTORAGE') private localStorage: Storage) {
     }
 
-    login(email: string, password: string) {
+    login(email: string, password: string): Observable<any> {
+        return this.http.post(AUTH_API, {
+          email,
+          password,
+          },httpOptions);
+    }
+
+    /*login(email: string, password: string) {
         return of(true).delay(1000)
-            .pipe(map((/*response*/) => {
+            .pipe(map((/*response) => {
                 // set token property
                 // const decodedToken = jwt_decode(response['token']);
 
@@ -36,7 +50,7 @@ export class AuthenticationService {
 
                 return true;
             }));
-    }
+    }*/
 
     logout(): void {
         // clear token remove user from local storage to log user out

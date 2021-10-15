@@ -7,6 +7,7 @@ import 'rxjs/add/operator/delay';
 
 import { AuthenticationService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
 @Component({
     selector: 'app-login',
@@ -21,12 +22,13 @@ export class LoginComponent implements OnInit {
     constructor(private router: Router,
         private titleService: Title,
         private notificationService: NotificationService,
-        private authenticationService: AuthenticationService) {
+        private authenticationService: AuthenticationService,
+        private tokenService: TokenStorageService) {
     }
 
     ngOnInit() {
-        this.titleService.setTitle('angular-material-template - Login');
-        this.authenticationService.logout();
+        this.titleService.setTitle('Proyecto .NET Login');
+        //this.authenticationService.logout();
         this.createForm();
     }
 
@@ -46,22 +48,18 @@ export class LoginComponent implements OnInit {
         const rememberMe = this.loginForm.get('rememberMe').value;
 
         this.loading = true;
-        this.authenticationService
-            .login(email.toLowerCase(), password)
-            .subscribe(
-                data => {
-                    if (rememberMe) {
-                        localStorage.setItem('savedUserEmail', email);
-                    } else {
-                        localStorage.removeItem('savedUserEmail');
-                    }
-                    this.router.navigate(['/']);
-                },
-                error => {
-                    this.notificationService.openSnackBar(error.error);
-                    this.loading = false;
-                }
-            );
+        this.authenticationService.login(email.toLowerCase(), password).subscribe(data => {
+            console.log(data);
+            this.tokenService.saveToken(data.token);
+            this.tokenService.saveUserName(data.email);
+            this.tokenService.saveRoleName(data.role);
+            this.loading = false;
+            this.router.navigate(['/']);
+        },
+        error => {
+            this.notificationService.openSnackBar(error.error);
+            this.loading = false;
+        });
     }
 
     resetPassword() {

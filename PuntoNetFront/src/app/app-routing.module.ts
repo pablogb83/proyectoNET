@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './core/guards/auth.guard';
+import { PagoComponent } from './pago/pago.component';
 
 const appRoutes: Routes = [
     {
@@ -46,6 +47,11 @@ const appRoutes: Routes = [
     {
         path: 'institucion',
         loadChildren: './institucion/institucion.module#InstitucionModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'pago',
+        loadChildren: './pago/pago.module#PagoModule',
         canActivate: [AuthGuard]
     },
     {

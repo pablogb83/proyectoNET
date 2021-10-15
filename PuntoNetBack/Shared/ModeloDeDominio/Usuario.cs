@@ -19,5 +19,7 @@ namespace Shared.ModeloDeDominio
         [Required]
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
+
+        public Role Rol { get; set; }
     }
 }
