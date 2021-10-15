@@ -111,6 +111,10 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Institucion, BL_Institucion>();
             services.AddScoped<IDAL_Registro, DataAccessLayer.DAL.DAL_Registro_EF>();
             services.AddScoped<IBL_Registro, BL_Registro>();
+            services.AddScoped<IDAL_Role, DataAccessLayer.DAL.DAL_Role_EF>();
+            services.AddScoped<IBL_Role, BL_Role>();
+            services.AddScoped<IDAL_Edificio, DataAccessLayer.DAL.DAL_Edificio_EF>();
+            services.AddScoped<IBL_Edificio, BL_Edificio>();
 
 
             services.AddSwaggerGen(c =>
