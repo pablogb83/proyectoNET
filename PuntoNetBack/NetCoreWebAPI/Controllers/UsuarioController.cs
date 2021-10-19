@@ -53,12 +53,7 @@ namespace NetCoreWebAPI.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("Id", user.Id.ToString()),
-<<<<<<< HEAD
-                    new Claim("TenantId", user.TenantId),
-                    //new Claim("Rol", user.Role.NombreRol)
-=======
                     new Claim("TenantId", user.TenantId)
->>>>>>> origin/Bruno
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -72,14 +67,9 @@ namespace NetCoreWebAPI.Controllers
                 Id = user.Id,
                 Email = user.Email,
                 Token = tokenString,
-<<<<<<< HEAD
                 TenantId = user.TenantId,
                 Role = user.Role.NombreRol
             }) ;
-=======
-                TenantId = user.TenantId
-            });
->>>>>>> origin/Bruno
         }
 
         //GET api/usuarios
