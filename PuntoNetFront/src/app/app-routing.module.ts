@@ -55,6 +55,16 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'edificios',
+        loadChildren: './edificios/edificios.module#EdificiosModule',
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'roles',
+        loadChildren: './roles/roles.module#RolesModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserListComponent } from './user-list/user-list.component';
 import { LayoutComponent } from '../shared/layout/layout.component';
 import { UserRoleComponent } from './user-role/user-role.component';
+import { UsersAddComponent } from './users-add/users-add.component';
+import { UsersEditComponent } from './users-edit/users-edit.component';
 
 const routes: Routes = [
   {
@@ -12,6 +14,8 @@ const routes: Routes = [
     children: [
       { path: '', component: UserListComponent },
       { path: 'addrole', component: UserRoleComponent },
+      { path: 'add', component: UsersAddComponent},
+      { path: 'edit', component: UsersEditComponent },
     ]
   }
 ];

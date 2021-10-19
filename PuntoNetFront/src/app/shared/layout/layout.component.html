@@ -90,6 +90,20 @@
           <p mat-line> Users </p>
         </a>
 
+        <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            business
+          </mat-icon>
+          <p mat-line> Edificios </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/roles']" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            contact_phone
+          </mat-icon>
+          <p mat-line> Roles </p>
+        </a>
+
         <a mat-list-item [routerLink]="['/auth/login']">
           <mat-icon mat-list-icon>exit_to_app</mat-icon>
           <p mat-line> Log out </p>

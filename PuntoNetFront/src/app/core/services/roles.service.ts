@@ -1,8 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const AUTH_API = '/api/usuarios/';
+const AUTH_API = '/api/roles/';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -12,35 +12,31 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-
-export class UsuariosService {
+export class RolesService {
 
   constructor(private http: HttpClient) { }
 
-  getUsuarios(): Observable<any> {
-    return this.http.get(AUTH_API);
+  getRoles():Observable<any[]>{
+    return this.http.get<any>(AUTH_API);
   }
 
-  getUsuario(id: number):Observable<any[]>{
+  getRole(id: number):Observable<any[]>{
     return this.http.get<any>(AUTH_API+id);
   }
 
-  postUsuario(email: string, passwordPlano: string){
+  postRole(nombreRol: string){
     return this.http.post(AUTH_API , {
-      email,
-      passwordPlano
+      nombreRol,
     },httpOptions);
   }
 
-  putUsuario(id:number, email: string, password: string){
+  putRole(id:number, nombreRol: string){
      return this.http.put(AUTH_API + id, {
-      email,
-      password
+      nombreRol,
      }, httpOptions);
   }
 
-  deleteUsuario(id:string){
+  deleteRole(id:string){
     return this.http.delete(AUTH_API + id);
   }
-
 }
