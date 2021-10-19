@@ -56,7 +56,7 @@ namespace NetCoreWebAPI
                 return tenantId;
             }).WithEFCoreStore<MultiTenantStoreDbContext, Institucion>();
             services.AddDbContext<WebAPIContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+            options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
 
             // configure strongly typed settings objects
         

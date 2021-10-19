@@ -25,7 +25,8 @@ namespace DataAccessLayer.DAL
                 return null;
 
             var user = _context.Usuarios.IgnoreQueryFilters().SingleOrDefault(x => x.Email == email);
-            Console.WriteLine(user.TenantId);
+            var role1 = _context.Roles.Find(1);
+            //Console.WriteLine(user.TenantId);
             
 
             // check if username exists

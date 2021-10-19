@@ -21,4 +21,26 @@ export class UsuariosService {
     return this.http.get(AUTH_API);
   }
 
+  getUsuario(id: number):Observable<any[]>{
+    return this.http.get<any>(AUTH_API+id);
+  }
+
+  postUsuario(email: string, passwordPlano: string){
+    return this.http.post(AUTH_API , {
+      email,
+      passwordPlano
+    },httpOptions);
+  }
+
+  putUsuario(id:number, email: string, password: string){
+     return this.http.put(AUTH_API + id, {
+      email,
+      password
+     }, httpOptions);
+  }
+
+  deleteUsuario(id:string){
+    return this.http.delete(AUTH_API + id);
+  }
+
 }

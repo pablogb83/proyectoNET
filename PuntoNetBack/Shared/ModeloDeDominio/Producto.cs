@@ -16,7 +16,7 @@ namespace Shared.ModeloDeDominio
         public ProductNameEnum Nombre { get; set; }
         [Required]
         public string Descripcion { get; set; }
-        public List<Precio> Precios { get; set; }
-        public List<Suscripcion> Suscripciones { get; set; }
+        public virtual List<Precio> Precios { get; set; }
+        public virtual List<Suscripcion> Suscripciones { get; set; }
     }
 }

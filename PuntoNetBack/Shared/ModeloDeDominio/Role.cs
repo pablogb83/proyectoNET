@@ -17,7 +17,7 @@ namespace Shared.ModeloDeDominio
         [MaxLength(250)]
         public string NombreRol { get; set; }
 
-        public List<Usuario> usuarios { get; set; }
+        public virtual List<Usuario> usuarios { get; set; }
 
     }
 }

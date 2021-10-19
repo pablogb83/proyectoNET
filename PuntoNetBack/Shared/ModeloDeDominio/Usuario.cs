@@ -17,6 +17,6 @@ namespace Shared.ModeloDeDominio
         [Required]
         public string TenantId { get; set; }
 
-        public Role Rol { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Finbuckle.MultiTenant;
 
 namespace Shared.ModeloDeDominio
 {
+    [MultiTenant]
     public class PuertaAcceso
     {
         [Key]
@@ -16,6 +17,6 @@ namespace Shared.ModeloDeDominio
         [MaxLength(250)]
         public string Denominacion { get; set; }
 
-        public Edificio edificio { get; set; }
+        public virtual Edificio edificio { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace DataAccessLayer
         public WebAPIContext(ITenantInfo tenantInfo, DbContextOptions options) : base(tenantInfo, options)
         {
         }
+
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<Suscripcion> Suscripcion { get; set; }

@@ -24,7 +24,7 @@ namespace BusinessLayer.BL
         {
             var user = _dalUsr.GetUsuarioById(userId);
             var rol = _dal.GetRoleById(rolId);
-            user.Rol = rol;
+            user.Role = rol;
             _dalUsr.SaveChanges();
             //_dalUsr.UpdateUsuario(user);
         }

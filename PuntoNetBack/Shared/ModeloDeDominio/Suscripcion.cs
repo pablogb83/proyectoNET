@@ -15,6 +15,6 @@ namespace Shared.ModeloDeDominio
         [Required]
         public SuscriptionEnum estado { get; set; }
         [Required]
-        public Producto Producto { get; set; }
+        public virtual Producto Producto { get; set; }
     }
 }
