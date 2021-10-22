@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations.WebAPI
 {
     [DbContext(typeof(WebAPIContext))]
-    [Migration("20211016173734_Actualizar tabla puertaAcceso")]
-    partial class ActualizartablapuertaAcceso
+    [Migration("20211020192910_PuertaActualizacion")]
+    partial class PuertaActualizacion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
@@ -94,7 +94,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.ToTable("Producto");
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.PuertaAcceso", b =>
+            modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +118,7 @@ namespace DataAccessLayer.Migrations.WebAPI
 
                     b.HasIndex("edificioId");
 
-                    b.ToTable("PuertaAccesos");
+                    b.ToTable("Puertas");
 
                     b
                         .HasAnnotation("Finbuckle:MultiTenant", true);
@@ -189,7 +189,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("RolId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenantId")
@@ -199,7 +199,7 @@ namespace DataAccessLayer.Migrations.WebAPI
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Usuarios");
 
@@ -214,7 +214,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasForeignKey("ProductoId");
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.PuertaAcceso", b =>
+            modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
                         .WithMany("puerta_accesos")
@@ -236,11 +236,11 @@ namespace DataAccessLayer.Migrations.WebAPI
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
                 {
-                    b.HasOne("Shared.ModeloDeDominio.Role", "Rol")
+                    b.HasOne("Shared.ModeloDeDominio.Role", "Role")
                         .WithMany("usuarios")
-                        .HasForeignKey("RolId");
+                        .HasForeignKey("RoleId");
 
-                    b.Navigation("Rol");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Dtos.PuertaAccesos
 {
-    class PuertaAccesosReadDto
+    public class PuertaReadDto
     {
         public int Id { get; set; }
 

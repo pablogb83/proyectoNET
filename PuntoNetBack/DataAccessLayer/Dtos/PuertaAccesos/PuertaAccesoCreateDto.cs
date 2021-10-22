@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Dtos.PuertaAccesos
 {
-    public class PuertaAccesoCreateDto
+    public class PuertaCreateDto
     {
         [Required]
         [MaxLength(250)]
         public string Denominacion { get; set; }
+        [Required]
+        public int idEdificio { get; set; }
     }
 }
