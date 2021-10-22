@@ -111,7 +111,7 @@ namespace NetCoreWebAPI.Controllers
             return NoContent();
         }
 
-        //api/role/addRoletoUser/
+        //api/roles/addRoletoUser/
         [HttpPost("addRoletoUser")]
         public ActionResult AddRoleUser([FromBody]UserIdRolId parametros)
         {

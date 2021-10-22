@@ -57,7 +57,11 @@ export class UserListComponent implements OnInit {
     const dialogRef = this.dialog.open(UserRoleComponent, {
       width: '250px',
       data: {user: user}
-    })
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getUsuarios();
+    }); 
   }
   
   openDialog(): void {
