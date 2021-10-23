@@ -65,6 +65,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'salones',
+        loadChildren: './salon/salon.module#SalonModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

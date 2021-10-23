@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Edificios;
+using DataAccessLayer.Dtos.Salon;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
@@ -30,7 +31,15 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<EdificiosReadDto>> GetAllEdificios()
         {
             var edificios = _bl.GetAllEdificios();
-            return Ok(_mapper.Map<IEnumerable<EdificiosReadDto>>(edificios));
+            if (edificios != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<EdificiosReadDto>>(edificios));
+            }
+            else
+            {
+                return NotFound();
+            }
+            
         }
 
         //GET api/edificios/{id}
@@ -108,6 +117,18 @@ namespace NetCoreWebAPI.Controllers
             _bl.DeleteEdificio(edificioModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
+        }
+
+        [HttpGet("salones/{id}")]
+        public ActionResult <IEnumerable<SalonReadDto>> GetSalones(int id)
+        {
+            var edificioModelFromRepo = _bl.GetEdificioById(id);
+            if (edificioModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(edificioModelFromRepo.Salones));
+
         }
     }
 }

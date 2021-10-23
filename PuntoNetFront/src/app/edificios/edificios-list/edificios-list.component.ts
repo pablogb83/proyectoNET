@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import Swal from 'sweetalert2';
 import { EdificiosAddComponent } from '../edificios-add/edificios-add.component';
@@ -16,7 +17,7 @@ export class EdificiosListComponent implements OnInit {
 
   displayedColumns: string[] = ['id','nombre', 'direccion', 'telefono', 'acciones'];
 
-  constructor(private service: EdificiosService,public dialog: MatDialog) {
+  constructor(private service: EdificiosService,public dialog: MatDialog, private router: Router) {
     this.getEdificios();
   }
 
@@ -77,6 +78,10 @@ export class EdificiosListComponent implements OnInit {
         )
       }
     })
+  }
+
+  redirectSalones(idedificio:any): void{
+    this.router.navigate(['salones'], { queryParams: { idedificio } });
   }
   
 }

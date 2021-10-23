@@ -38,8 +38,9 @@
                       <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="openDialogUpdate(element)" >
                           <mat-icon>update</mat-icon>
                       </button>
-                      <ng-container *ngIf="!element.role">
-                        <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarRol(element)" >
+                      <!-- <ng-container *ngIf="!element.role"> -->
+                        <ng-container>
+                        <button mat-icon-button color="success" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarRol(element)" >
                           <mat-icon>sentiment_very_satisfied</mat-icon>
                       </button>
                       </ng-container>
