@@ -38,7 +38,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Edificio> GetAllEdificios() //precisa saber que Institucion
         {
-            return _context.Edificios.ToList();
+           return _context.Edificios.ToList();
         }
 
         public Edificio GetEdificioById(int Id) //idem, edi + inst

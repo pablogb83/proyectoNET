@@ -139,6 +139,39 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.Salon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Denominacion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("edificioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("edificioId");
+
+                    b.ToTable("Salones");
+
+                    b
+                        .HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Suscripcion", b =>
                 {
                     b.Property<string>("Id")
@@ -221,6 +254,15 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.Navigation("edificio");
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.Salon", b =>
+                {
+                    b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
+                        .WithMany("Salones")
+                        .HasForeignKey("edificioId");
+
+                    b.Navigation("edificio");
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Suscripcion", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Producto", "Producto")
@@ -244,6 +286,8 @@ namespace DataAccessLayer.Migrations.WebAPI
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
                 {
                     b.Navigation("puerta_accesos");
+
+                    b.Navigation("Salones");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Producto", b =>

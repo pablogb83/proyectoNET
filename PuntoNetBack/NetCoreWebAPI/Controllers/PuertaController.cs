@@ -55,47 +55,10 @@ namespace NetCoreWebAPI.Controllers
 
             return CreatedAtRoute(nameof(GetPuertaById), new { Id = puertaReadDto.Id }, puertaReadDto);
         }
-        /*
-        //PUT api/commands/{id}
-        [HttpPut("{id}")]
-        public ActionResult UpdateEdificio(int id, EdificioUpdateDto edificioUpdateDto)
-        {
-            var edificioModelFromRepo = _bl.GetEdificioById(id);
-            if (edificioModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(edificioUpdateDto, edificioModelFromRepo);
-            _bl.UpdateEdificio(edificioModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }*/
 
-        //PATCH api/commands/{id}
-        /*[HttpPatch("{id}")]
-        public ActionResult PartialPuertaUpdtate(int id, JsonPatchDocument<PuertaUpdateDto> patchDoc)
-        {
-            var edificioModelFromRepo = _bl.GetEdificioById(id);
-            if (edificioModelFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            var edificioToPatch = _mapper.Map<EdificioUpdateDto>(edificioModelFromRepo);
-            patchDoc.ApplyTo(edificioToPatch, ModelState);
-            if (!TryValidateModel(edificioToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(edificioToPatch, edificioModelFromRepo);
-            _bl.UpdateEdificio(edificioModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
-        */
-        //DELETE api/commands/{id}
+        //DELETE api/puerta/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteEdificio(int id)
+        public ActionResult DeletePuerta(int id)
         {
             var edificioModelFromRepo = _bl.GetPuertaById(id);
             if (edificioModelFromRepo == null)
@@ -103,6 +66,21 @@ namespace NetCoreWebAPI.Controllers
                 return NotFound();
             }
             _bl.DeletePuerta(edificioModelFromRepo);
+            _bl.SaveChanges();
+            return NoContent();
+        }
+
+        //PUT api/salon/{id}
+        [HttpPut("{id}")]
+        public ActionResult UpdatePuerta(int id, PuertaUpdateDto puertaUpdateDto)
+        {
+            var puertaModelFromRepo = _bl.GetPuertaById(id);
+            if (puertaModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(puertaUpdateDto, puertaModelFromRepo);
+            _bl.UpdatePuerta(puertaModelFromRepo.Id);
             _bl.SaveChanges();
             return NoContent();
         }

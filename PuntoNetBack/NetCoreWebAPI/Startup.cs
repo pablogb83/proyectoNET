@@ -115,6 +115,9 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Role, BL_Role>();
             services.AddScoped<IDAL_Edificio, DataAccessLayer.DAL.DAL_Edificio_EF>();
             services.AddScoped<IBL_Edificio, BL_Edificio>();
+            services.AddScoped<IDAL_Salon, DataAccessLayer.DAL.DAL_Salon_EF>();
+            services.AddScoped<IBL_Salon, BL_Salon>();
+
             services.AddScoped<IDAL_Puerta, DataAccessLayer.DAL.DAL_Puerta_EF>();
             services.AddScoped<IBL_Puerta, BL_Puerta>();
 

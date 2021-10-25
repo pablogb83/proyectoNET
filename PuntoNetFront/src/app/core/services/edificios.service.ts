@@ -43,4 +43,13 @@ export class EdificiosService {
   deleteEdificio(id:string){
     return this.http.delete(AUTH_API + id);
   }
+
+  
+  getSalonesEdificio(id:number):Observable<any[]>{
+    return this.http.get<any>(AUTH_API + 'salones/' + id);
+  }
+
+  getPuertasEdificio(id:number):Observable<any[]>{
+    return this.http.get<any>(AUTH_API + 'puertas/' + id);
+  }
 }
