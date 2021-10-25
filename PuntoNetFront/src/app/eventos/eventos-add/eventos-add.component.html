@@ -1,0 +1,48 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <h3>Alta evento</h3>
+        <mat-divider></mat-divider>
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput [(ngModel)]="nombre">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Descripcion</mat-label>
+            <input matInput [(ngModel)]="descripcion">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill">
+            <mat-label>Fecha inicio</mat-label>
+            <input type="date" [(ngModel)]="fechainicio">
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill">
+            <mat-label>Fecha inicio</mat-label>
+            <input matInput [matDatepicker]="fechainicio">
+            <mat-datepicker-toggle matSuffix [for]="fechainicio"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Fecha fin</mat-label>
+            <input matInput [matDatepicker]="fechafin">
+            <mat-datepicker-toggle matSuffix [for]="fechafin"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+
+
+
+        <div class="ml-3 bd-highlight" style="width: 40%;">
+            <img [src]=PhotoFilePath height="250px;" width="200px;">
+            <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
+        </div>
+
+
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="agregarEvento()">Agregar</button>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        </div>
+    </div>
+</div>

@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations.WebAPI
 {
     [DbContext(typeof(WebAPIContext))]
-    [Migration("20211016202441_prueba")]
-    partial class prueba
+    [Migration("20211024185411_Re-migrate PuertaAccesos")]
+    partial class RemigratePuertaAccesos
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.10")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
@@ -49,6 +49,40 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.HasKey("Id");
 
                     b.ToTable("Edificios");
+
+                    b
+                        .HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
+            modelBuilder.Entity("Shared.ModeloDeDominio.Evento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaFinEvt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicioEvt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Eventos");
 
                     b
                         .HasAnnotation("Finbuckle:MultiTenant", true);
@@ -189,7 +223,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("RolId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenantId")
@@ -199,7 +233,7 @@ namespace DataAccessLayer.Migrations.WebAPI
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Usuarios");
 
@@ -236,11 +270,11 @@ namespace DataAccessLayer.Migrations.WebAPI
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Usuario", b =>
                 {
-                    b.HasOne("Shared.ModeloDeDominio.Role", "Rol")
+                    b.HasOne("Shared.ModeloDeDominio.Role", "Role")
                         .WithMany("usuarios")
-                        .HasForeignKey("RolId");
+                        .HasForeignKey("RoleId");
 
-                    b.Navigation("Rol");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
@@ -34,6 +35,11 @@ export class UsersAddComponent implements OnInit {
     this.service.postUsuario(val.email,val.password).subscribe(res=>{
       this.showSuccessAlert();
     }, err =>{
+      if (err instanceof HttpErrorResponse) {
+        const errorMessages = new Array<{ propName: string; errors: string }>();
+        console.log(errorMessages);
+      }
+
       this.showErrorAlert();
     });
   }
@@ -43,6 +49,7 @@ export class UsersAddComponent implements OnInit {
   }
 
   showErrorAlert() {
+
     Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 

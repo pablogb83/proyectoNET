@@ -25,6 +25,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'eventos',
+        loadChildren: './eventos/eventos.module#EventosModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'account',
         loadChildren: './account/account.module#AccountModule',
         canActivate: [AuthGuard]

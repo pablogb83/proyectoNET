@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace NetCoreWebAPI
 {
@@ -115,7 +117,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Role, BL_Role>();
             services.AddScoped<IDAL_Edificio, DataAccessLayer.DAL.DAL_Edificio_EF>();
             services.AddScoped<IBL_Edificio, BL_Edificio>();
-
+            services.AddScoped<IDAL_Evento, DataAccessLayer.DAL.DAL_Evento_EF>();
+            services.AddScoped<IBL_Evento, BL_Evento>();
 
             services.AddSwaggerGen(c =>
             {
@@ -182,6 +185,13 @@ namespace NetCoreWebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Photos")),
+                RequestPath = "/Photos"
             });
         }
     }

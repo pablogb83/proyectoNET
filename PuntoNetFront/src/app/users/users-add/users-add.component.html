@@ -4,7 +4,8 @@
         <mat-divider></mat-divider>
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
-            <input matInput [(ngModel)]="email">
+            <input matInput [(ngModel)]="email" ><!--formControlName="email" required-->
+            <!-- <mat-error *ngIf="form.get('email').errors?.required">Email is required</mat-error> -->
         </mat-form-field>
 
         <mat-form-field appearance="fill">
