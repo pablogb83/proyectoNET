@@ -74,7 +74,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarios
 
-        [Authorize]
+        [Authorize(Role = "ADMIN")]
         [HttpGet]
         public ActionResult<IEnumerable<UsuarioReadDto>> GetAllUsuarios()
         {

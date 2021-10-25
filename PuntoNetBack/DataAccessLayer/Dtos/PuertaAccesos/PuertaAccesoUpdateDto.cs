@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Dtos.PuertaAccesos
 {
-    public class PuertaAccesoUpdateDto
+    public class PuertaUpdateDto
     {
         [Required]
         [MaxLength(250)]

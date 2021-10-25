@@ -92,7 +92,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.ToTable("Producto");
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.PuertaAcceso", b =>
+            modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,7 +116,7 @@ namespace DataAccessLayer.Migrations.WebAPI
 
                     b.HasIndex("edificioId");
 
-                    b.ToTable("PuertaAccesos");
+                    b.ToTable("Puertas");
 
                     b
                         .HasAnnotation("Finbuckle:MultiTenant", true);
@@ -245,7 +245,7 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasForeignKey("ProductoId");
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.PuertaAcceso", b =>
+            modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
                         .WithMany("puerta_accesos")

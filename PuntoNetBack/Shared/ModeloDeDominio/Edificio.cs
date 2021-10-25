@@ -21,8 +21,9 @@ namespace Shared.ModeloDeDominio
         [Required]
         public string Telefono { get; set; }
 
-        public virtual ICollection<PuertaAcceso> puerta_accesos { get; set; } = new List<PuertaAcceso>();
+
 
         public virtual ICollection<Salon> Salones { get; set; } = new List<Salon>();
+        public virtual ICollection<Puerta> puerta_accesos { get; set; } = new List<Puerta>();
     }
 }

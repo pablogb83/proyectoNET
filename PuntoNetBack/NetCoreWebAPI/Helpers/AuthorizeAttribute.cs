@@ -16,21 +16,27 @@ namespace NetCoreWebAPI.Helpers
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     {
+        public string Role;
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            string user = context.HttpContext.Items["User"].ToString();
-            var tenantInfo = context.HttpContext.GetMultiTenantContext<Institucion>().TenantInfo;
-            if (user == null)
+            int user = (int)context.HttpContext.Items["User"];
+            if (user==0)
             {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }
             else
             {
-
                 var userService = context.HttpContext.RequestServices.GetRequiredService<IDAL_Usuario>();
-                int userId = int.Parse(user);
-                context.HttpContext.Items["UserData"] = userService.GetUsuarioById(userId);
-                Console.WriteLine(userId);
+                var userData = userService.GetUsuarioById(user);
+                if (userData.Role.NombreRol.Equals(this.Role))
+                {
+                    context.HttpContext.Items["UserData"] = userData;
+                }
+                else
+                {
+                    context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                    return;
+                }
             }
         }
     }
