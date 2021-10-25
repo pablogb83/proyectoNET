@@ -48,4 +48,8 @@ export class EdificiosService {
   getSalonesEdificio(id:number):Observable<any[]>{
     return this.http.get<any>(AUTH_API + 'salones/' + id);
   }
+
+  getPuertasEdificio(id:number):Observable<any[]>{
+    return this.http.get<any>(AUTH_API + 'puertas/' + id);
+  }
 }

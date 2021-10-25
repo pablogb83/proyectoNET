@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Edificios;
+using DataAccessLayer.Dtos.PuertaAccesos;
 using DataAccessLayer.Dtos.Salon;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -128,6 +129,18 @@ namespace NetCoreWebAPI.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(edificioModelFromRepo.Salones));
+
+        }
+
+        [HttpGet("puertas/{id}")]
+        public ActionResult<IEnumerable<SalonReadDto>> GetPuertas(int id)
+        {
+            var edificioModelFromRepo = _bl.GetEdificioById(id);
+            if (edificioModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<PuertaReadDto>>(edificioModelFromRepo.puerta_accesos));
 
         }
     }

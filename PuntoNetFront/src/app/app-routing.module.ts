@@ -70,6 +70,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'puertas',
+        loadChildren: './puerta/puerta.module#PuertaModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

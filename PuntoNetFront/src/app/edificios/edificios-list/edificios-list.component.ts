@@ -83,6 +83,10 @@ export class EdificiosListComponent implements OnInit {
   redirectSalones(idedificio:any): void{
     this.router.navigate(['salones'], { queryParams: { idedificio } });
   }
+
+  redirectPuertas(idedificio:any): void{
+    this.router.navigate(['puertas'], { queryParams: { idedificio } });
+  }
   
 }
 
