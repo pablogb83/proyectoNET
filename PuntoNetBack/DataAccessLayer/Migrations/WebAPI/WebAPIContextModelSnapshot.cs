@@ -238,6 +238,37 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.UsuarioEdificio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EdificioId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EdificioId");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("UsuariosEdificio");
+
+                    b
+                        .HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Precio", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Producto", null)
@@ -281,6 +312,25 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Shared.ModeloDeDominio.UsuarioEdificio", b =>
+                {
+                    b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
+                        .WithMany()
+                        .HasForeignKey("EdificioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.ModeloDeDominio.Usuario", "usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("edificio");
+
+                    b.Navigation("usuario");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>

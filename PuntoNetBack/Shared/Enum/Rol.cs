@@ -8,9 +8,9 @@ namespace Shared.Enum
 {
     public enum Rol
     {
-        SUPERADMIN = 0,
-        ADMIN = 1,
-        PORTERO = 2,
-        GESTOR = 3,
+        SUPERADMIN,
+        ADMIN,
+        PORTERO,
+        GESTOR,
     }
 }

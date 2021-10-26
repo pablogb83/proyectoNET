@@ -16,7 +16,7 @@ namespace Shared.ModeloDeDominio
         public byte[] PasswordSalt { get; set; }
         [Required]
         public string TenantId { get; set; }
-
+       
         public virtual Role Role { get; set; }
     }
 }
