@@ -3,6 +3,7 @@ import { EventosService } from 'src/app/core/services/eventos.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-eventos-add',
@@ -12,10 +13,9 @@ import Swal from 'sweetalert2';
 export class EventosAddComponent implements OnInit {
 
   nombre?:string;
-  direccion?:string;
   descripcion?:string;
-  fechainicio?:string;
-  fechafin?:string;
+  fechainicio = new FormControl(new Date());
+  fechafin = new FormControl(new Date());
   PhotoFileName?:any;
   PhotoFilePath?:any;
 
@@ -30,16 +30,22 @@ export class EventosAddComponent implements OnInit {
   }
 
   agregarEvento(){
-    let initDate = new Date (this.fechainicio).toJSON();
-    let endDate = new Date (this.fechafin).toJSON();
+    var initDate = new Date (this.fechainicio.value._i.year, 
+                             this.fechainicio.value._i.month, 
+                             this.fechainicio.value._i.date );
+
+    var endDate = new Date (this.fechafin.value._i.year, 
+                            this.fechafin.value._i.month, 
+                            this.fechafin.value._i.date );
+  //  console.log(initDate);
     var val = {
               nombre:this.nombre,
               descripcion:this.descripcion,
-              fechainicio: initDate,
+              fechainicio: initDate, 
               fechafin: endDate,
               PhotoFileName:this.PhotoFileName
               };
-    this.service.postEvento(val.nombre,val.descripcion,val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
+    this.service.postEvento(val.nombre,val.descripcion, val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
       this.showSuccessAlert();
     }, err =>{
       this.showErrorAlert();

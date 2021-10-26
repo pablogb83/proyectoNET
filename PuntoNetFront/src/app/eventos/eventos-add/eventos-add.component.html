@@ -12,26 +12,23 @@
             <input matInput [(ngModel)]="descripcion">
         </mat-form-field>
 
-        <!-- <mat-form-field appearance="fill">
-            <mat-label>Fecha inicio</mat-label>
-            <input type="date" [(ngModel)]="fechainicio">
-        </mat-form-field> -->
-
         <mat-form-field appearance="fill">
             <mat-label>Fecha inicio</mat-label>
-            <input matInput [matDatepicker]="fechainicio">
-            <mat-datepicker-toggle matSuffix [for]="fechainicio"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="pickerinit" [formControl]="fechainicio">
+            <mat-datepicker-toggle matSuffix [for]="pickerinit">
+                
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerinit></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="fill">
             <mat-label>Fecha fin</mat-label>
-            <input matInput [matDatepicker]="fechafin">
-            <mat-datepicker-toggle matSuffix [for]="fechafin"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="pickerfin" [formControl]="fechafin">
+            <mat-datepicker-toggle matSuffix [for]="pickerfin">
+                <!-- <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon> -->
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerfin></mat-datepicker>
           </mat-form-field>
-
-
 
 
         <div class="ml-3 bd-highlight" style="width: 40%;">

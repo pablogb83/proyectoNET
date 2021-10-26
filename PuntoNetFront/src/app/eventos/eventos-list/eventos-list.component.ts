@@ -27,7 +27,6 @@ export class EventosListComponent implements OnInit {
 
   getEventos(): void{
     this.service.getEventos().subscribe(data=>{
-      console.log(data);
       this.EventoList = new MatTableDataSource<Evento>(data);
       this.EventoList.paginator = this.paginator;
     });
@@ -47,7 +46,7 @@ export class EventosListComponent implements OnInit {
   openDialogUpdate(evt:any): void {
     const dialogRef = this.dialog.open(EventosEditComponent, {
       width: '250px',
-      data: {id: evt.id, nombre: evt.nombre, descripcion: evt.descripcion, fechainicio: evt.fechainicio, fechafin: evt.fechafin}
+      data: {id: evt.id, nombre: evt.nombre, descripcion: evt.descripcion, fechaInicioEvt: evt.fechaInicioEvt, fechaFinEvt: evt.fechaFinEvt, photoFileName: evt.photoFileName}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -84,6 +83,7 @@ export interface Evento {
   id: string;
   nombre: string;
   descripcion: string;
-  fechainicio: string;
-  fechafin: string;
+  fechaInicioEvt: Date;
+  fechaFinEvt: Date;
+  photoFileName: string;
 }

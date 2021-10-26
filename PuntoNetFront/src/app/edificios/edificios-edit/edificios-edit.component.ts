@@ -17,7 +17,7 @@ export class EdificiosEditComponent implements OnInit {
   direccion?:string;
   telefono?:string;
 
-  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EdificiosService) { 
+  constructor(public dialogRef: MatDialogRef<EdificiosEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EdificiosService) { 
     console.log(data);
     this.id = data.id;
     this.nombre = data.nombre;
@@ -46,7 +46,7 @@ export class EdificiosEditComponent implements OnInit {
   }
 
   showSuccessAlert() {
-    Swal.fire('OK', 'Institucion actualizada con exito!', 'success');
+    Swal.fire('OK', 'Edificio actualizada con exito!', 'success');
   }
 
   showErrorAlert() {

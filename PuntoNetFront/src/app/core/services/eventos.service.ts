@@ -27,22 +27,22 @@ export class EventosService {
     return this.http.get<any>(AUTH_API+id);
   }
 
-  postEvento(nombre: string, descripcion: string, fechainicio: string, fechafin: string, PhotoFileName: string){
+  postEvento(Nombre: string, Descripcion: string, FechaInicioEvt: Date, FechaFinEvt: Date, PhotoFileName: string){
     return this.http.post(AUTH_API , {
-      nombre,
-      descripcion,
-      fechainicio,
-      fechafin,
+      Nombre,
+      Descripcion,
+      FechaInicioEvt,
+      FechaFinEvt,
       PhotoFileName
     },httpOptions);
   }
 
-  putEvento(id:number, nombre: string, descripcion: string, fechainicio: string, fechafin: string, PhotoFileName: string){
-     return this.http.put(AUTH_API + id, {
-      nombre,
-      descripcion,
-      fechainicio,
-      fechafin,
+  putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: string, FechaFinEvt: string, PhotoFileName: string){
+     return this.http.put(AUTH_API + Id, {
+      Nombre,
+      Descripcion,
+      FechaInicioEvt,
+      FechaFinEvt,
       PhotoFileName
      }, httpOptions);
   }

@@ -13,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -60,7 +59,7 @@ namespace NetCoreWebAPI.Controllers
         {
             var eventoModel = _mapper.Map<Evento>(eventoCreateDto);
             _bl.CreateEvento(eventoModel);
-           // _bl.SaveChanges();
+            _bl.SaveChanges();
 
             var eventoReadDto = _mapper.Map<EventosReadDto>(eventoModel);
 
