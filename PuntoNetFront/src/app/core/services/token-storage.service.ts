@@ -5,6 +5,7 @@ const ROLE_NAME = 'role';
 const USER_NAME = '';
 const USER_ID = '';
 const STATUS = 'status';
+const TENANT = 'tenant';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,16 @@ export class TokenStorageService {
     return window.sessionStorage.getItem(STATUS);
   }
 
+  public saveTenant(tenant: string): void {
+    window.sessionStorage.removeItem(TENANT);
+    window.sessionStorage.setItem(TENANT, tenant);
+  }
+
+  public getTenant(): string | null {
+    return window.sessionStorage.getItem(TENANT);
+  }
+
+
   public saveStatus(status: boolean): void {
     window.sessionStorage.removeItem(STATUS);
     if(status){
@@ -66,8 +77,8 @@ export class TokenStorageService {
   }
 
 
-  public getStatus(): string | null {
-    return window.sessionStorage.getItem(STATUS);
+  public getStatus(): boolean | null {
+    return Boolean(window.sessionStorage.getItem(STATUS)==="ACTIVE");
   }
 
   public saveUserId(id: string): void {

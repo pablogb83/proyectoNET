@@ -33,7 +33,9 @@ export class InstitucionService {
   }
 
   isActive(id: string){
-    id = id  ?? "undefined";
+    if(!id){
+      id='undefined'
+    }
     return this.http.get(AUTH_API  + 'active/' + id);
   }
 }
