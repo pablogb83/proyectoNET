@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from './core/guards/admin.guard';
 
 import { AuthGuard } from './core/guards/auth.guard';
+import { SuperAdminGuard } from './core/guards/superadmin.guard';
 import { PagoComponent } from './pago/pago.component';
 
 const appRoutes: Routes = [
@@ -22,7 +24,7 @@ const appRoutes: Routes = [
     {
         path: 'users',
         loadChildren: './users/users.module#UsersModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: 'account',
@@ -47,7 +49,7 @@ const appRoutes: Routes = [
     {
         path: 'institucion',
         loadChildren: './institucion/institucion.module#InstitucionModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SuperAdminGuard]
     },
     {
         path: 'pago',
@@ -57,22 +59,22 @@ const appRoutes: Routes = [
     {
         path: 'edificios',
         loadChildren: './edificios/edificios.module#EdificiosModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: 'roles',
         loadChildren: './roles/roles.module#RolesModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SuperAdminGuard]
     },
     {
         path: 'salones',
         loadChildren: './salon/salon.module#SalonModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: 'puertas',
         loadChildren: './puerta/puerta.module#PuertaModule',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: '**',

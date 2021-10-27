@@ -22,6 +22,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     userName: string;
     isAdmin: boolean;
     rol:string;
+    instActive: boolean;
 
     private autoLogoutSubscription: Subscription;
 
@@ -39,12 +40,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        const user = this.authService.getCurrentUser();
-
-        this.isAdmin = user.isAdmin;
         this.userName = this.tokenService.getUserName();
         this.rol = this.tokenService.getRoleName();
-
+        this.instActive = this.tokenService.getStatus();
         // Auto log-out subscription
         const timer = TimerObservable.create(2000, 5000);
         this.autoLogoutSubscription = timer.subscribe(t => {

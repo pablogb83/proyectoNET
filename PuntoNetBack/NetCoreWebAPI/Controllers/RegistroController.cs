@@ -29,8 +29,8 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
-        [Authorize]
-        public ActionResult CreateInstitucion()
+        [Authorize(Role = "ADMIN")]
+        public ActionResult CrearSuscripcion()
         {
             Usuario user = (Usuario)HttpContext.Items["UserData"];
             return Ok(new { Link =_bl.CrearSuscripcion(user.TenantId) });

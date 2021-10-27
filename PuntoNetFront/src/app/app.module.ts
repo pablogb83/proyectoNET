@@ -9,6 +9,7 @@ import { CustomMaterialModule } from './custom-material/custom-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { LoggerModule, NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
 import { environment } from '../environments/environment';
+import { AdminGuard } from './core/guards/admin.guard';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { environment } from '../environments/environment';
   bootstrap: [AppComponent],
   providers:[
     NGXMapperService,
-    NGXLoggerHttpService
+    NGXLoggerHttpService,
+    AdminGuard
   ]
 })
 export class AppModule { }

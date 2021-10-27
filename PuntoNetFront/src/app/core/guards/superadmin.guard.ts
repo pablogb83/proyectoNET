@@ -4,22 +4,20 @@ import { AuthenticationService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class SuperAdminGuard implements CanActivate {
 
     constructor(private router: Router,
         private authService: TokenStorageService) { }
 
     canActivate() {
         const user = this.authService.getRoleName();
-        const active = this.authService.getStatus();
-      
-        if(user && user==="ADMIN" && active){
+
+        if (user && user==="SUPERADMIN") {
             return true;
-        }
-        if(!active){
-            this.router.navigate(['/pago']);
+
+        } else {
+            this.router.navigate(['/']);
             return false;
         }
-        return false;
     }
 }
