@@ -8,6 +8,7 @@ import 'rxjs/add/operator/delay';
 import { AuthenticationService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { InstitucionService } from 'src/app/core/services/institucion.service';
 
 @Component({
     selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
         private titleService: Title,
         private notificationService: NotificationService,
         private authenticationService: AuthenticationService,
-        private tokenService: TokenStorageService) {
+        private tokenService: TokenStorageService,
+        private service: InstitucionService) {
     }
 
     ngOnInit() {
@@ -45,7 +47,6 @@ export class LoginComponent implements OnInit {
     login() {
         const email = this.loginForm.get('email').value;
         const password = this.loginForm.get('password').value;
-        const rememberMe = this.loginForm.get('rememberMe').value;
 
         this.loading = true;
         this.authenticationService.login(email.toLowerCase(), password).subscribe(data => {
@@ -53,8 +54,12 @@ export class LoginComponent implements OnInit {
             this.tokenService.saveToken(data.token);
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);
-            this.loading = false;
-            this.router.navigate(['/']);
+            this.service.isActive(data.tenantId).subscribe(status=>{
+                console.log("El status de la institucion es:", Boolean(status));
+                this.tokenService.saveStatus(Boolean(status))
+                this.loading = false;
+                this.router.navigate(['/']);
+            })
         },
         error => {
             this.notificationService.openSnackBar(error.error);

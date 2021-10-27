@@ -4,6 +4,7 @@ const TOKEN_KEY = 'auth-token';
 const ROLE_NAME = 'role';
 const USER_NAME = '';
 const USER_ID = '';
+const STATUS = 'status';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,22 @@ export class TokenStorageService {
   }
 
   public getUserName(): string | null {
-    return window.sessionStorage.getItem(USER_NAME);
+    return window.sessionStorage.getItem(STATUS);
+  }
+
+  public saveStatus(status: boolean): void {
+    window.sessionStorage.removeItem(STATUS);
+    if(status){
+      window.sessionStorage.setItem(STATUS, 'ACTIVE');
+    }
+    else{
+      window.sessionStorage.setItem(STATUS, 'INACTIVE');
+    }
+  }
+
+
+  public getStatus(): string | null {
+    return window.sessionStorage.getItem(STATUS);
   }
 
   public saveUserId(id: string): void {

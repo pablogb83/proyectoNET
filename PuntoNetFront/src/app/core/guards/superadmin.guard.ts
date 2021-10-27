@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class SuperAdminGuard implements CanActivate {
 
     constructor(private router: Router,
-        private authService: AuthenticationService) { }
+        private authService: TokenStorageService) { }
 
     canActivate() {
-        const user = this.authService.getCurrentUser();
+        const user = this.authService.getRoleName();
 
-        if (user && user.isAdmin) {
+        if (user && user==="SUPERADMIN") {
             return true;
 
         } else {

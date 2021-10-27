@@ -1,6 +1,6 @@
-import { AdminGuard } from './admin.guard';
+import { SuperAdminGuard } from './superadmin.guard';
 
-describe('AdminGuard', () => {
+describe('SuperAdminGuard', () => {
 
     let router;
     let authService;
@@ -11,14 +11,14 @@ describe('AdminGuard', () => {
     });
 
     it('create an instance', () => {
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
         expect(guard).toBeTruthy();
     });
 
     it('returns true if user is admin', () => {
         const user = { 'isAdmin': true };
         authService.getCurrentUser.and.returnValue(user);
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
 
         const result = guard.canActivate();
 
@@ -27,7 +27,7 @@ describe('AdminGuard', () => {
 
     it('returns false if user does not exist', () => {
         authService.getCurrentUser.and.returnValue(null);
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
 
         const result = guard.canActivate();
 
@@ -37,7 +37,7 @@ describe('AdminGuard', () => {
     it('returns false if user is not admin', () => {
         const user = { 'isAdmin': false };
         authService.getCurrentUser.and.returnValue(user);
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
 
         const result = guard.canActivate();
 
@@ -47,7 +47,7 @@ describe('AdminGuard', () => {
     it('redirects to root if user is not an admin', () => {
         const user = { 'isAdmin': false };
         authService.getCurrentUser.and.returnValue(user);
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
 
         guard.canActivate();
 
@@ -56,7 +56,7 @@ describe('AdminGuard', () => {
 
     it('redirects to root if user does not exist', () => {
         authService.getCurrentUser.and.returnValue(null);
-        const guard = new AdminGuard(router, authService);
+        const guard = new SuperAdminGuard(router, authService);
 
         guard.canActivate();
 

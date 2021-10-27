@@ -31,4 +31,9 @@ export class InstitucionService {
   deleteInst(val:any){
     return this.http.delete(AUTH_API + val);
   }
+
+  isActive(id: string){
+    id = id  ?? "undefined";
+    return this.http.get(AUTH_API  + 'active/' + id);
+  }
 }

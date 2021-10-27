@@ -94,6 +94,17 @@ namespace NetCoreWebAPI.Controllers
             _bl.SaveChanges();
             return NoContent();
         }
+        
+        [HttpGet("active/{id}", Name = "IsActive")]
+        public ActionResult<bool> IsActive(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                id = "";
+            }
+            var institucion = _bl.GetInstitucionById(id);
+            return Ok(institucion!= null && institucion.Activa);
+        }
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
