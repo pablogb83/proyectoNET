@@ -1,0 +1,19 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <h3>Actualizar Salon</h3>
+        <mat-divider></mat-divider>
+        <mat-form-field appearance="fill">
+            <mat-label>Denominacion</mat-label>
+            <input matInput [(ngModel)]="denominacion">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Numero</mat-label>
+            <input matInput [(ngModel)]="numero">
+        </mat-form-field>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="updateSalon()">Actualizar</button>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        </div>
+  </div>
+</div>
