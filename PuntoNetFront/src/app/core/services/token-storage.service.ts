@@ -53,7 +53,7 @@ export class TokenStorageService {
   }
 
   public getUserName(): string | null {
-    return window.sessionStorage.getItem(STATUS);
+    return window.sessionStorage.getItem(USER_NAME);
   }
 
   public saveTenant(tenant: string): void {

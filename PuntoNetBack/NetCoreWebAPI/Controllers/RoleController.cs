@@ -2,6 +2,7 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Roles;
 using DataAccessLayer.Helpers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
@@ -19,11 +20,13 @@ namespace NetCoreWebAPI.Controllers
     {
         private readonly IBL_Role _bl;
         private readonly IMapper _mapper;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RoleController(IBL_Role bl, IMapper mapper)
+        public RoleController(IBL_Role bl, IMapper mapper, RoleManager<Role> roleManager)
         {
             _bl = bl;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         //GET api/roles
@@ -48,11 +51,12 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
-        public ActionResult<RolesReadDto> CreateRol(RoleCreateDto roleCreateDto)
+        public async Task<ActionResult<RolesReadDto>> CreateRolAsync(RoleCreateDto roleCreateDto)
         {
             var roleModel = _mapper.Map<Role>(roleCreateDto);
-            _bl.CreateRole(roleModel);
-            _bl.SaveChanges();
+            await _bl.CreateRoleAsync(roleModel);
+            //_bl.SaveChanges();
+            //var result = await _roleManager.CreateAsync(roleModel);
 
             var roleReadDto = _mapper.Map<RolesReadDto>(roleModel);
 
@@ -111,20 +115,6 @@ namespace NetCoreWebAPI.Controllers
             return NoContent();
         }
 
-        //api/roles/addRoletoUser/
-        [HttpPost("addRoletoUser")]
-        public ActionResult AddRoleUser([FromBody]UserIdRolId parametros)
-        {
-            try
-            {
-                _bl.AddRoleToUser(parametros.RolId, parametros.UserId);
-                return Ok();
-            }
-            catch(Exception)
-            {
-                return NoContent();
-
-            }
-        }
+       
     }
 }

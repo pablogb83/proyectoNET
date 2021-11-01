@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -29,7 +30,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
-        [Authorize(Role = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult CrearSuscripcion()
         {
             Usuario user = (Usuario)HttpContext.Items["UserData"];

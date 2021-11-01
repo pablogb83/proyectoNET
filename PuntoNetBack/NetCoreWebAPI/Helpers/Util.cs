@@ -1,10 +1,12 @@
 ﻿using DataAccessLayer.IDAL;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,12 +28,8 @@ namespace NetCoreWebAPI.Helpers
                     // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
-
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "Id").Value);
                 string tenantId = jwtToken.Claims.First(x => x.Type == "TenantId").Value;
-                // attach user to context on successful jwt validation
-                context.Items["User"] = userId;
                 return tenantId;
             }
             catch

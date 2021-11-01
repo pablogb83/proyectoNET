@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
@@ -13,52 +14,48 @@ namespace DataAccessLayer.DAL
     public class DAL_Usuario_EF : IDAL_Usuario
     {
         private readonly WebAPIContext _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public DAL_Usuario_EF(WebAPIContext context)
+        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public Usuario Autenticar(string email, string password)
+        public async Task<Usuario> AutenticarAsync(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return null;
 
             var user = _context.Usuarios.IgnoreQueryFilters().SingleOrDefault(x => x.Email == email);
-            //Console.WriteLine(user.TenantId);
-            
 
             // check if username exists
             if (user == null)
                 return null;
 
-            // check if password is correct
-            if (!VerifyPasswordHash(password, user.Password, user.PasswordSalt))
-                return null;
-
-            // authentication successful
-            return user;
+            if(await _userManager.CheckPasswordAsync(user, password))
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                return user;
+            }
+            return null;
         }
 
-        public void CreateUsuario(Usuario usr, string password)
+        public async Task CreateUsuarioAsync(Usuario usr, string password)
         {
             if (usr == null)
             {
                 throw new ArgumentNullException(nameof(usr));
             }
-
+            usr.UserName = usr.Email;
             if (_context.Usuarios.Any(x => x.Email == usr.Email))
                 throw new AppException("Email " + usr.Email + " ya esta registrado");
 
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("El password es requerido");
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-            usr.Password = passwordHash;
-            usr.PasswordSalt = passwordSalt;
-            _context.Usuarios.Add(usr);
+            var result = await _userManager.CreateAsync(usr, password);
+            Console.WriteLine("LALA");
         }
 
         public void DeleteUsuario(Usuario usr)
@@ -70,9 +67,10 @@ namespace DataAccessLayer.DAL
             _context.Usuarios.Remove(usr);
         }
 
-        public IEnumerable<Usuario> GetAllUsuarios()
+        public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
-            return _context.Usuarios.ToList();
+            var Usuarios = await AssignRoles(_context.Usuarios.ToList());
+            return Usuarios;
         }
 
         public Usuario GetUsuarioById(int Id)
@@ -120,5 +118,39 @@ namespace DataAccessLayer.DAL
 
             return true;
         }
+
+        public async Task<string> GetRolUsuario(Usuario user)
+        {
+            var role = await _userManager.GetRolesAsync(user);
+            if (role == null)
+            {
+                return null;
+            }
+            return role.FirstOrDefault();
+        }
+
+        public async Task AddRoleToUserAsync(Usuario userId, string Role)
+        {
+
+            await _userManager.AddToRoleAsync(userId, Role);
+        }
+
+        public async Task<IEnumerable<Usuario>> GetUsuariosAdmin()
+        {
+            var Porteros = await _userManager.GetUsersInRoleAsync("PORTERO");
+            var Usuarios = Porteros.Concat(await _userManager.GetUsersInRoleAsync("GESTOR"));
+            return await AssignRoles(Usuarios);
+        }
+
+        private async Task<IEnumerable<Usuario>> AssignRoles(IEnumerable<Usuario> Usuarios)
+        {
+            foreach (var usr in Usuarios)
+            {
+                var role = await GetRolUsuario(usr);
+                usr.Role = role ?? "UNDEFINED";
+            }
+            return Usuarios;
+        }
+
     }
 }

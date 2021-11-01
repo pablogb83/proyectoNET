@@ -117,4 +117,5 @@ export class UserListComponent implements OnInit {
 export interface Usuarios {
   id: number,
   email: string,
+  role: string
 }

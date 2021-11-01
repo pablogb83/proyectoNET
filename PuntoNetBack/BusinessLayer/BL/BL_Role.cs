@@ -20,18 +20,9 @@ namespace BusinessLayer.BL
             _dalUsr = dalUSR;
         }
 
-        public void AddRoleToUser(int rolId, int userId)
+        public async Task CreateRoleAsync(Role rol)
         {
-            var user = _dalUsr.GetUsuarioById(userId);
-            var rol = _dal.GetRoleById(rolId);
-            user.Role = rol;
-            _dalUsr.SaveChanges();
-            //_dalUsr.UpdateUsuario(user);
-        }
-
-        public void CreateRole(Role rol)
-        {
-            _dal.CreateRole(rol);
+            await _dal.CreateRoleAsync(rol);
         }
 
         public void DeleteRole(Role rol)

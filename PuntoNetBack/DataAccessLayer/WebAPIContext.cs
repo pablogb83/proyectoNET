@@ -1,4 +1,5 @@
 ﻿using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class WebAPIContext : MultiTenantDbContext
+    public class WebAPIContext : MultiTenantIdentityDbContext<Usuario, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public WebAPIContext(ITenantInfo tenantInfo, DbContextOptions options) : base(tenantInfo, options)
         {
@@ -19,17 +20,16 @@ namespace DataAccessLayer
         public virtual DbSet<Producto> Producto { get; set; }
         public virtual DbSet<Suscripcion> Suscripcion { get; set; }
         public virtual DbSet<Precio> Precio { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
+        //public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Puerta> Puertas { get; set; }
         public virtual DbSet<Edificio> Edificios { get; set; }
         public virtual DbSet<Salon> Salones { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Usuario>()
-        //        .HasOne(p => p.Role)
-        //        .WithMany(b => b.usuarios);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.RoleId, pk.UserId });
+        }
 
     }
 }

@@ -19,7 +19,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
             <td mat-cell *matCellDef="let element">  
               <ng-container *ngIf="element.role; else defaultValue">
-                {{element.role.nombreRol}}
+                {{element.role}}
               </ng-container>
               <ng-template #defaultValue>
                 No tiene rol

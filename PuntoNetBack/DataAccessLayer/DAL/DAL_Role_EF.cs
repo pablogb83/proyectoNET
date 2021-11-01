@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.IDAL;
+using Microsoft.AspNetCore.Identity;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,16 @@ namespace DataAccessLayer.DAL
     {
         private readonly WebAPIContext _context;
 
-        public DAL_Role_EF(WebAPIContext context)
+        private readonly RoleManager<Role> _roleManager;
+
+
+        public DAL_Role_EF(WebAPIContext context, RoleManager<Role> roleManager)
         {
             _context = context;
+            _roleManager = roleManager;
         }
 
-        public void CreateRole(Role rol)
+        public async Task CreateRoleAsync(Role rol)
         {
 
             if (rol == null)
@@ -25,7 +30,8 @@ namespace DataAccessLayer.DAL
                 throw new ArgumentNullException(nameof(rol));
             }
 
-            _context.Roles.Add(rol);
+            var result = await _roleManager.CreateAsync(rol);
+
         }
 
         public void DeleteRole(Role rol)

@@ -55,12 +55,13 @@ export class LoginComponent implements OnInit {
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);
             this.tokenService.saveTenant(data.tenantId);
-            this.service.isActive(data.tenantId).subscribe(status=>{
-                console.log("El status de la institucion es:", Boolean(status));
-                this.tokenService.saveStatus(Boolean(status))
-                this.loading = false;
-                this.router.navigate(['/']);
-            })
+            if(data.role!=="SUPERADMIN"){
+                this.service.isActive().subscribe(status=>{
+                    this.tokenService.saveStatus(Boolean(status))
+                    this.loading = false;
+                })
+            }
+            this.router.navigate(['/']);
         },
         error => {
             this.notificationService.openSnackBar(error.error);

@@ -1,4 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { window } from 'rxjs-compat/operator/window';
+import { InstitucionService } from '../core/services/institucion.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
 
 declare var paypal: any;
@@ -10,7 +13,7 @@ declare var paypal: any;
 })
 export class PaypalButtonComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
-  constructor(private service: TokenStorageService) { }
+  constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router) { }
 
 
   ngOnInit() {
@@ -24,6 +27,13 @@ export class PaypalButtonComponent implements OnInit {
             label: 'paypal',
             tagline: 'false'
         },
+        onClick: async (data,actions) =>{
+          const status = await this.institucionService.isActive().toPromise();
+          console.log("EL STATUS ES: ", status);
+          if(status){
+            return actions.reject();
+          }
+        },
         createSubscription: async (data: any, actions: any) => {
           return await actions.subscription.create({
             /* Creates the subscription */
@@ -31,11 +41,11 @@ export class PaypalButtonComponent implements OnInit {
             custom_id: tenant_id
           });
         },
-        onApprove: function(data: any, actions: any) {
-          alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        onApprove: (data: any, actions: any) => {
+          this.service.saveStatus(true);
+          this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{
-          console.log("ERRORR: ", subID);
         },
         onError: (data: any) => {
         }

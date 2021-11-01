@@ -32,10 +32,8 @@ export class InstitucionService {
     return this.http.delete(AUTH_API + val);
   }
 
-  isActive(id: string){
-    if(!id){
-      id='undefined'
-    }
-    return this.http.get(AUTH_API  + 'active/' + id);
+  isActive(){
+   
+    return this.http.get(AUTH_API  + 'active/');
   }
 }

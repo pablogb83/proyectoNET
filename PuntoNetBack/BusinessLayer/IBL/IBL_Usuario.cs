@@ -11,11 +11,15 @@ namespace BusinessLayer.IBL
     {
         bool SaveChanges();
 
-        IEnumerable<Usuario> GetAllUsuarios();
+        Task<IEnumerable<Usuario>> GetAllUsuariosAsync();
+        Task<IEnumerable<Usuario>> GetUsuariosAdmin();
         Usuario GetUsuarioById(int Id);
-        void CreateUsuario(Usuario usr, string password);
+        Task CreateUsuarioAsync(Usuario usr, string password);
         void UpdateUsuario(Usuario usr, string password = null);
         void DeleteUsuario(Usuario usr);
-        Usuario Autenticar(string email, string password);
+        Task<Usuario> Autenticar(string email, string password);
+        Task<string> GetRolUsuario(Usuario user);
+        public Task AddRoleToUserAsync(int rolId, int userId);
+
     }
 }

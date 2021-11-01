@@ -10,18 +10,19 @@ import { tap } from 'rxjs/operators';
 import { AuthenticationService } from '../services/auth.service';
 import { MatDialog } from '@angular/material';
 import { TokenStorageService } from '../services/token-storage.service';
+import { InstitucionService } from '../services/institucion.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
     constructor(private tokenService: TokenStorageService,
         private router: Router,
-        private dialog: MatDialog) { }
+        private dialog: MatDialog,
+        private institucionService: InstitucionService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         const token = this.tokenService.getToken();
-
         if (token) {
 
             const cloned = req.clone({
