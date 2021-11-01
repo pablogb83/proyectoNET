@@ -6,6 +6,7 @@ import { LayoutComponent } from '../shared/layout/layout.component';
 import { UserRoleComponent } from './user-role/user-role.component';
 import { UsersAddComponent } from './users-add/users-add.component';
 import { UsersEditComponent } from './users-edit/users-edit.component';
+import { UserEdificioComponent } from './user-edificio/user-edificio.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: 'addrole', component: UserRoleComponent },
       { path: 'add', component: UsersAddComponent},
       { path: 'edit', component: UsersEditComponent },
+      { path: 'addedificio', component: UserEdificioComponent },
     ]
   }
 ];

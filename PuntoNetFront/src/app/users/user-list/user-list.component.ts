@@ -8,6 +8,9 @@ import { UserRoleComponent } from '../user-role/user-role.component';
 import Swal from 'sweetalert2';
 import { UsersAddComponent } from '../users-add/users-add.component';
 import { UsersEditComponent } from '../users-edit/users-edit.component';
+import { UserEdificioComponent } from '../user-edificio/user-edificio.component';
+import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
 
 
 export interface DialogData {
@@ -28,6 +31,9 @@ export interface DialogDataUser {
 export class UserListComponent implements OnInit {
 
   UsuariosList:any=[];
+  edificios: any=[];
+  selectedValue: string;
+  todos:string;
 
   displayedColumns: string[] = ['id','email', 'rol', 'acciones'];
 
@@ -35,8 +41,14 @@ export class UserListComponent implements OnInit {
     private logger: NGXLogger,
     private titleService: Title,
     private service: UsuariosService,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private edificioService:EdificiosService,
+    private usuariosEdificioService:UsuarioEdificioService
+  ) {
+    this.edificioService.getEdificios().subscribe(data=>{
+      this.edificios = data
+    });
+   }
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
@@ -53,8 +65,33 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  listarPorEdificio(idEdificio:any){
+    console.log(idEdificio);
+    if(idEdificio===0){
+      this.getUsuarios();
+    }
+    else{
+      this.usuariosEdificioService.getUsuariosEdificio(idEdificio).subscribe(data=>{
+        console.log(data);
+        this.UsuariosList = new MatTableDataSource<Usuarios>(data);
+        this.UsuariosList.paginator = this.paginator;
+      });
+    }
+  }
+
   openDialogAsignarRol(user:any): void {
     const dialogRef = this.dialog.open(UserRoleComponent, {
+      width: '250px',
+      data: {user: user}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getUsuarios();
+    }); 
+  }
+
+  openDialogAsignarEdificio(user:any): void {
+    const dialogRef = this.dialog.open(UserEdificioComponent, {
       width: '250px',
       data: {user: user}
     });

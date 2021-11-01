@@ -78,7 +78,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UsuarioReadDto>> GetAllUsuarios()
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            //var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var Usuario = _bl.GetAllUsuarios();
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));
         }

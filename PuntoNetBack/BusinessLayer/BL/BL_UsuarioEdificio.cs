@@ -24,14 +24,19 @@ namespace BusinessLayer.BL
 
         }
 
-        public void CreateUsuarioEdificio(int usuarioId, int edificioId)
+        public bool CreateUsuarioEdificio(int usuarioId, int edificioId)
         {
             var usuario = _dalusuario.GetUsuarioById(usuarioId);
             var edificio = _daledificio.GetEdificioById(edificioId);
-            var usuarioEdificio = new UsuarioEdificio();
-            usuarioEdificio.edificio = edificio;
-            usuarioEdificio.usuario = usuario;
-            _dal.CreateUsuarioEdificio(usuarioEdificio);
+            if(usuario.Role!=null && (usuario.Role.NombreRol=="GESTOR" || usuario.Role.NombreRol == "PORTERO"))
+            {
+                var usuarioEdificio = new UsuarioEdificio();
+                usuarioEdificio.edificio = edificio;
+                usuarioEdificio.usuario = usuario;
+                _dal.CreateUsuarioEdificio(usuarioEdificio);
+                return true;
+            }
+            return false;
         }
 
         public void DeleteUsuarioEdificio(int idUsuario)

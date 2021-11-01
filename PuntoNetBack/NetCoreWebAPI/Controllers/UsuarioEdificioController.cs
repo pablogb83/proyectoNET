@@ -2,7 +2,9 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.UsuarioEdificio;
 using DataAccessLayer.Dtos.Usuarios;
+
 using Microsoft.AspNetCore.Mvc;
+using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,7 @@ namespace NetCoreWebAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<UsuarioEdificioReadDto>>(usuarioEdificios));
         }
 
+        [Authorize(Role = "ADMIN")]
         //POST api/usuarioEdificio
         [HttpPost]
         public ActionResult<UsuarioEdificioReadDto> CreateUsuarioEdificio(UsuarioEdificioCreateDto usuarioEdificioCreateDto)
@@ -39,9 +42,17 @@ namespace NetCoreWebAPI.Controllers
             //var usuarioEdificioModel = _mapper.Map<UsuarioEdificio>(UsuarioEdificioCreateDto);
             try
             {
-                _bl.CreateUsuarioEdificio(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId);
-                _bl.SaveChanges();
-                return Ok("Usuario agregado correctamente");
+                if (_bl.CreateUsuarioEdificio(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId)) 
+                {
+                    _bl.SaveChanges();
+                    return Ok(new { msg = "Usuario agregado correctamente" });
+                }
+                else
+                {
+                    throw new ArgumentException(
+                      "No se puede asignar ese usuario a ese edificio ");
+                }
+                
             }
             catch(Exception ex)
             {
