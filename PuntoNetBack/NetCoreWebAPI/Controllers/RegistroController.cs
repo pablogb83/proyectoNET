@@ -30,7 +30,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "ADMIN")] // [Authorize(Roles = "ADMIN")]
         public ActionResult CrearSuscripcion()
         {
             Usuario user = (Usuario)HttpContext.Items["UserData"];

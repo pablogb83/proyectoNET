@@ -97,9 +97,9 @@ namespace NetCoreWebAPI.Controllers
             _bl.SaveChanges();
             return NoContent();
         }
-        
+
         [HttpGet("active", Name = "IsActive")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]  
         public ActionResult<bool> IsActive()
         {
             var tenant = User.Claims.Skip(1).FirstOrDefault();
@@ -109,7 +109,7 @@ namespace NetCoreWebAPI.Controllers
                 id = "";
             }
             var institucion = _bl.GetInstitucionById(id);
-            return Ok(institucion!= null && institucion.Activa);
+            return Ok(institucion != null && institucion.Activa);
         }
 
         //DELETE api/commands/{id}
@@ -127,4 +127,3 @@ namespace NetCoreWebAPI.Controllers
         }
     }
 }
-

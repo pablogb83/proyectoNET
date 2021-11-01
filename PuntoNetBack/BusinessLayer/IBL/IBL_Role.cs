@@ -16,6 +16,5 @@ namespace BusinessLayer.IBL
         Task CreateRoleAsync(Role rol);
         void UpdateRole(Role rol);
         void DeleteRole(Role rol);
-        void AddRoleToUser(int rolid, int userid);
     }
 }

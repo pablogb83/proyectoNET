@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -53,9 +52,9 @@ namespace NetCoreWebAPI.Controllers
                 return BadRequest(new { message = "Usuario o password incorrectos" });
 
             var role = await _bl.GetRolUsuario(user);
-            if(role == null)
-                return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
-     
+            if (role == null)
+               return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             IdentityOptions _options = new IdentityOptions();
@@ -81,12 +80,11 @@ namespace NetCoreWebAPI.Controllers
                 Token = tokenString,
                 TenantId = user.TenantId,
                 Role = role
-            }) ;
+            });
         }
 
         //GET api/usuarios
 
-        [Authorize(Role = "ADMIN")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetAllUsuariosAsync()
         {

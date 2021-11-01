@@ -42,7 +42,7 @@ namespace NetCoreWebAPI.Controllers
             //var usuarioEdificioModel = _mapper.Map<UsuarioEdificio>(UsuarioEdificioCreateDto);
             try
             {
-                if (await _bl.CreateUsuarioEdificioAsync(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId)) 
+                if (await _bl.CreateUsuarioEdificioAsync(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId))
                 {
                     _bl.SaveChanges();
                     return Ok(new { msg = "Usuario agregado correctamente" });
@@ -52,19 +52,19 @@ namespace NetCoreWebAPI.Controllers
                     throw new ArgumentException(
                       "No se puede asignar ese usuario a ese edificio ");
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         //GET api/usuarioEdificio/id
-        [HttpGet ("{id}", Name = "GetUsuariosEdificios")]
+        [HttpGet("{id}", Name = "GetUsuariosEdificios")]
         public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetUsuariosEdificios(int id)
         {
-            var usuarios = await _bl.GetUsuariosEdificio(id); 
+            var usuarios = await _bl.GetUsuariosEdificio(id);
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(usuarios));
         }
 
@@ -82,8 +82,8 @@ namespace NetCoreWebAPI.Controllers
             {
                 return BadRequest("Algo salio mal");
             }
-  
-            
+
+
         }
     }
 }

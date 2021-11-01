@@ -138,6 +138,43 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.Evento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaFinEvt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicioEvt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Eventos");
+
+                    b
+                        .HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Precio", b =>
                 {
                     b.Property<int>("Id")
