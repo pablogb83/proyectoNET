@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
@@ -59,10 +61,66 @@ namespace NetCoreWebAPI
             }).WithEFCoreStore<MultiTenantStoreDbContext, Institucion>();
             services.AddDbContext<WebAPIContext>(options =>
             options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
-
+            //services.AddDefaultIdentity<Usuario>().AddRoles<Role>();
             // configure strongly typed settings objects
-        
-            services.AddAuthentication(x =>
+
+            IdentityBuilder builder = services.AddIdentityCore<Usuario>();
+
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder.AddEntityFrameworkStores<WebAPIContext>();
+            builder.AddDefaultTokenProviders();
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<Usuario>>();
+
+            services.AddAuthentication(options=> {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+              .AddJwtBearer(options =>
+              {
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuerSigningKey = true,
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
+                          .GetBytes(Configuration.GetSection("AppSettings:Secret").Value)),
+                      ValidateIssuer = false,
+                      ValidateAudience = false,
+                      ValidateLifetime = true,
+                      ClockSkew = TimeSpan.Zero
+                  };
+              });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // User settings.
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
+
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 9;
+
+                // Lockout settings.
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            });
+
+
+            /*services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer();*/
+
+            // configure jwt authentication
+
+            /*services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -103,7 +161,6 @@ namespace NetCoreWebAPI
                     ValidateAudience = false
                 };
             });*/
-            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Inyeccion de dependencias

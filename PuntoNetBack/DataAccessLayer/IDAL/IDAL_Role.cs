@@ -14,7 +14,7 @@ namespace DataAccessLayer.IDAL
 
         IEnumerable<Role> GetAllRoles();
         Role GetRoleById(int Id);
-        void CreateRole(Role rol);
+        Task CreateRoleAsync(Role rol);
         void UpdateRole(Role rol);
         void DeleteRole(Role rol);
 

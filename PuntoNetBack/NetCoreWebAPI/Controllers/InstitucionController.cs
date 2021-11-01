@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Instituciones;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -93,6 +96,20 @@ namespace NetCoreWebAPI.Controllers
             _bl.UpdateInstitucion(institucionModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
+        }
+        
+        [HttpGet("active", Name = "IsActive")]
+        [Authorize(Roles = "ADMIN")]
+        public ActionResult<bool> IsActive()
+        {
+            var tenant = User.Claims.Skip(1).FirstOrDefault();
+            string id = tenant.Value;
+            if (string.IsNullOrEmpty(id))
+            {
+                id = "";
+            }
+            var institucion = _bl.GetInstitucionById(id);
+            return Ok(institucion!= null && institucion.Activa);
         }
 
         //DELETE api/commands/{id}

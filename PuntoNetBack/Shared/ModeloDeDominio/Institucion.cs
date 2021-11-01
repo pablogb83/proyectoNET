@@ -21,5 +21,7 @@ namespace Shared.ModeloDeDominio
         public string Telefono { get; set; }
         //public Suscripcion Suscripcion { get; set; }
         public bool Activa { get; set; }
+
+        //public int UsuarioId { get; set; }
     }
 }

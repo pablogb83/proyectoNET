@@ -11,7 +11,7 @@ namespace DataAccessLayer.Dtos.Roles
     {
         public int Id { get; set; }
 
-        public string NombreRol { get; set; }
+        public string Name { get; set; }
 
     }
 }

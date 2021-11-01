@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.IBL;
+using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,23 @@ namespace BusinessLayer.BL
     public class BL_Usuario : IBL_Usuario
     {
         private readonly DataAccessLayer.IDAL.IDAL_Usuario _dal;
+        private readonly IDAL_Role _dalRol;
 
-        public BL_Usuario(DataAccessLayer.IDAL.IDAL_Usuario dal)
+
+        public BL_Usuario(DataAccessLayer.IDAL.IDAL_Usuario dal, IDAL_Role dalRol)
         {
             _dal = dal;
+            _dalRol = dalRol;
         }
 
-        public Usuario Autenticar(string email, string password)
+        public Task<Usuario> Autenticar(string email, string password)
         {
-            return _dal.Autenticar(email, password);
+            return _dal.AutenticarAsync(email, password);
         }
 
-        public void CreateUsuario(Usuario usr, string password)
+        public async Task CreateUsuarioAsync(Usuario usr, string password)
         {
-            _dal.CreateUsuario(usr, password);
+            await _dal.CreateUsuarioAsync(usr, password);
         }
 
         public void DeleteUsuario(Usuario usr)
@@ -32,14 +36,19 @@ namespace BusinessLayer.BL
             _dal.DeleteUsuario(usr);
         }
 
-        public IEnumerable<Usuario> GetAllUsuarios()
+        public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
-            return _dal.GetAllUsuarios();
+            return await _dal.GetAllUsuariosAsync();
         }
 
-        public Usuario GetUsuarioById(int Id)
+        public Task<string> GetRolUsuario(Usuario user)
         {
-            return _dal.GetUsuarioById(Id);
+            return _dal.GetRolUsuario(user);
+        }
+
+        public async Task<Usuario> GetUsuarioByIdAsync(int Id)
+        {
+            return await _dal.GetUsuarioByIdAsync(Id);
         }
 
         public bool SaveChanges()
@@ -50,6 +59,25 @@ namespace BusinessLayer.BL
         public void UpdateUsuario(Usuario usr, string password = null)
         {
             _dal.UpdateUsuario(usr,password);
+        }
+
+        public async Task AddRoleToUserAsync(int rolId, int userId)
+        {
+            Role rol = _dalRol.GetRoleById(rolId);
+            if (rol == null)
+            {
+                throw new KeyNotFoundException("El rol no existe");
+            }
+            Usuario user = await _dal.GetUsuarioByIdAsync(userId);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe");
+            }
+            await _dal.AddRoleToUserAsync(user, rol.Name);
+        }
+        public async Task<IEnumerable<Usuario>> GetUsuariosAdmin()
+        {
+            return  await _dal.GetUsuariosAdmin();
         }
     }
 }

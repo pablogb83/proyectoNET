@@ -10,9 +10,9 @@ namespace BusinessLayer.IBL
     public interface IBL_UsuarioEdificio
     {
         bool SaveChanges();
-        void CreateUsuarioEdificio(int usuarioId, int edificioId);
+        Task<bool> CreateUsuarioEdificioAsync(int usuarioId, int edificioId);
         IEnumerable<UsuarioEdificio> GetAllUsuarioEdificio();
-        IEnumerable<Usuario> GetUsuariosEdificio(int idEdificio);
+        Task<IEnumerable<Usuario>> GetUsuariosEdificio(int idEdificio);
         void DeleteUsuarioEdificio(int idUsuario);
     }
 }

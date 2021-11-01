@@ -10,12 +10,15 @@ namespace DataAccessLayer.IDAL
     public interface IDAL_Usuario
     {
         bool SaveChanges();
-        IEnumerable<Usuario> GetAllUsuarios();
-        Usuario GetUsuarioById(int Id);
-        void CreateUsuario(Usuario usr, string password);
+        Task<IEnumerable<Usuario>> GetAllUsuariosAsync();
+        Task<IEnumerable<Usuario>> GetUsuariosAdmin();
+        Task<Usuario> GetUsuarioByIdAsync(int Id);
+        Task<string> GetRolUsuario(Usuario user);
+        Task CreateUsuarioAsync(Usuario usr, string password);
         void UpdateUsuario(Usuario usr, string password = null);
         void DeleteUsuario(Usuario usr);
-        Usuario Autenticar(string email, string password);
+        Task<Usuario> AutenticarAsync(string email, string password);
+        public Task AddRoleToUserAsync(Usuario userId, string Role);
 
     }
 }

@@ -5,19 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Identity;
 
 namespace Shared.ModeloDeDominio
 {
  
-    public class Role
+    public class Role : IdentityRole<int>
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [MaxLength(250)]
-        public string NombreRol { get; set; }
-
-        public virtual List<Usuario> usuarios { get; set; }
-
+        
     }
 }

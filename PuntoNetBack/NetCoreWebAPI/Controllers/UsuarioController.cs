@@ -2,6 +2,8 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Usuarios;
 using DataAccessLayer.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,38 +24,48 @@ namespace NetCoreWebAPI.Controllers
     //api/Usuario
     [Route("api/usuarios")]
     [ApiController]
+    [Authorize(Roles = "ADMIN, SUPERADMIN")]
+
     public class UsuarioController : ControllerBase
     {
         private readonly IBL_Usuario _bl;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
 
-        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings)
+        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
         {
             _bl = bl;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UsuarioAutenticateDto model)
+        [AllowAnonymous]
+        public async Task<IActionResult> AuthenticateAsync([FromBody] UsuarioAutenticateDto model)
         {
-            var user = _bl.Autenticar(model.Email, model.Password);
+            var user = await _bl.Autenticar(model.Email, model.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Usuario o password incorrectos" });
 
-            if(user.Role == null)
+            var role = await _bl.GetRolUsuario(user);
+            if(role == null)
                 return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
      
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            IdentityOptions _options = new IdentityOptions();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("Id", user.Id.ToString()),
-                    new Claim("TenantId", user.TenantId)
+                    new Claim("TenantId", user.TenantId),
+                    new Claim(_options.ClaimsIdentity.RoleClaimType, role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -68,7 +80,7 @@ namespace NetCoreWebAPI.Controllers
                 Email = user.Email,
                 Token = tokenString,
                 TenantId = user.TenantId,
-                Role = user.Role.NombreRol
+                Role = role
             }) ;
         }
 
@@ -76,18 +88,25 @@ namespace NetCoreWebAPI.Controllers
 
         [Authorize(Role = "ADMIN")]
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioReadDto>> GetAllUsuarios()
+        public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetAllUsuariosAsync()
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var Usuario = _bl.GetAllUsuarios();
+            var Usuario = await _bl.GetAllUsuariosAsync();
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));
         }
+
+        [HttpGet("admin")]
+        public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetUsuariosAdmin()
+        {
+            var Usuario = await _bl.GetUsuariosAdmin();
+            return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));
+        }
+
 
         //GET api/usuarios/{id}
         [HttpGet("{id}", Name = "GetUsuarioById")]
         public ActionResult<UsuarioReadDto> GetUsuarioById(int id)
         {
-            var Usuario = _bl.GetUsuarioById(id);
+            var Usuario = _bl.GetUsuarioByIdAsync(id);
             if (Usuario != null)
             {
                 return Ok(_mapper.Map<UsuarioReadDto>(Usuario));
@@ -97,12 +116,12 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/usuarios
         [HttpPost]
-        public ActionResult<UsuarioReadDto> CreateUsuario([FromBody] UsuarioCreateDto usuarioCreateDto)
+        public async Task<ActionResult<UsuarioReadDto>> CreateUsuarioAsync([FromBody] UsuarioCreateDto usuarioCreateDto)
         {
             var UsuarioModel = _mapper.Map<Usuario>(usuarioCreateDto);
             try
             {
-                _bl.CreateUsuario(UsuarioModel, usuarioCreateDto.PasswordPlano);
+                await _bl.CreateUsuarioAsync(UsuarioModel, usuarioCreateDto.PasswordPlano);
                 _bl.SaveChanges();
 
                 var UsuarioReadDto = _mapper.Map<UsuarioReadDto>(UsuarioModel);
@@ -114,14 +133,13 @@ namespace NetCoreWebAPI.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         //PUT api/usuarios/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateUsuario(int id, UsuarioUpdateDto UsuarioUpdateDto)
+        public async Task<ActionResult> UpdateUsuarioAsync(int id, UsuarioUpdateDto UsuarioUpdateDto)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();
@@ -129,14 +147,14 @@ namespace NetCoreWebAPI.Controllers
             _mapper.Map(UsuarioUpdateDto, UsuarioModelFromRepo);
             _bl.UpdateUsuario(UsuarioModelFromRepo);
             _bl.SaveChanges();
-            return NoContent();
+            return Ok();
         }
 
         //PATCH api/usuarios/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialUsuarioUpdtate(int id, JsonPatchDocument<UsuarioUpdateDto> patchDoc)
+        public async Task<ActionResult> PartialUsuarioUpdtateAsync(int id, JsonPatchDocument<UsuarioUpdateDto> patchDoc)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();
@@ -156,9 +174,9 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/usuarios/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteUsuario(int id)
+        public async Task<ActionResult> DeleteUsuarioAsync(int id)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();
@@ -166,6 +184,22 @@ namespace NetCoreWebAPI.Controllers
             _bl.DeleteUsuario(UsuarioModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
+        }
+
+        //api/roles/addRoletoUser/
+        [HttpPost("addRoletoUser")]
+        public async Task<ActionResult> AddRoleUserAsync([FromBody] UserIdRolId parametros)
+        {
+            try
+            {
+                await _bl.AddRoleToUserAsync(parametros.RolId, parametros.UserId);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return NoContent();
+
+            }
         }
     }
 }

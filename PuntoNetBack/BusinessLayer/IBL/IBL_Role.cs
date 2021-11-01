@@ -13,7 +13,7 @@ namespace BusinessLayer.IBL
 
         IEnumerable<Role> GetAllRoles();
         Role GetRoleById(int Id);
-        void CreateRole(Role rol);
+        Task CreateRoleAsync(Role rol);
         void UpdateRole(Role rol);
         void DeleteRole(Role rol);
         void AddRoleToUser(int rolid, int userid);

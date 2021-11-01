@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { InstAddComponent } from '../inst-add/inst-add.component';
 import { InstEditComponent } from '../inst-edit/inst-edit.component';
 import {MatTableDataSource} from '@angular/material/table';
+import { UsersAddComponent } from 'src/app/users/users-add/users-add.component';
 
 
 export interface DialogData {
@@ -24,9 +25,7 @@ export class InstitucionListComponent implements AfterViewInit {
 
   constructor(private service:InstitucionService,public dialog: MatDialog) { 
     this.service.getInstList().subscribe(data=>{
-      //console.log(data);
       this.InstitucionList = new MatTableDataSource<Instituciones>(data);
-      //console.log(this.InstitucionList)
       this.InstitucionList.paginator = this.paginator;
     });
   }
@@ -40,8 +39,6 @@ export class InstitucionListComponent implements AfterViewInit {
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
   ngAfterViewInit() {
-    //console.log('estoy en el metodo este')
-    //console.log(this.InstitucionList);
     this.InstitucionList.paginator = this.paginator;
      console.log(this.InstitucionList);
   }
@@ -73,6 +70,17 @@ export class InstitucionListComponent implements AfterViewInit {
       this.ngAfterViewInit();
     });
   }
+  
+  openDialogAdmin(): void {
+    const dialogRef = this.dialog.open(UsersAddComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    }); 
+  }
+
 
   deleteClick(item:any){
     Swal.fire({

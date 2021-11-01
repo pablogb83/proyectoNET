@@ -12,6 +12,6 @@ namespace DataAccessLayer.Dtos.Roles
     {
         [Required]
         [MaxLength(250)]
-        public string NombreRol { get; set; }
+        public string Name { get; set; }
     }
 }

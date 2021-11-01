@@ -68,7 +68,7 @@
           <p mat-line> Dashboard </p>
         </a>
 
-        <a mat-list-item [routerLink]="['/institucion']" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/institucion']" *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
           <mat-icon mat-list-icon>
             business
           </mat-icon>
@@ -76,25 +76,11 @@
         </a>
 
         
-        <a mat-list-item [routerLink]="['/pago']" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/pago']"  *ngIf="rol==='ADMIN' && !instActive" routerLinkActive="active">
           <mat-icon mat-list-icon>
             monetization_on
           </mat-icon>
           <p mat-line> Pago</p>
-        </a>
-
-        <a mat-list-item [routerLink]="['/users']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            people
-          </mat-icon>
-          <p mat-line> Users </p>
-        </a>
-
-        <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            business
-          </mat-icon>
-          <p mat-line> Edificios </p>
         </a>
 
         <a mat-list-item [routerLink]="['/eventos']" routerLinkActive="active">
@@ -105,6 +91,22 @@
         </a>
 
         <a mat-list-item [routerLink]="['/roles']" routerLinkActive="active">
+        <div *ngIf="rol==='ADMIN' && instActive">
+          <a mat-list-item [routerLink]="['/users']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              people
+            </mat-icon>
+            <p mat-line> Users </p>
+          </a>
+  
+          <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              business
+            </mat-icon>
+            <p mat-line> Edificios </p>
+          </a>
+        </div>
+        <a mat-list-item [routerLink]="['/roles']"  *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
           <mat-icon mat-list-icon>
             contact_phone
           </mat-icon>

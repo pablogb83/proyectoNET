@@ -43,4 +43,11 @@ export class UsuariosService {
     return this.http.delete(AUTH_API + id);
   }
 
+  addRoleUser(RolId:string, UserId:string){
+    return this.http.post(AUTH_API + 'addRoletoUser',{
+        RolId,
+        UserId
+    }, httpOptions);
+  }
+
 }

@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace DataAccessLayer.Helpers
 {
@@ -61,6 +62,7 @@ namespace DataAccessLayer.Helpers
             string codyJson = Newtonsoft.Json.JsonConvert.SerializeObject(body);
             VerificationBody verBody = new VerificationBody(auth_algo, cert_url, transmission_id, transmission_sig, transmission_time, body);
             authRequest.AddJsonBody(verBody);
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(body);
             var authResponse = client.Execute(authRequest);
             JObject status = JObject.Parse(authResponse.Content) as JObject;
             var verification_status = status["verification_status"];

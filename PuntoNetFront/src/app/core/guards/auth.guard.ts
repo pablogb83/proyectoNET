@@ -4,28 +4,26 @@ import * as moment from 'moment';
 
 import { AuthenticationService } from '../services/auth.service';
 import { NotificationService } from '../services/notification.service';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
     constructor(private router: Router,
         private notificationService: NotificationService,
-        private authService: AuthenticationService) { }
+        private authService: TokenStorageService) { }
 
     canActivate() {
-        const user = this.authService.getCurrentUser();
-
-        if (user && user.expiration) {
-
-            if (moment() < moment(user.expiration)) {
-                return true;
-            } else {
+        const status = Boolean(this.authService.getStatus());
+        const user = this.authService.getRoleName();
+        if (user && user!=="VISITANTE"){
+            return true;
+            /*else {
                 this.notificationService.openSnackBar('Your session has expired');
                 this.router.navigate(['auth/login']);
                 return false;
-            }
+            }*/
         }
-
         this.router.navigate(['auth/login']);
         return false;
     }
