@@ -24,11 +24,11 @@ namespace BusinessLayer.BL
 
         }
 
-        public bool CreateUsuarioEdificio(int usuarioId, int edificioId)
+        public async Task<bool> CreateUsuarioEdificioAsync(int usuarioId, int edificioId)
         {
-            var usuario = _dalusuario.GetUsuarioById(usuarioId);
+            var usuario = await _dalusuario.GetUsuarioByIdAsync(usuarioId);
             var edificio = _daledificio.GetEdificioById(edificioId);
-            if(usuario.Role!=null && (usuario.Role.NombreRol=="GESTOR" || usuario.Role.NombreRol == "PORTERO"))
+            if(usuario.Role!=null && (usuario.Role=="GESTOR" || usuario.Role == "PORTERO"))
             {
                 var usuarioEdificio = new UsuarioEdificio();
                 usuarioEdificio.edificio = edificio;
@@ -49,12 +49,13 @@ namespace BusinessLayer.BL
             return _dal.GetAllUsuarioEdificio();
         }
 
-        public IEnumerable<Usuario> GetUsuariosEdificio(int idEdificio)
+        public async Task<IEnumerable<Usuario>> GetUsuariosEdificio(int idEdificio)
         {
             List<Usuario> usuarios = new List<Usuario>();
             var usuariosEdificio = _dal.GetUsuariosEdificio(idEdificio);
             foreach (var item in usuariosEdificio)
             {
+                item.usuario.Role = await _dalusuario.GetRolUsuario(item.usuario);
                 usuarios.Add(item.usuario);
             }
             return usuarios;

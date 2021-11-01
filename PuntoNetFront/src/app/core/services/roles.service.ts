@@ -24,15 +24,15 @@ export class RolesService {
     return this.http.get<any>(AUTH_API+id);
   }
 
-  postRole(nombreRol: string){
+  postRole(name: string){
     return this.http.post(AUTH_API , {
-      nombreRol,
+      name,
     },httpOptions);
   }
 
-  putRole(id:number, nombreRol: string){
+  putRole(id:number, name: string){
      return this.http.put(AUTH_API + id, {
-      nombreRol,
+      name,
      }, httpOptions);
   }
 
@@ -40,10 +40,5 @@ export class RolesService {
     return this.http.delete(AUTH_API + id);
   }
 
-  addRoleUser(RolId:string, UserId:string){
-    return this.http.post(AUTH_API + 'addRoletoUser',{
-        RolId,
-        UserId
-    }, httpOptions);
-  }
+  
 }

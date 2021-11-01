@@ -104,7 +104,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpGet("{id}", Name = "GetUsuarioById")]
         public ActionResult<UsuarioReadDto> GetUsuarioById(int id)
         {
-            var Usuario = _bl.GetUsuarioById(id);
+            var Usuario = _bl.GetUsuarioByIdAsync(id);
             if (Usuario != null)
             {
                 return Ok(_mapper.Map<UsuarioReadDto>(Usuario));
@@ -135,9 +135,9 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/usuarios/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateUsuario(int id, UsuarioUpdateDto UsuarioUpdateDto)
+        public async Task<ActionResult> UpdateUsuarioAsync(int id, UsuarioUpdateDto UsuarioUpdateDto)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();
@@ -145,14 +145,14 @@ namespace NetCoreWebAPI.Controllers
             _mapper.Map(UsuarioUpdateDto, UsuarioModelFromRepo);
             _bl.UpdateUsuario(UsuarioModelFromRepo);
             _bl.SaveChanges();
-            return NoContent();
+            return Ok();
         }
 
         //PATCH api/usuarios/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialUsuarioUpdtate(int id, JsonPatchDocument<UsuarioUpdateDto> patchDoc)
+        public async Task<ActionResult> PartialUsuarioUpdtateAsync(int id, JsonPatchDocument<UsuarioUpdateDto> patchDoc)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();
@@ -172,9 +172,9 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/usuarios/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteUsuario(int id)
+        public async Task<ActionResult> DeleteUsuarioAsync(int id)
         {
-            var UsuarioModelFromRepo = _bl.GetUsuarioById(id);
+            var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
             if (UsuarioModelFromRepo == null)
             {
                 return NotFound();

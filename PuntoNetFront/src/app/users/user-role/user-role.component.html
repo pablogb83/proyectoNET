@@ -6,7 +6,7 @@
             <mat-label>Roles</mat-label>
             <mat-select [(ngModel)]="selectedValue">
               <mat-option *ngFor="let rol of roles" [value]="rol.id">
-                {{rol.nombreRol}}
+                {{rol.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>

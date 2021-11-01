@@ -12,7 +12,7 @@ namespace DataAccessLayer.IDAL
         bool SaveChanges();
         Task<IEnumerable<Usuario>> GetAllUsuariosAsync();
         Task<IEnumerable<Usuario>> GetUsuariosAdmin();
-        Usuario GetUsuarioById(int Id);
+        Task<Usuario> GetUsuarioByIdAsync(int Id);
         Task<string> GetRolUsuario(Usuario user);
         Task CreateUsuarioAsync(Usuario usr, string password);
         void UpdateUsuario(Usuario usr, string password = null);

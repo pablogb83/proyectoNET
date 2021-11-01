@@ -69,13 +69,18 @@ namespace DataAccessLayer.DAL
 
         public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
+            var UsuariosPrueba = _context.Usuarios;
             var Usuarios = await AssignRoles(_context.Usuarios.ToList());
             return Usuarios;
         }
 
-        public Usuario GetUsuarioById(int Id)
+        public async Task<Usuario> GetUsuarioByIdAsync(int Id)
         {
+            Usuario user = _context.Usuarios.FirstOrDefault(p => p.Id == Id);
+            var roles = await _userManager.GetRolesAsync(user);
+            user.Role = roles.FirstOrDefault();
             return _context.Usuarios.FirstOrDefault(p => p.Id == Id);
+
         }
 
         public bool SaveChanges()
@@ -131,7 +136,8 @@ namespace DataAccessLayer.DAL
 
         public async Task AddRoleToUserAsync(Usuario userId, string Role)
         {
-
+            var roles = await _userManager.GetRolesAsync(userId);
+            var result = await _userManager.RemoveFromRoleAsync(userId, "PORTERO");
             await _userManager.AddToRoleAsync(userId, Role);
         }
 

@@ -46,9 +46,9 @@ namespace BusinessLayer.BL
             return _dal.GetRolUsuario(user);
         }
 
-        public Usuario GetUsuarioById(int Id)
+        public async Task<Usuario> GetUsuarioByIdAsync(int Id)
         {
-            return _dal.GetUsuarioById(Id);
+            return await _dal.GetUsuarioByIdAsync(Id);
         }
 
         public bool SaveChanges()
@@ -68,7 +68,7 @@ namespace BusinessLayer.BL
             {
                 throw new KeyNotFoundException("El rol no existe");
             }
-            Usuario user = _dal.GetUsuarioById(userId);
+            Usuario user = await _dal.GetUsuarioByIdAsync(userId);
             if (user == null)
             {
                 throw new KeyNotFoundException("El usuario no existe");

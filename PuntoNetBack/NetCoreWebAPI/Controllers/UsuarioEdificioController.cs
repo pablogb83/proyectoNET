@@ -2,7 +2,7 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.UsuarioEdificio;
 using DataAccessLayer.Dtos.Usuarios;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
@@ -34,15 +34,15 @@ namespace NetCoreWebAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<UsuarioEdificioReadDto>>(usuarioEdificios));
         }
 
-        [Authorize(Role = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         //POST api/usuarioEdificio
         [HttpPost]
-        public ActionResult<UsuarioEdificioReadDto> CreateUsuarioEdificio(UsuarioEdificioCreateDto usuarioEdificioCreateDto)
+        public async Task<ActionResult<UsuarioEdificioReadDto>> CreateUsuarioEdificioAsync(UsuarioEdificioCreateDto usuarioEdificioCreateDto)
         {
             //var usuarioEdificioModel = _mapper.Map<UsuarioEdificio>(UsuarioEdificioCreateDto);
             try
             {
-                if (_bl.CreateUsuarioEdificio(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId)) 
+                if (await _bl.CreateUsuarioEdificioAsync(usuarioEdificioCreateDto.UsuarioId, usuarioEdificioCreateDto.EdificioId)) 
                 {
                     _bl.SaveChanges();
                     return Ok(new { msg = "Usuario agregado correctamente" });
@@ -62,9 +62,9 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio/id
         [HttpGet ("{id}", Name = "GetUsuariosEdificios")]
-        public ActionResult<IEnumerable<UsuarioReadDto>> GetUsuariosEdificios(int id)
+        public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetUsuariosEdificios(int id)
         {
-            var usuarios = _bl.GetUsuariosEdificio(id); 
+            var usuarios = await _bl.GetUsuariosEdificio(id); 
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(usuarios));
         }
 

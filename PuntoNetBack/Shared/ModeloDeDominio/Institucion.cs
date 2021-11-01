@@ -22,6 +22,6 @@ namespace Shared.ModeloDeDominio
         //public Suscripcion Suscripcion { get; set; }
         public bool Activa { get; set; }
 
-        public int UsuarioId { get; set; }
+        //public int UsuarioId { get; set; }
     }
 }
