@@ -477,6 +477,25 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.UsuarioEdificio", b =>
+                {
+                    b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
+                        .WithMany()
+                        .HasForeignKey("EdificioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.ModeloDeDominio.Usuario", "usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("edificio");
+
+                    b.Navigation("usuario");
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
                 {
                     b.Navigation("puerta_accesos");

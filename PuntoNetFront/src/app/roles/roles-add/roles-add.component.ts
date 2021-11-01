@@ -26,7 +26,7 @@ export class RolesAddComponent implements OnInit {
 
   agregarRole(){
     var val = {
-      nombre:this.nombre,
+      nombre:this.nombre,  
     };
     this.service.postRole(val.nombre).subscribe(res=>{
       this.showSuccessAlert();

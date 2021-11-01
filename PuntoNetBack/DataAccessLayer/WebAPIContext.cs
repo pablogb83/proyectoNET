@@ -24,6 +24,7 @@ namespace DataAccessLayer
         public virtual DbSet<Puerta> Puertas { get; set; }
         public virtual DbSet<Edificio> Edificios { get; set; }
         public virtual DbSet<Salon> Salones { get; set; }
+        public virtual DbSet<UsuarioEdificio> UsuariosEdificio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
