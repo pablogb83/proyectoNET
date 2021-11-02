@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
+using DataAccessLayer.Dtos.Edificios;
 using DataAccessLayer.Dtos.UsuarioEdificio;
 using DataAccessLayer.Dtos.Usuarios;
 using Microsoft.AspNetCore.Authorization;
@@ -28,9 +29,9 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioEdificioReadDto>> GetAllUsuariosEdificios()
+        public async Task<ActionResult<IEnumerable<UsuarioEdificioReadDto>>> GetAllUsuariosEdificios()
         {
-            var usuarioEdificios = _bl.GetAllUsuarioEdificio(); ;
+            var usuarioEdificios =await _bl.GetAllUsuarioEdificio(); ;
             return Ok(_mapper.Map<IEnumerable<UsuarioEdificioReadDto>>(usuarioEdificios));
         }
 
@@ -66,6 +67,22 @@ namespace NetCoreWebAPI.Controllers
         {
             var usuarios = await _bl.GetUsuariosEdificio(id);
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(usuarios));
+        }
+
+        //GET api/usuarioEdificio/id
+        [HttpGet("edificio/{id}")]
+        public async Task<ActionResult<IEnumerable<EdificiosReadDto>>> GetEdificioUsuario(int id)
+        {
+            try
+            {
+                var edificio = await _bl.GetEdificioUsuario(id);
+                return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+            }
+            catch
+            {
+                return BadRequest("Algo salio mal");
+            }
+
         }
 
         //DELETE api/usuarios/{id}

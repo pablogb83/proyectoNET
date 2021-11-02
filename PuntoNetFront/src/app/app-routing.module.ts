@@ -79,7 +79,7 @@ const appRoutes: Routes = [
     {
         path: 'puertas',
         loadChildren: './puerta/puerta.module#PuertaModule',
-        canActivate: [AuthGuard, AdminGuard]
+        canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
         path: '**',
