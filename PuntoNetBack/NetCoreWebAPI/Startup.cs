@@ -184,6 +184,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Evento, BL_Evento>();
             services.AddScoped<IDAL_UsuarioPuerta, DataAccessLayer.DAL.DAL_UsuarioPuerta>();
             services.AddScoped<IBL_UsuarioPuerta, BL_UsuarioPuerta>();
+            services.AddScoped<IDAL_Persona, DataAccessLayer.DAL.DAL_Persona>();
+            services.AddScoped<IBL_Persona, BL_Persona>();
 
             services.AddSwaggerGen(c =>
             {
@@ -255,8 +257,8 @@ namespace NetCoreWebAPI
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "Photos")),
-                RequestPath = "/Photos"
+                Path.Combine(Directory.GetCurrentDirectory(), "Files")),
+                RequestPath = "/Files"
             });
         }
     }

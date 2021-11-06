@@ -26,6 +26,8 @@ export class PuertaListComponent implements OnInit {
   PuertaList:any=[];
   rol:string;
   userId:string;
+  puerta?: any;
+  puertaid:string;
 
   constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService) { 
     this.route.queryParams.subscribe(params => {
@@ -38,6 +40,16 @@ export class PuertaListComponent implements OnInit {
     });
     this.rol = this.tokenService.getRoleName();
     this.userId = this.tokenService.getUserId();
+    if(this.rol === 'PORTERO'){
+      this.usuarioPuertaService.getPuertaUser(this.userId).subscribe(data=>{
+        this.puerta = new MatTableDataSource<Puerta>(data)
+        console.log(this.puerta);
+        if(this.puerta._data._value){
+          this.puertaid = this.puerta._data._value.id;
+        }
+        console.log(this.puertaid);
+      })
+    }
   }
 
   ngOnInit() {
@@ -110,8 +122,20 @@ export class PuertaListComponent implements OnInit {
       });
    }
 
+   liberarPuerta():void{
+     this.usuarioPuertaService.deletePuertaUser(this.userId).subscribe(data=>{
+       this.showSuccessAlertPuertaLiberada();
+     },err=>{
+       this.showErrorAlert()
+     })
+   }
+
    showSuccessAlert() {
     Swal.fire('OK', 'Puerta asignada' , 'success');
+  }
+
+  showSuccessAlertPuertaLiberada() {
+    Swal.fire('OK', 'Puerta liberada' , 'success');
   }
 
   showErrorAlert() {

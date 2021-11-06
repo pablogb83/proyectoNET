@@ -14,6 +14,7 @@ namespace DataAccessLayer.IDAL
         void CreateUsuarioPuerta(UsuarioPuerta usuarioPuerta);
         IEnumerable<UsuarioPuerta> GetAllUsuarioPuerta();
         Usuario GetUsuarioPuerta(int idPuerta);
+        Puerta GetPuertaUsuario(int idUsuario);
         void DeleteUsuarioPuerta(int idUsuario);
     }
 }

@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 const AUTH_API = '/api/usuarioPuerta/';
 
@@ -19,5 +20,13 @@ export class UsuarioPuertaService {
       usuarioId,
       puertaId
     }, httpOptions);
+  }
+
+  getPuertaUser(id:string):Observable<any>{
+    return this.http.get(AUTH_API + 'puerta/' + id)
+  }
+
+  deletePuertaUser(id:string){
+    return this.http.delete(AUTH_API + id)
   }
 }

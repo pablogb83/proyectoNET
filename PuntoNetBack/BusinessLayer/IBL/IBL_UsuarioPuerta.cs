@@ -13,6 +13,7 @@ namespace BusinessLayer.IBL
         Task<bool> CreateUsuarioPuertaAsync(int usuarioId, int puertaId);
         Task<IEnumerable<UsuarioPuerta>> GetAllUsuarioPuertaAsync();
         Task<Usuario> GetUsuarioPuerta(int idPuerta);
+        Puerta GetPuertaUsuario(int idUsuario);
         void DeleteUsuarioPuerta(int idUsuario);
     }
 }

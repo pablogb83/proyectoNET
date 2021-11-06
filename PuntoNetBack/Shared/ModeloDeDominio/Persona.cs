@@ -29,5 +29,7 @@ namespace Shared.ModeloDeDominio
         public TipoDocumento tipo_doc { get; set; }
         [Required]
         public string nro_doc { get; set; }
+
+        public string PhotoFileName { get; set; }
     }
 }

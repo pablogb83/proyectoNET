@@ -26,6 +26,10 @@ namespace BusinessLayer.BL
         }
         public async Task<bool> CreateUsuarioPuertaAsync(int usuarioId, int puertaId)
         {
+            if (_dal.GetUsuarioPuerta(puertaId) != null)
+            {
+                return false;
+            }
             var usuario = await _dalusuario.GetUsuarioByIdAsync(usuarioId);
             var puerta = _dalpuerta.GetPuertaById(puertaId);
             var edificio = _dalUsrEdi.GetEdificioUsuario(usuario);
@@ -54,6 +58,12 @@ namespace BusinessLayer.BL
             }
             return usuariosPuerta;
             //return _dal.GetAllUsuarioPuerta();
+        }
+
+        public Puerta GetPuertaUsuario(int idUsuario)
+        {
+            var puerta = _dal.GetPuertaUsuario(idUsuario);
+            return puerta;
         }
 
         public async Task<Usuario> GetUsuarioPuerta(int idPuerta)

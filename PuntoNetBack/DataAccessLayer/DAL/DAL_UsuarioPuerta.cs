@@ -33,10 +33,34 @@ namespace DataAccessLayer.DAL
             return _context.UsuarioPuerta.ToList();
         }
 
+        public Puerta GetPuertaUsuario(int idUsuario)
+        {
+            var usuarioPuerta = _context.UsuarioPuerta
+                .Where(u => u.UsuarioId == idUsuario).FirstOrDefault();
+            if (usuarioPuerta != null)
+            {
+                return usuarioPuerta.puerta;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public Usuario GetUsuarioPuerta(int idPuerta)
         {
-            return _context.UsuarioPuerta
-                .Where(u => u.PuertaId == idPuerta).FirstOrDefault().usuario;
+
+            var usuarioPuerta = _context.UsuarioPuerta
+                .Where(u => u.PuertaId == idPuerta).FirstOrDefault();
+            if (usuarioPuerta != null)
+            {
+                return usuarioPuerta.usuario;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public bool SaveChanges()

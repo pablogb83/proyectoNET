@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using DataAccessLayer.Dtos.UsuarioPuerta;
 using DataAccessLayer.Dtos.Usuarios;
+using DataAccessLayer.Dtos.PuertaAccesos;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -90,6 +91,13 @@ namespace NetCoreWebAPI.Controllers
             }
 
 
+        }
+
+        [HttpGet("puerta/{id}")]
+        public ActionResult<PuertaReadDto> GetPuertaUsuario(int id)
+        {
+            var puerta = _bl.GetPuertaUsuario(id);
+            return Ok(_mapper.Map<PuertaReadDto>(puerta));
         }
     }
 }

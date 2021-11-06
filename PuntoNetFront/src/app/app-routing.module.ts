@@ -82,6 +82,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
+        path: 'personas',
+        loadChildren: './persona/persona.module#PersonaModule',
+        canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

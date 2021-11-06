@@ -32,9 +32,16 @@
                         </button>
                     </div>
                     <div class="example-button-row" *ngIf="rol==='PORTERO'">
-                      <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="seleccionarPuerta(element)">
-                        <mat-icon>person_add</mat-icon>
-                    </button>
+                      <div *ngIf="!puertaid">
+                        <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="seleccionarPuerta(element)">
+                          <mat-icon>person_add</mat-icon>
+                        </button>
+                      </div>
+                      <div *ngIf="puertaid && puertaid===element.id">
+                        <button mat-icon-button color="warn" aria-label="Example icon button with a delete icon" (click)="liberarPuerta()">
+                          <mat-icon>cancel</mat-icon>
+                      </button>
+                      </div> 
                     </div>
                 </td>
               </ng-container>
