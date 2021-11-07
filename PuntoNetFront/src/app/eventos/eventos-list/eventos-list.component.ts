@@ -34,7 +34,7 @@ export class EventosListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(EventosAddComponent, {
-      width: '300px',
+      width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -45,7 +45,7 @@ export class EventosListComponent implements OnInit {
 
   openDialogUpdate(evt:any): void {
     const dialogRef = this.dialog.open(EventosEditComponent, {
-      width: '250px',
+      width: '500px',
       data: {id: evt.id, nombre: evt.nombre, descripcion: evt.descripcion, fechaInicioEvt: evt.fechaInicioEvt, fechaFinEvt: evt.fechaFinEvt, photoFileName: evt.photoFileName}
     });
 

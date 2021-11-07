@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);
             this.tokenService.saveTenant(data.tenantId);
+            this.tokenService.saveUserId(data.id);
             if(data.role!=="SUPERADMIN"){
                 this.service.isActive().subscribe(status=>{
                     this.tokenService.saveStatus(Boolean(status))

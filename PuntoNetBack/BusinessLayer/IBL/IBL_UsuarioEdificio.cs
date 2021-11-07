@@ -11,8 +11,9 @@ namespace BusinessLayer.IBL
     {
         bool SaveChanges();
         Task<bool> CreateUsuarioEdificioAsync(int usuarioId, int edificioId);
-        IEnumerable<UsuarioEdificio> GetAllUsuarioEdificio();
+        Task<IEnumerable<UsuarioEdificio>> GetAllUsuarioEdificio();
         Task<IEnumerable<Usuario>> GetUsuariosEdificio(int idEdificio);
+        Task<Edificio> GetEdificioUsuario(int idUsuario);
         void DeleteUsuarioEdificio(int idUsuario);
     }
 }

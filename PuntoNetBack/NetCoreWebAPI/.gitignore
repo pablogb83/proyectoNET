@@ -9,6 +9,8 @@
 
 #Carpeta Photos
 Photos/
+#Carpeta Files
+Files/
 
 # dependencies
 /node_modules

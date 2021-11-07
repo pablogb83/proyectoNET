@@ -15,7 +15,7 @@ const httpOptions = {
 })
 export class EventosService {
 
-  readonly PhotoUrl = "https://localhost:44396/Photos/";
+  // readonly PhotoUrl = "https://localhost:44396/Photos/";
 
   constructor(private http: HttpClient) { }
 
@@ -51,7 +51,7 @@ export class EventosService {
     return this.http.delete(AUTH_API + id);
   }
 
-  UploadPhoto(val:any){
-    return this.http.post(AUTH_API +'SaveFile',val);
-  }
+  // UploadPhoto(val:any){
+  //   return this.http.post(AUTH_API +'SaveFile',val);
+  // }
 }

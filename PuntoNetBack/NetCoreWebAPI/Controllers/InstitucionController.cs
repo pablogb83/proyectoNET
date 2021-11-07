@@ -99,7 +99,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("active", Name = "IsActive")]
-        [Authorize(Roles = "ADMIN")]  
+        [Authorize(Roles = "ADMIN, PORTERO, GESTOR")]  
         public ActionResult<bool> IsActive()
         {
             var tenant = User.Claims.Skip(1).FirstOrDefault();

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EventosService } from 'src/app/core/services/eventos.service';
+import { FileService } from 'src/app/core/services/file.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
 import Swal from 'sweetalert2';
 import { Evento } from '../eventos-list/eventos-list.component';
@@ -21,7 +22,7 @@ export class EventosEditComponent implements OnInit {
   PhotoFileName?:any;
   PhotoFilePath?:any;
 
-  constructor(public dialogRef: MatDialogRef<EventosEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Evento, private service:EventosService) { 
+  constructor(public dialogRef: MatDialogRef<EventosEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Evento, private service:EventosService,private fileService:FileService) { 
     console.log(data);
     this.id = data.id;
     this.nombre = data.nombre;
@@ -34,7 +35,7 @@ export class EventosEditComponent implements OnInit {
     this.fechafin = s2.getMonth()+1 + "/" + s2.getDate() + "/" + s2.getFullYear(); //06/15/2021
 
     this.PhotoFileName = data.photoFileName;
-    this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
+    this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
   }
 
   onNoClick(): void {
@@ -65,9 +66,9 @@ export class EventosEditComponent implements OnInit {
     const formData:FormData=new FormData();
     formData.append('uploadedFile',file,file.name);
 
-    this.service.UploadPhoto(formData).subscribe((data)=>{
+    this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName=data.toString();
-      this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
+      this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
     })
 
   }

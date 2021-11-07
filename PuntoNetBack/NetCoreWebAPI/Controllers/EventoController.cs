@@ -22,14 +22,13 @@ namespace NetCoreWebAPI.Controllers
     {
         private readonly IBL_Evento _bl;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
-        private readonly IWebHostEnvironment _env;
 
-        public EventoController(IBL_Evento bl, IMapper mapper, IWebHostEnvironment env)
+
+        public EventoController(IBL_Evento bl, IMapper mapper)
         {
             _bl = bl;
             _mapper = mapper;
-            _env = env;
+
         }
 
 
@@ -137,30 +136,5 @@ namespace NetCoreWebAPI.Controllers
             }
         }*/
 
-        [Route("SaveFile")]
-        [HttpPost]
-        public JsonResult SaveFile()
-        {
-            try
-            {
-                var httpRequest = Request.Form;
-                var postedFile = httpRequest.Files[0];
-                string filename = postedFile.FileName;
-                var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
-
-                using (var stream = new FileStream(physicalPath, FileMode.Create))
-                {
-                    postedFile.CopyTo(stream);
-                }
-
-                return new JsonResult(filename);
-            }
-            catch (Exception)
-            {
-
-                return new JsonResult("anonymous.png");
-            }
-
-        }
     }
 }

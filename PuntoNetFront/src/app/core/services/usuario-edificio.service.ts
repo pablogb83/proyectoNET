@@ -25,5 +25,9 @@ export class UsuarioEdificioService {
   getUsuariosEdificio(id:number):Observable<any[]>{
     return this.http.get<any>(AUTH_API + id);
   }
+
+  getEdificioUsuario(id:string):Observable<any>{
+    return this.http.get<any>(AUTH_API + 'edificio/' + id);
+  }
   
 }

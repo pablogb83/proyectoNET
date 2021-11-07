@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
+import { FileService } from 'src/app/core/services/file.service';
 
 @Component({
   selector: 'app-eventos-add',
@@ -23,7 +24,7 @@ export class EventosAddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService) { }
+  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService) { }
 
   ngOnInit() {
    // this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
@@ -57,9 +58,9 @@ export class EventosAddComponent implements OnInit {
     const formData:FormData=new FormData();
     formData.append('uploadedFile',file,file.name);
 
-    this.service.UploadPhoto(formData).subscribe((data)=>{
+    this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName=data.toString();
-      this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
+      this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
     })
 
   }

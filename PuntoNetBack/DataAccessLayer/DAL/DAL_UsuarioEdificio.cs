@@ -41,6 +41,12 @@ namespace DataAccessLayer.DAL
             return _context.UsuariosEdificio.ToList();
         }
 
+        public Edificio GetEdificioUsuario(Usuario usr)
+        {
+            return _context.UsuariosEdificio
+                .Where(u => u.usuario == usr).FirstOrDefault().edificio;
+        }
+
         public IEnumerable<UsuarioEdificio> GetUsuariosEdificio(int idEdificio)
         {
             return _context.UsuariosEdificio
