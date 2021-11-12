@@ -23,14 +23,6 @@ namespace DataAccessLayer.DAL
             _context = context;
         }
 
-        public string CrearSuscripcionAsync(string inst)
-        {
-            var paypal = new PaypalUtil(_clientFactory);
-            string token = paypal.getPayPalAccessToken();
-            string link = paypal.createSuscription(token, inst);
-            return link;
-        }
-
         public bool AuthorizePayment(IHeaderDictionary headers, PaypalSuscriptionActivated body)
         {
             var paypal = new PaypalUtil(_clientFactory);

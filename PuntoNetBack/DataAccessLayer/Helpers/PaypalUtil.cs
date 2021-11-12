@@ -11,6 +11,8 @@ using System.Text.Json.Serialization;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;using System.Text;
 using Newtonsoft.Json.Linq;
+using Shared.ModeloDeDominio;
+using Shared.Enum;
 
 namespace DataAccessLayer.Helpers
 {
@@ -34,11 +36,11 @@ namespace DataAccessLayer.Helpers
             TokenInfo obj = JsonConvert.DeserializeObject<TokenInfo>(content);
             return obj.access_token;
         }
-        public string createSuscription(string  token, string inst)
+        public string createProduct(string token, ProductNameEnum nombreProducto)
         {
-            var client = new RestClient("https://api-m.sandbox.paypal.com/v1/billing/subscriptions") { Encoding = Encoding.UTF8 };
+            var client = new RestClient("https://api-m.sandbox.paypal.com/v1/catalogs/products") { Encoding = Encoding.UTF8 };
             client.AddDefaultHeader("Authorization", string.Format("Bearer {0}", token));
-            SuscriptionInfo body = new SuscriptionInfo(inst);
+            ProductInfo body = new ProductInfo(nombreProducto);
             var authRequest = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
             authRequest.RequestFormat = DataFormat.Json;
             authRequest.AddJsonBody(body);
@@ -47,7 +49,6 @@ namespace DataAccessLayer.Helpers
             SuscriptionResponse obj = JsonConvert.DeserializeObject<SuscriptionResponse>(content);
             return obj.links[0].href;
         }
-
         public bool authorizePayment(IHeaderDictionary headers, PaypalSuscriptionActivated body, string token)
         {
             var client = new RestClient("https://api-m.sandbox.paypal.com/v1/notifications/verify-webhook-signature") { Encoding = Encoding.UTF8 };

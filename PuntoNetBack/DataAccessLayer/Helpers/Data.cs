@@ -1,4 +1,5 @@
 ﻿
+using Shared.Enum;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,23 @@ namespace DataAccessLayer.Helpers
         public string app_id { get; set; }
         public int expires_in { get; set; }
         public string nonce { get; set; }
+    }
+
+    public class ProductInfo
+    {
+        public ProductInfo(ProductNameEnum nombreProducto)
+        {
+            name = nombreProducto;
+            description = "Servicio de gestion de puertas y accesos nivel: " + nombreProducto;
+            type = "SERVICE";
+            category = "SOFTWARE";
+        }
+
+        public ProductNameEnum name { get; set; }
+        public string description { get; set; }
+        public string type { get; set; }
+        public string category { get; set; }
+
     }
 
     public class PaymentMethod
@@ -207,6 +225,18 @@ namespace DataAccessLayer.Helpers
         public string transmission_time { get; set; }
         public string webhook_id { get; set; }
         public PaypalSuscriptionActivated webhook_event { get; set; }
+    }
+
+    public class ImageInfo
+    {
+        public string FilePath { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
+        public string Metadata { get; set; } = string.Empty;
+        public string Attributes { get; set; } = string.Empty;
+        public string Caption { get; set; } = string.Empty;
+        public string OcrResult { get; set; } = string.Empty;
+        public string ThumbUrl { get; set; } = string.Empty; //"Assets/FaceFinder.jpg";
+        public string Confidence { get; set; } = string.Empty;
     }
 
 }

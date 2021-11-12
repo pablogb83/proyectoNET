@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
+using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Usuarios;
 using DataAccessLayer.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -191,6 +192,22 @@ namespace NetCoreWebAPI.Controllers
             try
             {
                 await _bl.AddRoleToUserAsync(parametros.RolId, parametros.UserId);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return NoContent();
+
+            }
+        }
+
+        [HttpPost("compareFaces")]
+        [AllowAnonymous]
+        public async Task<ActionResult> compareFaces()
+        {
+            try
+            {
+                await DAL_FaceApi.Verify();
                 return Ok();
             }
             catch (Exception)

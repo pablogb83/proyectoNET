@@ -138,46 +138,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.Precio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("FechaVigencia")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProductoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<float>("Valor")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoId");
-
-                    b.ToTable("Precio");
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Producto", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Nombre")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Producto");
-                });
-
             modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.Property<int>("Id")
@@ -265,36 +225,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.HasIndex("edificioId");
 
                     b.ToTable("Salones");
-
-                    b
-                        .HasAnnotation("Finbuckle:MultiTenant", true);
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Suscripcion", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductoId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("estado")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("fechainicio")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoId");
-
-                    b.ToTable("Suscripcion");
 
                     b
                         .HasAnnotation("Finbuckle:MultiTenant", true);
@@ -457,13 +387,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Shared.ModeloDeDominio.Precio", b =>
-                {
-                    b.HasOne("Shared.ModeloDeDominio.Producto", null)
-                        .WithMany("Precios")
-                        .HasForeignKey("ProductoId");
-                });
-
             modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
@@ -480,17 +403,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .HasForeignKey("edificioId");
 
                     b.Navigation("edificio");
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Suscripcion", b =>
-                {
-                    b.HasOne("Shared.ModeloDeDominio.Producto", "Producto")
-                        .WithMany("Suscripciones")
-                        .HasForeignKey("ProductoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Shared.ModeloDeDominio.UserRole", b =>
@@ -532,13 +444,6 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.Navigation("puerta_accesos");
 
                     b.Navigation("Salones");
-                });
-
-            modelBuilder.Entity("Shared.ModeloDeDominio.Producto", b =>
-                {
-                    b.Navigation("Precios");
-
-                    b.Navigation("Suscripciones");
                 });
 #pragma warning restore 612, 618
         }

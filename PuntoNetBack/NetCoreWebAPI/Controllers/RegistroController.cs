@@ -28,14 +28,6 @@ namespace NetCoreWebAPI.Controllers
             _mapper = mapper;
         }
 
-        //POST api/commands
-        [HttpPost]
-        [Authorize(Roles = "ADMIN")]
-        public ActionResult CrearSuscripcion()
-        {
-            Usuario user = (Usuario)HttpContext.Items["UserData"];
-            return Ok(new { Link =_bl.CrearSuscripcion(user.TenantId) });
-        }
 
         [HttpPost]
         [Route("confirm")]
