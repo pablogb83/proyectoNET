@@ -25,7 +25,7 @@ export class PersonaService {
   }
 
   postPersona(val:any){
-    return this.http.post(AUTH_API ,val,httpOptions);
+    return this.http.post(AUTH_API ,val);
   }
 
   putPersona(id:string, val:any){

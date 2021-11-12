@@ -105,6 +105,39 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.Acceso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("FechaHora")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PersonaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PuertaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonaId");
+
+                    b.HasIndex("PuertaId");
+
+                    b.ToTable("Accesos");
+
+                    b
+                        .HasAnnotation("Finbuckle:MultiTenant", true);
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Edificio", b =>
                 {
                     b.Property<int>("Id")
@@ -209,12 +242,15 @@ namespace DataAccessLayer.Migrations.WebAPI
 
                     b.Property<string>("nro_doc")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("tipo_doc")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("nro_doc")
+                        .IsUnique();
 
                     b.ToTable("Personas");
 
@@ -505,6 +541,25 @@ namespace DataAccessLayer.Migrations.WebAPI
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Shared.ModeloDeDominio.Acceso", b =>
+                {
+                    b.HasOne("Shared.ModeloDeDominio.Persona", "Persona")
+                        .WithMany("Accesos")
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.ModeloDeDominio.Puerta", "Puerta")
+                        .WithMany("Accesos")
+                        .HasForeignKey("PuertaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Persona");
+
+                    b.Navigation("Puerta");
+                });
+
             modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
                 {
                     b.HasOne("Shared.ModeloDeDominio.Edificio", "edificio")
@@ -581,6 +636,16 @@ namespace DataAccessLayer.Migrations.WebAPI
                     b.Navigation("puerta_accesos");
 
                     b.Navigation("Salones");
+                });
+
+            modelBuilder.Entity("Shared.ModeloDeDominio.Persona", b =>
+                {
+                    b.Navigation("Accesos");
+                });
+
+            modelBuilder.Entity("Shared.ModeloDeDominio.Puerta", b =>
+                {
+                    b.Navigation("Accesos");
                 });
 #pragma warning restore 612, 618
         }

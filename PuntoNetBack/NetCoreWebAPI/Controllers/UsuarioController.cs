@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.DAL;
+using DataAccessLayer.Dtos.Persona;
 using DataAccessLayer.Dtos.Usuarios;
 using DataAccessLayer.Helpers;
 using Finbuckle.MultiTenant;
@@ -30,13 +31,14 @@ namespace NetCoreWebAPI.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IBL_Usuario _bl;
+        private readonly IBL_Persona _blPersona;
         private readonly IBL_Institucion _blInst;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
 
-        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager,IBL_Institucion blInst)
+        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager,IBL_Institucion blInst, IBL_Persona blPersona)
         {
             _bl = bl;
             _blInst = blInst;
@@ -44,6 +46,7 @@ namespace NetCoreWebAPI.Controllers
             _appSettings = appSettings.Value;
             _userManager = userManager;
             _signInManager = signInManager;
+            _blPersona = blPersona; 
         }
 
         [HttpPost("authenticate")]
@@ -236,7 +239,9 @@ namespace NetCoreWebAPI.Controllers
                 var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream());
                 if (result!=null)
                 {
-                    return Ok(new { persona = result });
+                    Persona coincidencia = _blPersona.GetPersonaByDocumento(result.Name);
+                    var personaReadDto = _mapper.Map<PersonaReadDto>(coincidencia);
+                    return Ok(personaReadDto);
                 }
                 else
                 {

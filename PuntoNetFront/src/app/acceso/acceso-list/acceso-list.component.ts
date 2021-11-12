@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { AccesoService } from 'src/app/core/services/acceso.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { UsuarioPuertaService } from 'src/app/core/services/usuario-puerta.service';
+import { Persona } from 'src/app/persona/persona-list/persona-list.component';
+import { Puerta } from 'src/app/puerta/puerta-list/puerta-list.component';
+import { ReconocimientoFacialComponent } from 'src/app/reconocimiento-facial/reconocimiento-facial.component';
 import Swal from 'sweetalert2';
 import { AccesoAddComponent } from '../acceso-add/acceso-add.component';
 
@@ -36,7 +39,7 @@ export class AccesoListComponent implements OnInit {
         this.puerta = data.denominacion;
         this.edificio = data.edificio.nombre;
         this.accesoService.getAccesosPuerta(this.puertaid).subscribe(data=>{
-          this.AccesosList = data;
+          this.AccesosList = new MatTableDataSource<Acceso>(data);
           this.AccesosList.paginator = this.paginator;
           console.log(this.AccesosList);
         })
@@ -57,6 +60,18 @@ export class AccesoListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       //this.getSalones();
+    }); 
+  }
+
+  openDialogFacial(): void {
+    const dialogRef = this.dialog.open(ReconocimientoFacialComponent, {
+      width: '500px',
+      data: {idpuerta: this.puertaid}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getAccesos();
     }); 
   }
 
@@ -87,4 +102,12 @@ export class AccesoListComponent implements OnInit {
 export interface Data {
   idpuerta: string;
 }
+export interface Acceso {
+  id: string;
+  fechaHora: string;
+  persona: Persona;
+  puerta: Puerta;
+}
+
+
 

@@ -120,7 +120,7 @@ export interface Persona {
   apellidos: string;
   telefono: string;
   email: string;
-  tipo_doc: number;
+  tipo_doc: string;
   nro_doc: string
   photoFileName: string;
 }

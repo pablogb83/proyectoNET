@@ -23,6 +23,10 @@ export class FileService {
   }
 
   Uploadfile(val:any){
+    return this.http.post(AUTH_API + 'archivos' ,val);
+  }
+
+  UploadfileFace(val:any){
     return this.http.post('/api/usuarios/compareFaces' ,val);
   }
 }

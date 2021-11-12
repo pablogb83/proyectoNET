@@ -123,6 +123,12 @@
             </mat-icon>
             <p mat-line> Accesos </p>
           </a>
+          <a mat-list-item [routerLink]="['/personas']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              people
+            </mat-icon>
+            <p mat-line> Personas </p>
+          </a>
         </div>
 
         <a mat-list-item [routerLink]="['/roles']"  *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">

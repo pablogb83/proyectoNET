@@ -44,10 +44,36 @@ namespace NetCoreWebAPI.Controllers
             }
             catch (Exception)
             {
-
                 return new JsonResult("anonymous.png");
             }
+        }
 
+        [HttpPost("azurefoto")]
+        public JsonResult SavePersonPhoto()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+
+                var randomString = RandomString.RandomizeString(10);
+
+                filename = randomString + filename;
+
+                var physicalPath = _env.ContentRootPath + "/Files/Photos/" + filename;
+
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+                return new JsonResult(filename);
+            }
+            catch (Exception)
+            {
+                return new JsonResult("anonymous.png");
+            }
         }
 
         [HttpPost("archivos")]

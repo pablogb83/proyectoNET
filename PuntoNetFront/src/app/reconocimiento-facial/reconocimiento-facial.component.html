@@ -5,5 +5,7 @@
         <div class="ml-3 bd-highlight" style="width: 40%;">
             <input type="file" (change)="uploadFile($event)" class="mt-2"/>
         </div>
+        <img [src]="imgURL" height="200" *ngIf="imgURL">
+        <img *ngIf="PhotoFilePath" [src]=PhotoFilePath height="250px;" width="200px;">
     </div>
 </div>

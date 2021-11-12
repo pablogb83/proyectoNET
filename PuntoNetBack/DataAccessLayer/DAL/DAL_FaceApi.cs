@@ -227,5 +227,12 @@ namespace DataAccessLayer.DAL
             VerifyResult result = await client.Face.VerifyFaceToPersonAsync(idCara1, idPersona,personGroupId);
             return result.IsIdentical;
         }
+        
+        public static async Task<bool> AgregarPersona(string email, Stream stream)
+        {
+            Person p1 = await client.PersonGroupPerson.CreateAsync(personGroupId, email);
+            PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(personGroupId, p1.PersonId, stream);
+            return true;
+        }
     }
 }
