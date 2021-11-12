@@ -96,7 +96,29 @@
             </mat-icon>
             <p mat-line> Edificios </p>
           </a>
+          <a mat-list-item [routerLink]="['/eventos']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              event
+            </mat-icon>
+            <p mat-line> Eventos </p>
+          </a>
+          <a mat-list-item [routerLink]="['/personas']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              people
+            </mat-icon>
+            <p mat-line> Personas </p>
+          </a>
         </div>
+
+        <div *ngIf="rol==='PORTERO' && instActive">
+          <a mat-list-item [routerLink]="['/puertas']" [queryParams]="{idedificio: idedificio}" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              meeting_room
+            </mat-icon>
+            <p mat-line> Puertas </p>
+          </a>
+        </div>
+
         <a mat-list-item [routerLink]="['/roles']"  *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
           <mat-icon mat-list-icon>
             contact_phone

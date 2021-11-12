@@ -44,9 +44,22 @@ namespace BusinessLayer.BL
             _dal.DeleteUsuarioEdificio(idUsuario);
         }
 
-        public IEnumerable<UsuarioEdificio> GetAllUsuarioEdificio()
+        public async Task<IEnumerable<UsuarioEdificio>> GetAllUsuarioEdificio()
         {
-            return _dal.GetAllUsuarioEdificio();
+            //return _dal.GetAllUsuarioEdificio();
+            var usuariosEdificio = _dal.GetAllUsuarioEdificio();
+            foreach (var item in usuariosEdificio)
+            {
+                item.usuario.Role = await _dalusuario.GetRolUsuario(item.usuario);
+            }
+            return usuariosEdificio;
+
+        }
+
+        public async Task<Edificio> GetEdificioUsuario(int idUsuario)
+        {
+            var usuario = await _dalusuario.GetUsuarioByIdAsync(idUsuario);
+            return _dal.GetEdificioUsuario(usuario);
         }
 
         public async Task<IEnumerable<Usuario>> GetUsuariosEdificio(int idEdificio)
@@ -65,6 +78,5 @@ namespace BusinessLayer.BL
         {
             return _dal.SaveChanges();
         }
-
     }
 }

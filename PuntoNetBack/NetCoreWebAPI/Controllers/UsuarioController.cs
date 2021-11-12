@@ -53,9 +53,9 @@ namespace NetCoreWebAPI.Controllers
                 return BadRequest(new { message = "Usuario o password incorrectos" });
 
             var role = await _bl.GetRolUsuario(user);
-            if(role == null)
-                return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
-     
+            if (role == null)
+               return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             IdentityOptions _options = new IdentityOptions();
@@ -81,7 +81,7 @@ namespace NetCoreWebAPI.Controllers
                 Token = tokenString,
                 TenantId = user.TenantId,
                 Role = role
-            }) ;
+            });
         }
 
         //GET api/usuarios

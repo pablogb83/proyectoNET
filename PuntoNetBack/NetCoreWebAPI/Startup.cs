@@ -20,6 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace NetCoreWebAPI
 {
@@ -123,6 +125,15 @@ namespace NetCoreWebAPI
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            .AddJwtBearer();
+            
+            // configure jwt authentication
+         
+            /*services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(x =>
             {
                 x.Events = new JwtBearerEvents
@@ -150,7 +161,6 @@ namespace NetCoreWebAPI
                     ValidateAudience = false
                 };
             });*/
-
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Inyeccion de dependencias
@@ -170,9 +180,12 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Puerta, BL_Puerta>();
             services.AddScoped<IDAL_UsuarioEdificio, DataAccessLayer.DAL.DAL_UsuarioEdificio>();
             services.AddScoped<IBL_UsuarioEdificio, BL_UsuarioEdificio>();
-            services.AddScoped<IDAL_Producto, DataAccessLayer.DAL.DAL_Producto>();
-            services.AddScoped<IBL_Producto, BL_Producto>();
-
+            services.AddScoped<IDAL_Evento, DataAccessLayer.DAL.DAL_Evento_EF>();
+            services.AddScoped<IBL_Evento, BL_Evento>();
+            services.AddScoped<IDAL_UsuarioPuerta, DataAccessLayer.DAL.DAL_UsuarioPuerta>();
+            services.AddScoped<IBL_UsuarioPuerta, BL_UsuarioPuerta>();
+            services.AddScoped<IDAL_Persona, DataAccessLayer.DAL.DAL_Persona>();
+            services.AddScoped<IBL_Persona, BL_Persona>();
 
             services.AddSwaggerGen(c =>
             {
@@ -239,6 +252,13 @@ namespace NetCoreWebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "Files")),
+                RequestPath = "/Files"
             });
         }
     }

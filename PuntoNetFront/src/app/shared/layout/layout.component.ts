@@ -8,6 +8,7 @@ import { AuthenticationService } from './../../core/services/auth.service';
 import { SpinnerService } from '../../core/services/spinner.service';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
 
 @Component({
     selector: 'app-layout',
@@ -24,6 +25,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     rol:string;
     instActive: boolean;
 
+    idedificio:number;
+    idUsuario:string;
+
     private autoLogoutSubscription: Subscription;
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
@@ -31,7 +35,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         public spinnerService: SpinnerService,
         private authService: AuthenticationService,
         private authGuard: AuthGuard,
-        private tokenService: TokenStorageService) {
+        private tokenService: TokenStorageService,
+        private usuarioEdificio: UsuarioEdificioService) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -43,11 +48,21 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userName = this.tokenService.getUserName();
         this.rol = this.tokenService.getRoleName();
         this.instActive = this.tokenService.getStatus();
+        this.idUsuario = this.tokenService.getUserId();
         // Auto log-out subscription
         const timer = TimerObservable.create(2000, 5000);
         this.autoLogoutSubscription = timer.subscribe(t => {
             this.authGuard.canActivate();
         });
+
+        console.log(this.idUsuario);
+        if(this.rol==='PORTERO' && this.idUsuario){
+            this.usuarioEdificio.getEdificioUsuario(this.idUsuario).subscribe(data=>{
+                console.log(data);
+                this.idedificio = data.id;
+            })
+            //this.idedificio = 1;
+        }
     }
 
     ngOnDestroy(): void {

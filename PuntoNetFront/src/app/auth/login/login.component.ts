@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
     login() {
         const email = this.loginForm.get('email').value;
         const password = this.loginForm.get('password').value;
+     //   const rememberMe = this.loginForm.get('rememberMe').value;
 
         this.loading = true;
         this.authenticationService.login(email.toLowerCase(), password).subscribe(data => {
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);
             this.tokenService.saveTenant(data.tenantId);
+            this.tokenService.saveUserId(data.id);
             if(data.role!=="SUPERADMIN"){
                 this.service.isActive().subscribe(status=>{
                     this.tokenService.saveStatus(Boolean(status))

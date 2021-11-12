@@ -24,7 +24,12 @@ const appRoutes: Routes = [
     {
         path: 'users',
         loadChildren: './users/users.module#UsersModule',
-        canActivate: [AuthGuard, AdminGuard]
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'eventos',
+        loadChildren: './eventos/eventos.module#EventosModule',
+        canActivate: [AuthGuard]
     },
     {
         path: 'account',
@@ -74,7 +79,12 @@ const appRoutes: Routes = [
     {
         path: 'puertas',
         loadChildren: './puerta/puerta.module#PuertaModule',
-        canActivate: [AuthGuard, AdminGuard]
+        canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
+        path: 'personas',
+        loadChildren: './persona/persona.module#PersonaModule',
+        canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
         path: '**',

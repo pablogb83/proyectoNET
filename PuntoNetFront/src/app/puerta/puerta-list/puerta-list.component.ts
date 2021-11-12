@@ -3,6 +3,8 @@ import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { PuertaService } from 'src/app/core/services/puerta.service';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { UsuarioPuertaService } from 'src/app/core/services/usuario-puerta.service';
 import Swal from 'sweetalert2';
 import { PuertaAddComponent } from '../puerta-add/puerta-add.component';
 import { PuertaEditComponent } from '../puerta-edit/puerta-edit.component';
@@ -22,8 +24,12 @@ export class PuertaListComponent implements OnInit {
   edificio?: any; 
   edificioNombre: string;
   PuertaList:any=[];
+  rol:string;
+  userId:string;
+  puerta?: any;
+  puertaid:string;
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService) { 
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService) { 
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
@@ -32,6 +38,18 @@ export class PuertaListComponent implements OnInit {
         this.edificioNombre = this.edificio._data._value.nombre;
       });
     });
+    this.rol = this.tokenService.getRoleName();
+    this.userId = this.tokenService.getUserId();
+    if(this.rol === 'PORTERO'){
+      this.usuarioPuertaService.getPuertaUser(this.userId).subscribe(data=>{
+        this.puerta = new MatTableDataSource<Puerta>(data)
+        console.log(this.puerta);
+        if(this.puerta._data._value){
+          this.puertaid = this.puerta._data._value.id;
+        }
+        console.log(this.puertaid);
+      })
+    }
   }
 
   ngOnInit() {
@@ -92,6 +110,37 @@ export class PuertaListComponent implements OnInit {
        }
      })
    }
+
+   seleccionarPuerta(puerta:any):void{
+      console.log(puerta.id);
+      console.log(this.userId);
+      this.usuarioPuertaService.addUserPuerta(this.userId, puerta.id).subscribe(data=>{
+        console.log(data);
+        this.showSuccessAlert();
+      },err=>{
+        this.showSuccessAlert();
+      });
+   }
+
+   liberarPuerta():void{
+     this.usuarioPuertaService.deletePuertaUser(this.userId).subscribe(data=>{
+       this.showSuccessAlertPuertaLiberada();
+     },err=>{
+       this.showErrorAlert()
+     })
+   }
+
+   showSuccessAlert() {
+    Swal.fire('OK', 'Puerta asignada' , 'success');
+  }
+
+  showSuccessAlertPuertaLiberada() {
+    Swal.fire('OK', 'Puerta liberada' , 'success');
+  }
+
+  showErrorAlert() {
+    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  }
 
 }
 
