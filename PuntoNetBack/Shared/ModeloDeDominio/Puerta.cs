@@ -19,5 +19,7 @@ namespace Shared.ModeloDeDominio
         public string Denominacion { get; set; }
 
         public virtual Edificio edificio { get; set; }
+
+        public virtual ICollection<Acceso> Accesos { get; set; } = new List<Acceso>();
     }
 }

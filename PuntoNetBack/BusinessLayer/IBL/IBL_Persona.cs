@@ -18,5 +18,6 @@ namespace BusinessLayer.IBL
         void UpdatePersona(Persona prs);
         void DeletePersona(Persona prs);
         void AltaMasivaPersona(List<PersonaCreateDto> personas);
+        IEnumerable<Persona> GetAllPersonasBusqueda(string filter);
     }
 }

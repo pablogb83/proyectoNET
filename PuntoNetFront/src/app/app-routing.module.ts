@@ -87,6 +87,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
+        path: 'accesos',
+        loadChildren: './acceso/acceso.module#AccesoModule',
+        canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'
