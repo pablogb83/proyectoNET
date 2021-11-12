@@ -79,5 +79,10 @@ namespace BusinessLayer.BL
         {
             return  await _dal.GetUsuariosAdmin();
         }
+
+        public async Task CreateAdminAsync(Usuario usr, string password)
+        {
+            await _dal.CreateAdminAsync(usr, password);
+        }
     }
 }

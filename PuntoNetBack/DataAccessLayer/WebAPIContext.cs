@@ -17,9 +17,9 @@ namespace DataAccessLayer
         }
 
         public virtual DbSet<Usuario> Usuarios { get; set; }
-        public virtual DbSet<Producto> Producto { get; set; }
-        public virtual DbSet<Suscripcion> Suscripcion { get; set; }
-        public virtual DbSet<Precio> Precio { get; set; }
+        //public virtual DbSet<Producto> Producto { get; set; }
+        //public virtual DbSet<Suscripcion> Suscripcion { get; set; }
+        //public virtual DbSet<Precio> Precio { get; set; }
         //public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Puerta> Puertas { get; set; }
         public virtual DbSet<Edificio> Edificios { get; set; }
@@ -34,6 +34,7 @@ namespace DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.RoleId, pk.UserId });
+            TenantMismatchMode = TenantMismatchMode.Ignore;
         }
 
     }

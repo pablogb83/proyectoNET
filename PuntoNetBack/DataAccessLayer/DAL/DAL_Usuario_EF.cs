@@ -55,7 +55,26 @@ namespace DataAccessLayer.DAL
                 throw new AppException("El password es requerido");
 
             var result = await _userManager.CreateAsync(usr, password);
-            Console.WriteLine("LALA");
+        }
+
+        public async Task CreateAdminAsync(Usuario usr, string password)
+        {
+            if (usr == null)
+            {
+                throw new ArgumentNullException(nameof(usr));
+            }
+            usr.UserName = usr.Email;
+            if (_context.Usuarios.IgnoreQueryFilters().Any(x => x.Email == usr.Email))
+                throw new AppException("Email " + usr.Email + " ya esta registrado");
+
+            if (string.IsNullOrWhiteSpace(password))
+                throw new AppException("El password es requerido");
+            // var u1 = _context.Usuarios.Add(usr);
+            //_context.SaveChanges();
+            _context.TenantMismatchMode = Finbuckle.MultiTenant.TenantMismatchMode.Ignore;
+            var result = await _userManager.CreateAsync(usr, password);
+            var createdUser = _userManager.Users.IgnoreQueryFilters().SingleOrDefault(x => x.Email == usr.Email);
+            await _userManager.AddToRoleAsync(createdUser, "ADMIN");
         }
 
         public void DeleteUsuario(Usuario usr)

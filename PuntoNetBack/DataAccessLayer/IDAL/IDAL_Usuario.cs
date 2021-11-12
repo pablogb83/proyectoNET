@@ -15,6 +15,7 @@ namespace DataAccessLayer.IDAL
         Task<Usuario> GetUsuarioByIdAsync(int Id);
         Task<string> GetRolUsuario(Usuario user);
         Task CreateUsuarioAsync(Usuario usr, string password);
+        Task CreateAdminAsync(Usuario usr, string password);
         void UpdateUsuario(Usuario usr, string password = null);
         void DeleteUsuario(Usuario usr);
         Task<Usuario> AutenticarAsync(string email, string password);

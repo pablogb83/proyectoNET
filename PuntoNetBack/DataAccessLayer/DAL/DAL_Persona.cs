@@ -51,6 +51,11 @@ namespace DataAccessLayer.DAL
                 (p.Telefono.Contains(filter)));
         }
 
+        public Persona GetPersonaByDocumento(string nro_doc)
+        {
+            return _context.Personas.FirstOrDefault(p => p.nro_doc == nro_doc);
+        }
+
         public Persona GetPersonaById(int Id)
         {
             return _context.Personas.FirstOrDefault(p => p.Id == Id);

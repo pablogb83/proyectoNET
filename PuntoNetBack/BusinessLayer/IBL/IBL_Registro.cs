@@ -10,8 +10,6 @@ namespace BusinessLayer.IBL
 {
     public interface IBL_Registro
     {
-        string CrearSuscripcion(string inst);
-
         bool AuthorizePayment(IHeaderDictionary headers, PaypalSuscriptionActivated body);
     }
 }

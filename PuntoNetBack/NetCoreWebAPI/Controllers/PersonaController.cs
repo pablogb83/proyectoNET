@@ -2,9 +2,12 @@
 using BusinessLayer.IBL;
 using CsvHelper;
 using CsvHelper.Configuration;
+using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using NetCoreWebAPI.Helpers;
+using Shared.Enum;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -61,11 +64,33 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/persona
         [HttpPost]
-        public ActionResult<PersonaReadDto> CreatePersona(PersonaCreateDto personaCreateDto)
+        public async Task<ActionResult<PersonaReadDto>> CreatePersona()
         {
-            var personaModel = _mapper.Map<Persona>(personaCreateDto);
+            var httpRequest = Request.Form;
+            var postedFile = httpRequest.Files[0];
+            
+            string filename = postedFile.FileName;
+            var randomString = RandomString.RandomizeString(10);
+            filename = randomString + filename;
+
+            Persona personaModel = new Persona();
+            personaModel.Nombres = httpRequest["nombres"];
+            personaModel.Apellidos = httpRequest["apellidos"];
+            personaModel.Telefono = httpRequest["telefono"];
+            personaModel.Email = httpRequest["email"];
+            personaModel.tipo_doc = (TipoDocumento)Int32.Parse(httpRequest["tipo_doc"]);
+            personaModel.nro_doc = httpRequest["nro_doc"];
+            personaModel.PhotoFileName = filename;
+
+            var physicalPath = _env.ContentRootPath + "/Files/Photos/" + filename;
+            using (var stream = new FileStream(physicalPath, FileMode.Create))
+            {
+                postedFile.CopyTo(stream);
+            }
             _bl.CreatePersona(personaModel);
             _bl.SaveChanges();
+
+            await DAL_FaceApi.AgregarPersona(personaModel.nro_doc, postedFile.OpenReadStream());
 
             var personaReadDto = _mapper.Map<PersonaReadDto>(personaModel);
 

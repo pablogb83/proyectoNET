@@ -10,7 +10,6 @@ namespace DataAccessLayer.IDAL
 {
     public interface IDAL_Registro
     {
-        string CrearSuscripcionAsync(string inst);
         bool AuthorizePayment(IHeaderDictionary headers, PaypalSuscriptionActivated body);
 
     }

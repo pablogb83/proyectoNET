@@ -18,6 +18,8 @@ namespace DataAccessLayer.Profiles
             CreateMap<UsuarioCreateDto, Usuario>();
             CreateMap<UsuarioUpdateDto, Usuario>();
             CreateMap<Usuario, UsuarioUpdateDto>();
+            CreateMap<AdminCreateDto, Usuario>();
+
         }
     }
 }

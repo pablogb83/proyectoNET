@@ -27,7 +27,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<PuertaReadDto>> GetAllPuertas()
         {
-            var puertas = _bl.GetAllPuertas(); ;
+            var puertas = _bl.GetAllPuertas();
             return Ok(_mapper.Map<IEnumerable<PuertaReadDto>>(puertas));
         }
 
