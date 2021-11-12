@@ -1,0 +1,25 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <h3>Alta edificio</h3>
+        <mat-divider></mat-divider>
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput [(ngModel)]="nombre">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Direccion</mat-label>
+            <input matInput [(ngModel)]="direccion">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Telefono</mat-label>
+            <input matInput [(ngModel)]="telefono">
+        </mat-form-field>
+
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="agregarEdificio()">Agregar</button>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        </div>
+  </div>
+</div>
