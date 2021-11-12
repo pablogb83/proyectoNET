@@ -15,5 +15,7 @@ namespace Shared.ModeloDeDominio
         public string TenantId { get; set; }
         [NotMapped]
         public string Role { get; set; }
+        public string PhotoFileName { get; set; }
+
     }
 }

@@ -17,13 +17,13 @@ export class AuthGuard implements CanActivate {
         const status = Boolean(this.authService.getStatus());
         const user = this.authService.getRoleName();
         if (user && user!=="VISITANTE"){
-            return true;
             /*else {
                 this.notificationService.openSnackBar('Your session has expired');
                 this.router.navigate(['auth/login']);
                 return false;
             }*/
         }
+        return true;
         this.router.navigate(['auth/login']);
         return false;
     }

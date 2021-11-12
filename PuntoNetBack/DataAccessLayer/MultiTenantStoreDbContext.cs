@@ -24,7 +24,7 @@ namespace DataAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=LAPTOP-PBMLVKPJ\\SQLEXPRESS;Database=NetApi2;Trusted_Connection=True;MultipleActiveResultSets=True");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-30BQ617\\SQLEXPRESS;Database=NetApi2;Trusted_Connection=True;MultipleActiveResultSets=True");
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

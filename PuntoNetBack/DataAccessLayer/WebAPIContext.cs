@@ -33,6 +33,7 @@ namespace DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.RoleId, pk.UserId });
+            TenantMismatchMode = TenantMismatchMode.Ignore;
         }
 
     }

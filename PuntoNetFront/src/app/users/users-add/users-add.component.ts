@@ -15,13 +15,18 @@ export class UsersAddComponent implements OnInit {
   
   email?:string;
   passwordPlano?:string;
+  institucion?: string;
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
 
-  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService) { }
+  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService) {
+    if(data){
+      this.institucion = data.id
+    }
+  }
 
   ngOnInit() {
   }
@@ -31,11 +36,20 @@ export class UsersAddComponent implements OnInit {
       email:this.email,
       password:this.passwordPlano
     };
-    this.service.postUsuario(val.email,val.password).subscribe(res=>{
-      this.showSuccessAlert();
-    }, err =>{
-      this.showErrorAlert();
-    });
+    if(this.institucion){
+      this.service.postAdmin(val.email,val.password,this.institucion).subscribe(res=>{
+        this.showSuccessAlert();
+      }, err =>{
+        this.showErrorAlert();
+      });
+    }
+    else{
+      this.service.postUsuario(val.email,val.password).subscribe(res=>{
+        this.showSuccessAlert();
+      }, err =>{
+        this.showErrorAlert();
+      });
+    }
   }
 
   showSuccessAlert() {

@@ -24,7 +24,8 @@ namespace DataAccessLayer.DAL
         static string personGroupId = "mi-grupo-bruno540";
         // Set in GetOrCreatePersonAsync()
         const string recognitionModel03 = RecognitionModel.Recognition04;
-
+        private static Person searchedForPerson;
+        private readonly Person emptyPerson = new Person(Guid.Empty, string.Empty);
         // A trained PersonGroup has at least 1 added face for the specifed person
         // and has successfully completed the training process at least once.
         private bool isPersonGroupTrained;
@@ -41,7 +42,7 @@ namespace DataAccessLayer.DAL
 
         public DAL_FaceApi(IFaceClient faceClient)
         {
-           
+            searchedForPerson = emptyPerson;
         }
         public static async Task Verify()
         {
@@ -186,6 +187,45 @@ namespace DataAccessLayer.DAL
             IList<DetectedFace> detectedFaces = await faceClient.Face.DetectWithUrlAsync(url, recognitionModel: recognition_model, detectionModel: DetectionModel.Detection03);
             Debug.WriteLine($"{detectedFaces.Count} face(s) detected from image `{Path.GetFileName(url)}`");
             return detectedFaces.ToList();
+        }
+
+        public static async Task<Person> ReconocimientoFacial(Stream imagen)
+        {
+            IList<Person> people =await client.PersonGroupPerson.ListAsync(personGroupId);
+            List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, imagen, recognitionModel03);
+            Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
+            foreach (Person person in people)
+            {
+                try
+                {
+                    bool verificacion = await VerificarCaras(sourceFaceId1, person.PersonId);
+                    if (verificacion)
+                    {
+                        return person;
+                    }
+                }
+                catch(APIErrorException err)
+                {
+                    Debug.WriteLine(err.Message);
+                    Debug.WriteLine(err.Body.Error.Code);
+                    Debug.WriteLine(err.Body.Error.Message);
+                }
+               
+            }
+            return null;
+        }
+
+        private static async Task<List<DetectedFace>> DetectFaceRecognizeStream(IFaceClient faceClient, Stream imagen, string recognition_model)
+        {
+            IList<DetectedFace> detectedFaces = await client.Face.DetectWithStreamAsync(imagen, true, false, new FaceAttributeType[] { FaceAttributeType.Age, FaceAttributeType.Gender });
+            Debug.WriteLine($"{detectedFaces.Count} face(s) detected from image `{Path.GetFileName(url)}`");
+            return detectedFaces.ToList();
+        }
+
+        public static async Task<bool> VerificarCaras(Guid idCara1, Guid idPersona)
+        {
+            VerifyResult result = await client.Face.VerifyFaceToPersonAsync(idCara1, idPersona,personGroupId);
+            return result.IsIdentical;
         }
     }
 }

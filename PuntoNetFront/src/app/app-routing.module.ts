@@ -87,6 +87,10 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
+        path: 'reconocimiento-facial',
+        loadChildren: './reconocimiento-facial/reconocimiento-facial.module#ReconocimientoFacialModule',
+    },
+    {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full'

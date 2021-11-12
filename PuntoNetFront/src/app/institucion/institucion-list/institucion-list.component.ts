@@ -71,9 +71,10 @@ export class InstitucionListComponent implements AfterViewInit {
     });
   }
   
-  openDialogAdmin(): void {
+  openDialogAdmin(inst: any): void {
     const dialogRef = this.dialog.open(UsersAddComponent, {
       width: '250px',
+      data: {id: inst.id}
     });
 
     dialogRef.afterClosed().subscribe(result => {
