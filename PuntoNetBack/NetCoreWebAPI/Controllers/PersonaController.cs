@@ -131,5 +131,19 @@ namespace NetCoreWebAPI.Controllers
             }
             
         }
+
+        [HttpGet("busqueda")]
+        public ActionResult<IEnumerable<PersonaReadDto>> Busqueda([FromQuery]string filter)
+        {
+            var personas = _bl.GetAllPersonasBusqueda(filter);
+            if (personas != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<PersonaReadDto>>(personas));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

@@ -41,4 +41,8 @@ export class PersonaService {
     return this.http.post(AUTH_API + 'altaMasiva/' + ruta , httpOptions);
   }
 
+  getPersonasBusqueda(filter: string): Observable<any>{
+    return this.http.get(AUTH_API + 'busqueda?filter='+ filter, httpOptions);
+  }
+
 }

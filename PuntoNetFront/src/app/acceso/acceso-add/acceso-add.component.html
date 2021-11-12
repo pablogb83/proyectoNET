@@ -1,0 +1,37 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <h3>Nuevo Acceso</h3>
+        <mat-divider></mat-divider>
+
+        <div style="font-size: 12px">
+            <mat-form-field appearance="outline">
+              <mat-label>Buscar</mat-label>
+              <input matInput (keyup)="busqueda($event)">
+           </mat-form-field>
+        </div> 
+
+        <mat-form-field appearance="fill">
+            <mat-label>Personas</mat-label>
+            <mat-select [(ngModel)]="idPersona" >
+              <mat-option *ngFor="let persona of PersonasList" [value]="persona.id" (click)="obtenerPersona(persona)">
+                {{persona.nombres}} {{persona.apellidos}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> 
+          
+          <div *ngIf="PhotoFilePath && PersonasList.length > 0" class="ml-3 bd-highlight" style="width: 40%;">
+            <img [src]=PhotoFilePath height="250px;" width="200px;">
+         </div>
+
+        <div class="example-button-row">
+            <div *ngIf="PersonasList.length > 0">
+              <button mat-raised-button color="primary" (click)="agregarAcceso()">Agregar</button> 
+            </div>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+            <div *ngIf="PersonasList.length === 0">
+                <p>Persona no registrada</p>
+                <button mat-raised-button color="primary" (click)="redireccionar()">Registrar</button>
+            </div>
+        </div>
+  </div>
+</div>

@@ -16,5 +16,6 @@ namespace DataAccessLayer.IDAL
         void CreatePersona(Persona prs);
         void UpdatePersona(Persona prs);
         void DeletePersona(Persona prs);
+        IEnumerable<Persona> GetAllPersonasBusqueda(string filter);
     }
 }

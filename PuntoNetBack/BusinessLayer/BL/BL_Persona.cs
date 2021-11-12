@@ -49,6 +49,11 @@ namespace BusinessLayer.BL
             return _dal.GetAllPersonas();
         }
 
+        public IEnumerable<Persona> GetAllPersonasBusqueda(string filter)
+        {
+            return _dal.GetAllPersonasBusqueda(filter);
+        }
+
         public Persona GetPersonaById(int Id)
         {
             return _dal.GetPersonaById(Id);

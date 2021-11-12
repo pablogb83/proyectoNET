@@ -31,5 +31,8 @@ namespace Shared.ModeloDeDominio
         public string nro_doc { get; set; }
 
         public string PhotoFileName { get; set; }
+
+        public virtual ICollection<Acceso> Accesos { get; set; } = new List<Acceso>();
+
     }
 }
