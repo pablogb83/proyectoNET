@@ -7,6 +7,14 @@
           <div class="tittle-button-row">
             <button mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
             <button mat-raised-button color="accent" (click)="openDialogAltaMasiva()">Alta masiva</button>
+            
+            <div style="font-size: 10px">
+                <mat-form-field appearance="outline">
+                  <mat-label>Buscar</mat-label>
+                  <input matInput (keyup)="busqueda($event)">
+               </mat-form-field>
+            </div>
+
           </div>
           <table mat-table  [dataSource]="PersonasList" matSort>
   

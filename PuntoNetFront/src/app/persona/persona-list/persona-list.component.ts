@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { PersonaService } from 'src/app/core/services/persona.service';
 import Swal from 'sweetalert2';
@@ -15,22 +15,25 @@ import { PersonaEditComponent } from '../persona-edit/persona-edit.component';
 export class PersonaListComponent implements OnInit {
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort,{static: false}) sort: MatSort;
 
   displayedColumns: string[] = ['id','nombres', 'apellidos', 'telefono', 'email', 'tipo_doc', 'nro_doc' ,'acciones'];
 
   PersonasList:any=[];
 
   constructor(private service: PersonaService,public dialog: MatDialog, private router: Router) {
-    this.getPersonas()
+    
    }
 
   ngOnInit() {
+    this.getPersonas()
   }
 
   getPersonas(): void{
     this.service.getPersonas().subscribe(data=>{
       this.PersonasList = new MatTableDataSource<Persona>(data);
       this.PersonasList.paginator = this.paginator;
+      this.PersonasList.sort = this.sort;
     });
   }
 
@@ -91,6 +94,24 @@ export class PersonaListComponent implements OnInit {
     })
   }
 
+  busqueda(event: any): void{
+    console.log('Estoy buuscando', event.target.value);
+    this.getPersonasBusqueda(event.target.value);
+  }
+
+  getPersonasBusqueda(filter: string): void{
+    if(filter===''){
+      this.getPersonas();
+    }else{
+      this.service.getPersonasBusqueda(filter).subscribe(data=>{
+        this.PersonasList = new MatTableDataSource<Persona>(data);
+        this.PersonasList.paginator = this.paginator;
+        this.PersonasList.sort = this.sort;
+      });
+    }
+    
+  }
+
 }
 
 export interface Persona {
@@ -99,7 +120,7 @@ export interface Persona {
   apellidos: string;
   telefono: string;
   email: string;
-  tipo_doc: number;
+  tipo_doc: string;
   nro_doc: string
   photoFileName: string;
 }

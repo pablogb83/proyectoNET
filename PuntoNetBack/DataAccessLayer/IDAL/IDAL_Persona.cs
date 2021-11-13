@@ -13,8 +13,11 @@ namespace DataAccessLayer.IDAL
 
         IEnumerable<Persona> GetAllPersonas();
         Persona GetPersonaById(int Id);
+
+        Persona GetPersonaByDocumento(string nro_doc);
         void CreatePersona(Persona prs);
         void UpdatePersona(Persona prs);
         void DeletePersona(Persona prs);
+        IEnumerable<Persona> GetAllPersonasBusqueda(string filter);
     }
 }

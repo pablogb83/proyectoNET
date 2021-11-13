@@ -41,6 +41,21 @@ namespace DataAccessLayer.DAL
             return _context.Personas.ToList();
         }
 
+        public IEnumerable<Persona> GetAllPersonasBusqueda(string filter)
+        {
+            return _context.Personas.Where(p=> 
+                (p.Apellidos.Contains(filter)) || 
+                (p.Nombres.Contains(filter)) ||
+                (p.nro_doc.Contains(filter)) ||
+                (p.Email.Contains(filter)) ||
+                (p.Telefono.Contains(filter)));
+        }
+
+        public Persona GetPersonaByDocumento(string nro_doc)
+        {
+            return _context.Personas.FirstOrDefault(p => p.nro_doc == nro_doc);
+        }
+
         public Persona GetPersonaById(int Id)
         {
             return _context.Personas.FirstOrDefault(p => p.Id == Id);

@@ -117,6 +117,18 @@
             </mat-icon>
             <p mat-line> Puertas </p>
           </a>
+          <a mat-list-item [routerLink]="['/accesos']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              directions_walk
+            </mat-icon>
+            <p mat-line> Accesos </p>
+          </a>
+          <a mat-list-item [routerLink]="['/personas']" routerLinkActive="active">
+            <mat-icon mat-list-icon>
+              people
+            </mat-icon>
+            <p mat-line> Personas </p>
+          </a>
         </div>
 
         <a mat-list-item [routerLink]="['/roles']"  *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
@@ -142,7 +154,7 @@
 
       <div class="progress-bar-container">
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async">
-        </mat-progress-bar>
+        </mat-progress-bar> 
         <!-- <mat-spinner class="spinner" [diameter]="50" *ngIf="showSpinner"></mat-spinner> -->
       </div>
 

@@ -25,6 +25,14 @@ export class UsuariosService {
     return this.http.get<any>(AUTH_API+id);
   }
 
+  postAdmin(email: string, passwordPlano: string, tenantId?: string){
+    return this.http.post(AUTH_API + 'admin' , {
+      email,
+      passwordPlano,
+      tenantId
+    },httpOptions);
+  }
+
   postUsuario(email: string, passwordPlano: string){
     return this.http.post(AUTH_API , {
       email,
@@ -35,7 +43,7 @@ export class UsuariosService {
   putUsuario(id:number, email: string, password: string){
      return this.http.put(AUTH_API + id, {
       email,
-      password
+      password,
      }, httpOptions);
   }
 

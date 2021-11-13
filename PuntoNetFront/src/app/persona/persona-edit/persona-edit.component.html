@@ -37,7 +37,8 @@
             </mat-form-field>
 
             <div class="ml-3 bd-highlight" style="width: 40%;">
-                <img [src]=PhotoFilePath height="250px;" width="200px;">
+                <img [src]="imgURL" height="200" *ngIf="imgURL">
+                <img *ngIf="!imgURL" [src]=PhotoFilePath height="250px;" width="200px;">
                 <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
             </div>
         </div>

@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: '', component: PersonaListComponent },
       { path: 'add', component: PersonaAddComponent},
       { path: 'edit', component: PersonaEditComponent },
-      { path: 'altaMasica', component: PersonaAltaMasivaComponent },
+      { path: 'altaMasiva', component: PersonaAltaMasivaComponent },
     ]
   }
 ];

@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Finbuckle.MultiTenant;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shared.ModeloDeDominio
 {
     [MultiTenant]
+    [Index(nameof(nro_doc), IsUnique = true)]
     public class Persona
     {
         [Key]
@@ -31,5 +33,8 @@ namespace Shared.ModeloDeDominio
         public string nro_doc { get; set; }
 
         public string PhotoFileName { get; set; }
+
+        public virtual ICollection<Acceso> Accesos { get; set; } = new List<Acceso>();
+
     }
 }

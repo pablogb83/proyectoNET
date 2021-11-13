@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Dtos.Edificios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,7 @@ namespace DataAccessLayer.Dtos.PuertaAccesos
         public int Id { get; set; }
 
         public string Denominacion { get; set; }
+
+        public EdificiosReadDto Edificio { get; set; }
     }
 }

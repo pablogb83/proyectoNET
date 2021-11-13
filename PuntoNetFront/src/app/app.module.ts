@@ -14,7 +14,7 @@ import { AdminGuard } from './core/guards/admin.guard';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

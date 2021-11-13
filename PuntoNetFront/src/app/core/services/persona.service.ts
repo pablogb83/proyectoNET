@@ -25,7 +25,7 @@ export class PersonaService {
   }
 
   postPersona(val:any){
-    return this.http.post(AUTH_API ,val,httpOptions);
+    return this.http.post(AUTH_API ,val);
   }
 
   putPersona(id:string, val:any){
@@ -39,6 +39,10 @@ export class PersonaService {
   altaMasiva(ruta:string):Observable<any>{
     console.log("estoy en el service")
     return this.http.post(AUTH_API + 'altaMasiva/' + ruta , httpOptions);
+  }
+
+  getPersonasBusqueda(filter: string): Observable<any>{
+    return this.http.get(AUTH_API + 'busqueda?filter='+ filter, httpOptions);
   }
 
 }
