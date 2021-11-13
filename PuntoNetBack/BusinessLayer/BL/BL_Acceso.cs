@@ -33,6 +33,18 @@ namespace BusinessLayer.BL
                 acc.Puerta = pta;
                 _dal.CreateAcceso(acc);
             }
+            else
+            {
+                if (pta == null)
+                {
+                    throw new InvalidOperationException("Usted no tiene una puerta asignada");
+                }
+                else
+                {
+                    throw new InvalidOperationException("No proporciono datos de la persona");
+                }
+                
+            }
         }
 
         public void DeleteAcceso(Acceso acc)

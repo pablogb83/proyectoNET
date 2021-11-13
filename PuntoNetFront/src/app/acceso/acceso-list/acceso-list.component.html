@@ -3,10 +3,15 @@
   
       <mat-card>
         <mat-card-content>
-          <h2>Ingresos a edificio {{edificio}} por acceso {{puerta}}</h2>
-          <div class="tittle-button-row">
-            <button *ngIf="rol==='PORTERO'" mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
-            <button *ngIf="rol==='PORTERO'" mat-raised-button color="accent" (click)="openDialogFacial()">Agregar facialmente</button>
+          <div *ngIf="permiso">
+            <h2>Ingresos a edificio {{edificio}} por acceso {{puerta}}</h2>
+            <div class="tittle-button-row">
+              <button *ngIf="rol==='PORTERO'" mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
+              <button *ngIf="rol==='PORTERO'" mat-raised-button color="accent" (click)="openDialogFacial()">Agregar facialmente</button>
+            </div>
+          </div>
+          <div *ngIf="!permiso">
+            <h2>{{mensaje}}</h2>
           </div>
           <table mat-table  [dataSource]="AccesosList" matSort>
   
