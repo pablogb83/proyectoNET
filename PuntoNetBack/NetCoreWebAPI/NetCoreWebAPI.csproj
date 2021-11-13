@@ -27,7 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Photos\" />
+    <Folder Include="Files\csvFiles\" />
+    <Folder Include="Files\Photos\" />
   </ItemGroup>
 
 </Project>
