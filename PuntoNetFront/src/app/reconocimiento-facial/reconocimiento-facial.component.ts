@@ -88,6 +88,10 @@ export class ReconocimientoFacialComponent implements OnInit {
       });
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
   showSuccessAlert(persona: string) {
     Swal.fire('OK', 'La persona de la imagen ingresada se encuentra en el sistema y es el usuario: ' + persona, 'success');
   }
