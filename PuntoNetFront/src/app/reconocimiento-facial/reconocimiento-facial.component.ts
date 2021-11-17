@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {  Router } from '@angular/router';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
@@ -64,18 +64,7 @@ export class ReconocimientoFacialComponent implements OnInit {
     });
   }
 
-  title = 'app';
-  selectedFile = null;
-
-  onFileSelected(event)
-  {
-    this.selectedFile = event.target.files[0];
-  }
-
-  onUpload()
-  {
-    console.log(this.selectedFile); // You can use FormData upload to backend server
-  }
+  
 
   agregarAcceso(idPersona){
     var val = {
@@ -104,33 +93,52 @@ export class ReconocimientoFacialComponent implements OnInit {
       });
   }
 
-  takeSnapshot(): void {
-    this.trigger.next();
+  WIDTH = 640;
+  HEIGHT = 480;
+
+  @ViewChild("video",{ read: true,static:true})
+  public video: ElementRef;
+
+  @ViewChild("canvas",{ read: true,static:true})
+  public canvas: ElementRef;
+
+  captures: string[] = [];
+  error: any;
+  isCaptured: boolean;
+
+  async ngAfterViewInit() {
+    await this.setupDevices();
   }
 
-  onOffWebCame() {
-    this.showWebcam = !this.showWebcam;
+  async setupDevices() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+        if (stream) {
+          this.video.nativeElement.srcObject = stream;
+          this.video.nativeElement.play();
+          this.error = null;
+        } else {
+          this.error = "You have no output video device";
+        }
+      } catch (e) {
+        this.error = e;
+      }
+    }
   }
 
-  handleInitError(error: WebcamInitError) {
-    this.errors.push(error);
+  capture() {
+    this.drawImageToCanvas(this.video.nativeElement);
+    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
+    this.isCaptured = true;
   }
 
-  changeWebCame(directionOrDeviceId: boolean | string) {
-    this.nextWebcam.next(directionOrDeviceId);
-  }
-
-  handleImage(webcamImage: WebcamImage) {
-    this.getPicture.emit(webcamImage);
-    this.showWebcam = false;
-  }
-
-  get triggerObservable(): Observable<void> {
-    return this.trigger.asObservable();
-  }
-
-  get nextWebcamObservable(): Observable<boolean | string> {
-    return this.nextWebcam.asObservable();
+  drawImageToCanvas(image: any) {
+    this.canvas.nativeElement
+      .getContext("2d")
+      .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
   }
 }
 

@@ -65,7 +65,7 @@ export class AccesoListComponent implements OnInit {
 
   openDialogFacial(): void {
     const dialogRef = this.dialog.open(ReconocimientoFacialComponent, {
-      width: '500px',
+      width: '1000px',
       data: {idpuerta: this.puertaid}
     });
 
