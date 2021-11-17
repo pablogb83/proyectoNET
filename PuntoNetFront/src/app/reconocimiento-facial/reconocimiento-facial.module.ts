@@ -5,6 +5,7 @@ import { ReconocimientoFacialRoutingModule } from './reconocimiento-facial-routi
 import { SharedModule } from '../shared/shared.module';
 import { ReconocimientoFacialComponent } from './reconocimiento-facial.component';
 import { WebcamSnapshotComponent } from '../webcam-snapshot/webcam-snapshot.component';
+import { MatGridListModule } from '@angular/material';
 
 
 @NgModule({
@@ -12,8 +13,9 @@ import { WebcamSnapshotComponent } from '../webcam-snapshot/webcam-snapshot.comp
   imports: [
     CommonModule,
     SharedModule,
-    ReconocimientoFacialRoutingModule
-  ],
-  
+    ReconocimientoFacialRoutingModule,
+    WebcamModule,
+    MatGridListModule 
+  ]
 })
 export class ReconocimientoFacialModule { }

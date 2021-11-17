@@ -53,14 +53,21 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost]
         public ActionResult<AccesoReadDto> CreateAcceso(AccesoCreateDto accesoCreateDto)
         {
-            var accesoModel = _mapper.Map<Acceso>(accesoCreateDto);
-            _bl.CreateAcceso(accesoModel, accesoCreateDto.PersonaId, accesoCreateDto.PuertaId);
-            _bl.SaveChanges();
-            
-            var accesoReadDto = _mapper.Map<AccesoReadDto>(accesoModel);
+            try
+            {
+                var accesoModel = _mapper.Map<Acceso>(accesoCreateDto);
+                _bl.CreateAcceso(accesoModel, accesoCreateDto.PersonaId, accesoCreateDto.PuertaId);
+                _bl.SaveChanges();
 
-            return CreatedAtRoute(nameof(GetAccesoById), new { Id = accesoReadDto.Id }, accesoReadDto);
-            //return Ok(commandReadDto);
+                var accesoReadDto = _mapper.Map<AccesoReadDto>(accesoModel);
+
+                return CreatedAtRoute(nameof(GetAccesoById), new { Id = accesoReadDto.Id }, accesoReadDto);
+                //return Ok(commandReadDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]

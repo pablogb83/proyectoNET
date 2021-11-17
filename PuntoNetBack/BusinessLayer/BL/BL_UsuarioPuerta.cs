@@ -24,11 +24,20 @@ namespace BusinessLayer.BL
             _dalUsrEdi = dalUsrEdi;
 
         }
-        public async Task<bool> CreateUsuarioPuertaAsync(int usuarioId, int puertaId)
+        public async Task CreateUsuarioPuertaAsync(int usuarioId, int puertaId)
         {
-            if (_dal.GetUsuarioPuerta(puertaId) != null)
+            var usuario2 = _dal.GetUsuarioPuerta(puertaId);
+            if (usuario2 != null)
             {
-                return false;
+                if(usuario2.Id == usuarioId)
+                {
+                    throw new InvalidOperationException("Ya esta asignado a esa puerta");
+                }
+                else
+                {
+                    throw new InvalidOperationException("La puerta ya tiene un usuario asignado");
+                }
+                
             }
             var usuario = await _dalusuario.GetUsuarioByIdAsync(usuarioId);
             var puerta = _dalpuerta.GetPuertaById(puertaId);
@@ -39,9 +48,12 @@ namespace BusinessLayer.BL
                 usuarioPuerta.puerta = puerta;
                 usuarioPuerta.usuario = usuario;
                 _dal.CreateUsuarioPuerta(usuarioPuerta);
-                return true;
+                //return true;
             }
-            return false;
+            else
+            {
+                throw new InvalidOperationException("No puede seleccionar esa puerta");
+            }
         }
 
         public void DeleteUsuarioPuerta(int idUsuario)

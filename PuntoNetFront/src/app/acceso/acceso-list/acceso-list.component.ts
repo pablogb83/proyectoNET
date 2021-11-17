@@ -27,6 +27,8 @@ export class AccesoListComponent implements OnInit {
   puertaid:string;
   rol:string;
   userId:string;
+  mensaje:string;
+  permiso:boolean = true;
 
   constructor(public dialog: MatDialog,private route: ActivatedRoute,private accesoService: AccesoService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService) { }
 
@@ -35,14 +37,22 @@ export class AccesoListComponent implements OnInit {
     this.userId = this.tokenService.getUserId();
     if(this.rol === 'PORTERO'){
       this.usuarioPuertaService.getPuertaUser(this.userId).subscribe(data=>{
-        this.puertaid = data.id;
-        this.puerta = data.denominacion;
-        this.edificio = data.edificio.nombre;
-        this.accesoService.getAccesosPuerta(this.puertaid).subscribe(data=>{
-          this.AccesosList = new MatTableDataSource<Acceso>(data);
-          this.AccesosList.paginator = this.paginator;
-          console.log(this.AccesosList);
-        })
+        console.log('esta es la data')
+        console.log(data);
+        if(data===null){
+          console.log('no puede registar acceso sin una puerta');
+          this.mensaje = 'No puede registar accesos sin una puerta asignada';
+          this.permiso = false;
+        }else{
+          this.puertaid = data.id;
+          this.puerta = data.denominacion;
+          this.edificio = data.edificio.nombre;
+          this.accesoService.getAccesosPuerta(this.puertaid).subscribe(data=>{
+            this.AccesosList = new MatTableDataSource<Acceso>(data);
+            this.AccesosList.paginator = this.paginator;
+            console.log(this.AccesosList);
+          })
+        }
       })
     }
   }

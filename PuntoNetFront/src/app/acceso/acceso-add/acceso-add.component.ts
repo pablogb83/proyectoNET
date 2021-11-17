@@ -38,7 +38,8 @@ export class AccesoAddComponent  {
       this.service.postAcceso(val).subscribe(res=>{
         this.showSuccessAlert();
       }, err =>{
-        this.showErrorAlert();
+        console.log(err)
+        this.showErrorAlert(err.error);
       });
   }
 
@@ -82,8 +83,8 @@ export class AccesoAddComponent  {
     Swal.fire('OK', 'Acceso registrado con exito!', 'success');
   }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg:any) {
+    Swal.fire('Error!', msg, 'error');
   }
 
 }

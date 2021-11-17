@@ -220,7 +220,7 @@ namespace NetCoreWebAPI.Controllers
                 await _bl.AddRoleToUserAsync(parametros.RolId, parametros.UserId);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return NoContent();
 

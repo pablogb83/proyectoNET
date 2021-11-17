@@ -2,6 +2,7 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Salon;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,13 @@ namespace NetCoreWebAPI.Controllers
     {
         private readonly IBL_Salon _bl;
         private readonly IMapper _mapper;
+        private readonly ILogger<SalonController> _logger;
 
-        public SalonController(IBL_Salon bl, IMapper mapper)
+        public SalonController(IBL_Salon bl, IMapper mapper, ILogger<SalonController> logger)
         {
             _bl = bl;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //GET api/salon
@@ -67,6 +70,9 @@ namespace NetCoreWebAPI.Controllers
             }
             _bl.DeleteSalon(salonModelFromRepo);
             _bl.SaveChanges();
+            string salonEliminado = " Denominacion: " + salonModelFromRepo.Denominacion +
+                                    " Numero:" + salonModelFromRepo.Numero;
+            _logger.LogInformation(message: "SalonEliminado: " + salonEliminado);
             return NoContent();
         }
 
@@ -79,9 +85,18 @@ namespace NetCoreWebAPI.Controllers
             {
                 return NotFound();
             }
+            string datosAntesDelcambio = "Edificio: " + salonModelFromRepo.edificio.Nombre +
+                                         " Denominacion: " + salonModelFromRepo.Denominacion +
+                                         " Numero: " + salonModelFromRepo.Numero;
+            _logger.LogInformation(message: "SalonAntes: " + datosAntesDelcambio);
+
             _mapper.Map(salonUpdateDto, salonModelFromRepo);
             _bl.UpdateSalon(salonModelFromRepo);
             _bl.SaveChanges();
+            string datosDespuesDelcambio =  " Denominacion: " + salonUpdateDto.Denominacion +
+                                            " Numero: " + salonUpdateDto.numero;
+            _logger.LogInformation(message: "SalonDespues: " + datosDespuesDelcambio);
+
             return NoContent();
         }
     }

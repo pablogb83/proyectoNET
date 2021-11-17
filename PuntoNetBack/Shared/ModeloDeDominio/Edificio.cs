@@ -25,5 +25,10 @@ namespace Shared.ModeloDeDominio
 
         public virtual ICollection<Salon> Salones { get; set; } = new List<Salon>();
         public virtual ICollection<Puerta> puerta_accesos { get; set; } = new List<Puerta>();
+
+        public static implicit operator string(Edificio v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,6 +5,7 @@ using DataAccessLayer.Dtos.PuertaAccesos;
 using DataAccessLayer.Dtos.Salon;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,14 @@ namespace NetCoreWebAPI.Controllers
     {
         private readonly IBL_Edificio _bl;
         private readonly IMapper _mapper;
+        private readonly ILogger<EdificioController> _logger;
 
-        public EdificioController(IBL_Edificio bl, IMapper mapper)
+
+        public EdificioController(IBL_Edificio bl, IMapper mapper, ILogger<EdificioController> logger)
         {
             _bl = bl;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //GET api/edificios
@@ -59,6 +63,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost]
         public ActionResult<EdificiosReadDto> CreateEdificio(EdificioCreateDto edificioCreateDto)
         {
+
             var edificioModel = _mapper.Map<Edificio>(edificioCreateDto);
             _bl.CreateEdificio(edificioModel);
             _bl.SaveChanges();
@@ -78,9 +83,19 @@ namespace NetCoreWebAPI.Controllers
             {
                 return NotFound();
             }
+
+            string datosAntesDelcambio = "Nombre: " + edificioModelFromRepo.Nombre +
+                                         " Direccion: " +  edificioModelFromRepo.Direccion +
+                                         " Telefono:" +  edificioModelFromRepo.Telefono;
+            _logger.LogInformation(message: "EdificioAntes: " + datosAntesDelcambio);
             _mapper.Map(edificioUpdateDto, edificioModelFromRepo);
             _bl.UpdateEdificio(edificioModelFromRepo);
             _bl.SaveChanges();
+            string datosDespuesDelCambio = "Nombre: "  + edificioUpdateDto.Nombre + 
+                                           " Dirección: " + edificioUpdateDto.Direccion + 
+                                           " Teléfono: " + edificioUpdateDto.Telefono;
+            _logger.LogInformation(message: "EdificioDespués: " + datosDespuesDelCambio);
+
             return NoContent();
         }
 
@@ -117,6 +132,10 @@ namespace NetCoreWebAPI.Controllers
             }
             _bl.DeleteEdificio(edificioModelFromRepo);
             _bl.SaveChanges();
+            string datosAntesDelcambio = "Nombre: " + edificioModelFromRepo.Nombre +
+                             " Direccion: " + edificioModelFromRepo.Direccion +
+                             " Telefono:" + edificioModelFromRepo.Telefono;
+            _logger.LogInformation(message: "EdificioBorrado: " + datosAntesDelcambio);
             return NoContent();
         }
 

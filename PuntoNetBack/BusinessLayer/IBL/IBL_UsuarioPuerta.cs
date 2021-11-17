@@ -10,7 +10,7 @@ namespace BusinessLayer.IBL
     public interface IBL_UsuarioPuerta
     {
         bool SaveChanges();
-        Task<bool> CreateUsuarioPuertaAsync(int usuarioId, int puertaId);
+        Task CreateUsuarioPuertaAsync(int usuarioId, int puertaId);
         Task<IEnumerable<UsuarioPuerta>> GetAllUsuarioPuertaAsync();
         Task<Usuario> GetUsuarioPuerta(int idPuerta);
         Puerta GetPuertaUsuario(int idUsuario);

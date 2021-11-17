@@ -41,17 +41,10 @@ namespace NetCoreWebAPI.Controllers
             //var usuarioEdificioModel = _mapper.Map<UsuarioEdificio>(UsuarioEdificioCreateDto);
             try
             {
-                if (await _bl.CreateUsuarioPuertaAsync(usuarioPuertaCreateDto.UsuarioId, usuarioPuertaCreateDto.PuertaId))
-                {
-                    _bl.SaveChanges();
-                    return Ok(new { msg = "Usuario agregado correctamente" });
-                }
-                else
-                {
-                    throw new ArgumentException(
-                      "No se puede asignar ese usuario a esa puerta ");
-                }
-
+                await _bl.CreateUsuarioPuertaAsync(usuarioPuertaCreateDto.UsuarioId, usuarioPuertaCreateDto.PuertaId);
+                _bl.SaveChanges();
+                return Ok(new { msg = "Usuario agregado correctamente" });
+        
             }
             catch (Exception ex)
             {
@@ -83,7 +76,7 @@ namespace NetCoreWebAPI.Controllers
             {
                 _bl.DeleteUsuarioPuerta(id);
                 _bl.SaveChanges();
-                return Ok("Eliminado correctamente");
+                return Ok(new { msg = "Puerta liberada correctamente" });
             }
             catch
             {

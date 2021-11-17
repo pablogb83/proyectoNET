@@ -7,11 +7,12 @@ import { SharedModule } from '../shared/shared.module';
 import { InstAddComponent } from './inst-add/inst-add.component';
 import { InstEditComponent } from './inst-edit/inst-edit.component';
 import { UsersAddComponent } from '../users/users-add/users-add.component';
+import { AdminAddComponent } from './admin-add/admin-add.component';
 
 
 
 @NgModule({
-  declarations: [InstitucionListComponent, InstAddComponent, InstEditComponent, UsersAddComponent],
+  declarations: [InstitucionListComponent, InstAddComponent, InstEditComponent, UsersAddComponent, AdminAddComponent],
   imports: [
     CommonModule,
     SharedModule,
