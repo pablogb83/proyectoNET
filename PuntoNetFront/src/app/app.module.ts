@@ -1,31 +1,40 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './Login/login/login.component';
+import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { InstitucionComponent } from './institucion/institucion.component';
-import { ShowInstComponent } from './institucion/show-inst/show-inst.component';
-import { AddEditInstComponent } from './institucion/add-edit-inst/add-edit-inst.component';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { CustomMaterialModule } from './custom-material/custom-material.module';
+import { AppRoutingModule } from './app-routing.module';
+import { LoggerModule, NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
+import { environment } from '../environments/environment';
+import { AdminGuard } from './core/guards/admin.guard';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    InstitucionComponent,
-    ShowInstComponent,
-    AddEditInstComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    CoreModule,
+    SharedModule,
+    CustomMaterialModule.forRoot(),
     AppRoutingModule,
-    FormsModule,
-    HttpClientModule 
+    LoggerModule.forRoot({
+      serverLoggingUrl: `http://my-api/logs`,
+      level: environment.logLevel,
+      serverLogLevel: environment.serverLogLevel
+    })
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers:[
+    NGXMapperService,
+    NGXLoggerHttpService,
+    AdminGuard
+  ]
 })
 export class AppModule { }
