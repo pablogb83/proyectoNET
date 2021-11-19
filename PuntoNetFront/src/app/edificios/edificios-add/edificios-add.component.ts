@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
-import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
+import { Edificio } from 'src/app/edificios/edificios-list/edificios-list.component';
 import { environment } from 'src/environments/environment';
 import * as Mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
@@ -39,7 +39,8 @@ export class EdificiosAddComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EdificiosService) { }
+  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: Edificio, 
+              private service:EdificiosService) { }
 
 
   crearMarcador(lng: number, lat: number){

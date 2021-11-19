@@ -48,8 +48,10 @@ export class EdificiosListComponent implements OnInit {
 
   openDialogUpdate(edif:any): void {
     const dialogRef = this.dialog.open(EdificiosEditComponent, {
-      width: '250px',
-      data: {id: edif.id, nombre: edif.nombre, direccion: edif.direccion, telefono: edif.telefono}
+      width: '1000px',
+      height: '410px',
+      data: {id: edif.id, nombre: edif.nombre, direccion: edif.direccion, telefono: edif.telefono, 
+            lat: edif.lat, lng: edif.lng}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -97,5 +99,7 @@ export interface Edificio {
   nombre: string;
   direccion: string;
   telefono: string;
+  lat: string;
+  lng: string;
 }
 

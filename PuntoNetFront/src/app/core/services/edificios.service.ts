@@ -34,11 +34,13 @@ export class EdificiosService {
     },httpOptions);
   }
 
-  putEdificio(id:number, nombre: string, direccion: string, telefono: string){
+  putEdificio(id:number, nombre: string, direccion: string, telefono: string, lat: string, lng: string){
      return this.http.put(AUTH_API + id, {
       nombre,
       direccion,
-      telefono
+      telefono,
+      lat,
+      lng
      }, httpOptions);
   }
 
