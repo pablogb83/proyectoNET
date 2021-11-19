@@ -36,7 +36,8 @@ export class EdificiosListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(EdificiosAddComponent, {
-      width: '250px',
+      width: '1000px',
+      height: '410px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -17,5 +17,9 @@ namespace DataAccessLayer.Dtos.Edificios
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
+
+        public string lng { get; set; }
+
+        public string lat { get; set; }
     }
 }
