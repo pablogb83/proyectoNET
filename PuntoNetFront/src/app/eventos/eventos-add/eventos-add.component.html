@@ -3,7 +3,7 @@
         <h3>Alta evento</h3>
         <mat-divider></mat-divider>
         <mat-form-field appearance="fill">
-            <mat-label>Nombre</mat-label>
+            <mat-label aria-required="true">Nombre</mat-label>
             <input matInput [(ngModel)]="nombre">
         </mat-form-field>
 
@@ -13,8 +13,8 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Fecha inicio</mat-label>
-            <input matInput [matDatepicker]="pickerinit" [formControl]="fechainicio">
+            <mat-label aria-required="true">Fecha inicio</mat-label>
+            <input id="fechainicioId" matInput [matDatepicker]="pickerinit" [formControl]="fechainicio">
             <mat-datepicker-toggle matSuffix [for]="pickerinit">
                 
             </mat-datepicker-toggle>

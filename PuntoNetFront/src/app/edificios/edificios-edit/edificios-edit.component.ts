@@ -28,7 +28,7 @@ export class EdificiosEditComponent implements OnInit {
       container: 'mapa-mapbox-edit', // container ID
       style: 'mapbox://styles/mapbox/streets-v11', // style URL
       center: [this.lng, this.lat], // LNG, LAT
-      zoom: 3 // 15 starting zoom
+      zoom: 13 // 15 starting zoom
     });
 
     this.crearMarcador(this.lng, this.lat);

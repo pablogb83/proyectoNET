@@ -4,30 +4,29 @@
             <h3>Alta edificio</h3>
             <mat-divider></mat-divider>
         </div>    
-        <div style="width:800px;">
-        <div class="formEdificio" style="width:300px; float:left;">
-            <mat-form-field appearance="fill">
-                <mat-label>Nombre</mat-label>
-                <input matInput [(ngModel)]="nombre">
-            </mat-form-field><br>
+        <div style="width:auto">
+            <div class="formEdificio" style="width:300px; float:left;">
+                <mat-form-field appearance="fill">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput [(ngModel)]="nombre">
+                </mat-form-field><br>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Direccion</mat-label>
-                <input matInput [(ngModel)]="direccion">
-            </mat-form-field><br>
+                <mat-form-field appearance="fill">
+                    <mat-label>Direccion</mat-label>
+                    <input matInput [(ngModel)]="direccion">
+                </mat-form-field><br>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Telefono</mat-label>
-                <input matInput [(ngModel)]="telefono">
-            </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Telefono</mat-label>
+                    <input matInput [(ngModel)]="telefono">
+                </mat-form-field>
+            </div>
+            <div id="mapa-mapbox-edit" style="width:500px; height: 300px; float:right;"></div>
         </div>
-        <div id="mapa-mapbox-edit" style="width:500px; height: 300px; float:right;"></div>
-    </div>
 
-    <div class="example-button-row" style="position: relative;">
-        <button mat-raised-button color="primary" (click)="updateEdificio()">Agregar</button>
+    </div>
+    <div class="example-button-row" >
+        <button mat-raised-button color="primary" (click)="updateEdificio()">Actualizar</button>
         <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
     </div>
-</div>
-
 </div>

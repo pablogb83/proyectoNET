@@ -63,6 +63,11 @@ export class UserListComponent implements OnInit {
       var usuariosFilter = data.filter(function (x){
         return x.role === 'PORTERO' || x.role === 'GESTOR' || x.role==='UNDEFINED';
       });
+      // for(let usr in usuariosFilter){
+      //   if(usr.role === 'UNDEFINED'){
+      //     usr.role = "Sin rol asignado";
+      //   }
+      // }
       this.UsuariosList = new MatTableDataSource<Usuarios>(usuariosFilter);
       this.UsuariosList.paginator = this.paginator;
     });
