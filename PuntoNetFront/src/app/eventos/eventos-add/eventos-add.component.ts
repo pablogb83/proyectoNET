@@ -15,10 +15,11 @@ export class EventosAddComponent implements OnInit {
 
   nombre?:string;
   descripcion?:string;
-  fechainicio = new FormControl(new Date());
-  fechafin = new FormControl(new Date());
+  fechainicio = new FormControl();
+  fechafin = new FormControl();
   PhotoFileName?:any;
   PhotoFilePath?:any;
+  fecha = new Date();
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -31,24 +32,30 @@ export class EventosAddComponent implements OnInit {
   }
 
   agregarEvento(){
-    var initDate = new Date (this.fechainicio.value._i.year, 
-                             this.fechainicio.value._i.month, 
-                             this.fechainicio.value._i.date );
+    if(!this.fechainicio.value || !this.fechafin.value || !this.nombre || !this.descripcion){
+      return this.showErrorAlert("Complete todos los datos necesarios")
+    }
+      var initDate = new Date (this.fechainicio.value._i.year, 
+                              this.fechainicio.value._i.month, 
+                              this.fechainicio.value._i.date );
 
-    var endDate = new Date (this.fechafin.value._i.year, 
-                            this.fechafin.value._i.month, 
-                            this.fechafin.value._i.date );
+      var endDate = new Date (this.fechafin.value._i.year, 
+                              this.fechafin.value._i.month, 
+                              this.fechafin.value._i.date );
+
   //  console.log(initDate);
     var val = {
-              nombre:this.nombre,
-              descripcion:this.descripcion,
+              nombre: this.nombre,
+              descripcion: this.descripcion,
               fechainicio: initDate, 
               fechafin: endDate,
               PhotoFileName:this.PhotoFileName
               };
+              console.log(val);
     this.service.postEvento(val.nombre,val.descripcion, val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
       this.showSuccessAlert();
     }, err =>{
+      console.log(err);
       this.showErrorAlert();
     });
   }
@@ -60,7 +67,7 @@ export class EventosAddComponent implements OnInit {
 
     this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName=data.toString();
-      this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
+      this.PhotoFilePath=this.fileService.PhotoUrl + this.PhotoFileName;
     })
 
   }
@@ -69,8 +76,8 @@ export class EventosAddComponent implements OnInit {
     Swal.fire('OK', 'Evento agregado con exito!', 'success');
   }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg?) {
+    Swal.fire('Error!', msg ? msg : 'Algo salió mal', 'error');
   }
 
 }

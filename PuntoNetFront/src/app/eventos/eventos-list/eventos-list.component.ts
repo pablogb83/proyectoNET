@@ -27,7 +27,13 @@ export class EventosListComponent implements OnInit {
 
   getEventos(): void{
     this.service.getEventos().subscribe(data=>{
+
       this.EventoList = new MatTableDataSource<Evento>(data);
+      for (let fecha of data){
+        fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
+        fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
+      }
+
       this.EventoList.paginator = this.paginator;
     });
   }

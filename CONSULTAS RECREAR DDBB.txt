@@ -1,0 +1,58 @@
+CORRER API
+ - Crear Institucion desde la API
+
+{
+  "name": "UTEC",
+  "direccion": "Cinganda 455",
+  "telefono": "4342 4455",
+  "connectionString": "UTEC_CON"
+}
+
+PEGAR ESTO EN SQL:
+
+  UPDATE [NetApi2].[dbo].[Institucion] SET Activa = 1 WHERE Id = '5655e726-7e27-4f7a-a72f-4d22e431e6de';
+
+  INSERT INTO  [NetApi2].[dbo].[AspNetUsers] 
+	 ([Email]
+      ,[TenantId]
+      ,[AccessFailedCount]
+      ,[ConcurrencyStamp]
+      ,[EmailConfirmed]
+      ,[LockoutEnabled]
+      ,[LockoutEnd]
+      ,[NormalizedEmail]
+      ,[NormalizedUserName]
+      ,[PasswordHash]
+      ,[PhoneNumber]
+      ,[PhoneNumberConfirmed]
+      ,[SecurityStamp]
+      ,[TwoFactorEnabled]
+      ,[UserName]) VALUES 
+('superadmin@superadmin.com',
+'5655e726-7e27-4f7a-a72f-4d22e431e6de',
+0,
+'e49b6353-54d1-43d0-a0f2-af4bd1537f56',
+1,
+0,
+null,
+'SUPERADMIN@SUPERADMIN.COM',
+'SUPERADMIN@SUPERADMIN.COM', 
+'AQAAAAEAACcQAAAAEDScDguK3Sx4oLf+Zh+A8etz8lIrm2TH0yCx10v7asCjqErAXyq2gOad712ILTfrKg==',
+'098776123',
+0,
+'BOV5C5BUINZUBRPZH4B26XRDZBEO5C6J'
+,0
+,'SUPERADMIN');
+
+  INSERT INTO [NetApi2].[dbo].[AspNetRoles] VALUES ('SUPERADMIN',null,null);
+
+  INSERT INTO [NetApi2].[dbo].[AspNetUserRoles] VALUES (1,1);
+
+
+*NOTA: Cambiar TenantId en el Insert de User y en el Update de Institucion por el que se le genero a cada uno
+
+- CREAR RESTO DE ROLES DESDE EL MENU DE SUPERADMIN.
+
+
+
+

@@ -36,7 +36,8 @@ export class EdificiosListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(EdificiosAddComponent, {
-      width: '250px',
+      width: 'auto',
+      height: 'auto',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -47,8 +48,10 @@ export class EdificiosListComponent implements OnInit {
 
   openDialogUpdate(edif:any): void {
     const dialogRef = this.dialog.open(EdificiosEditComponent, {
-      width: '250px',
-      data: {id: edif.id, nombre: edif.nombre, direccion: edif.direccion, telefono: edif.telefono}
+      width: 'auto',
+      height: 'auto',
+      data: {id: edif.id, nombre: edif.nombre, direccion: edif.direccion, telefono: edif.telefono, 
+            lat: edif.lat, lng: edif.lng}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -96,5 +99,7 @@ export interface Edificio {
   nombre: string;
   direccion: string;
   telefono: string;
+  lat: string;
+  lng: string;
 }
 

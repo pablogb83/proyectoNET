@@ -60,7 +60,15 @@ export class UserListComponent implements OnInit {
   getUsuarios(): void{
     this.service.getUsuarios().subscribe(data=>{
       console.log(data);
-      this.UsuariosList = new MatTableDataSource<Usuarios>(data);
+      var usuariosFilter = data.filter(function (x){
+        return x.role === 'PORTERO' || x.role === 'GESTOR' || x.role==='UNDEFINED';
+      });
+      // for(let usr in usuariosFilter){
+      //   if(usr.role === 'UNDEFINED'){
+      //     usr.role = "Sin rol asignado";
+      //   }
+      // }
+      this.UsuariosList = new MatTableDataSource<Usuarios>(usuariosFilter);
       this.UsuariosList.paginator = this.paginator;
     });
   }

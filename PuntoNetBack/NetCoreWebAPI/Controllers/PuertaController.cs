@@ -4,6 +4,7 @@ using DataAccessLayer.Dtos.PuertaAccesos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -16,11 +17,13 @@ namespace NetCoreWebAPI.Controllers
     {
         private readonly IBL_Puerta _bl;
         private readonly IMapper _mapper;
+        private readonly ILogger<PuertaController> _logger;
 
-        public PuertaController(IBL_Puerta bl, IMapper mapper)
+        public PuertaController(IBL_Puerta bl, IMapper mapper, ILogger<PuertaController> logger)
         {
             _bl = bl;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //GET api/puertas
@@ -67,6 +70,8 @@ namespace NetCoreWebAPI.Controllers
             }
             _bl.DeletePuerta(edificioModelFromRepo);
             _bl.SaveChanges();
+            string puertaEliminada = " Denominacion: " + edificioModelFromRepo.Denominacion;
+            _logger.LogInformation(message: "PuertaEliminada: " + puertaEliminada);
             return NoContent();
         }
 
@@ -79,9 +84,16 @@ namespace NetCoreWebAPI.Controllers
             {
                 return NotFound();
             }
+            string datosAntesdelCambio = "Edificio: " + puertaModelFromRepo.edificio.Nombre +
+                                         " Denominacion: " + puertaModelFromRepo.Denominacion;
+
+            _logger.LogInformation(message: "PuertaAntes: " + datosAntesdelCambio);
             _mapper.Map(puertaUpdateDto, puertaModelFromRepo);
             _bl.UpdatePuerta(puertaModelFromRepo.Id);
             _bl.SaveChanges();
+
+            string datosDespuesdelCambio = " Denominacion: " + puertaUpdateDto.Denominacion;
+            _logger.LogInformation(message: "PuertaDespues: " + datosDespuesdelCambio);
             return NoContent();
         }
     }
