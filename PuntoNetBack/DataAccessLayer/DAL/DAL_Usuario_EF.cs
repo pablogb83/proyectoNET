@@ -156,11 +156,14 @@ namespace DataAccessLayer.DAL
         public async Task AddRoleToUserAsync(Usuario userId, string Role)
         {
             var roles = await _userManager.GetRolesAsync(userId);
-       //     var result = await _userManager.RemoveFromRoleAsync(userId, "PORTERO");
+            var user = await _userManager.FindByNameAsync(userId.UserName);
+            if (roles.Count != 0)
+            {
+                var result = await _userManager.RemoveFromRolesAsync(user, roles);
+            }
+            var roles2 = await _userManager.GetRolesAsync(userId);
 
-            var result = await _userManager.RemoveFromRolesAsync(userId, roles.ToArray<string>());
-
-             await _userManager.AddToRoleAsync(userId, Role);
+            await _userManager.AddToRoleAsync(userId, Role);
         }
 
         public async Task<IEnumerable<Usuario>> GetUsuariosAdmin()
