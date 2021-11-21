@@ -37,4 +37,6 @@ import { AdminGuard } from './core/guards/admin.guard';
     AdminGuard
   ]
 })
-export class AppModule { }
+export class AppModule {
+  
+ }
