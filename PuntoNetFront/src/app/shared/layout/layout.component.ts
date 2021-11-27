@@ -74,4 +74,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(): void {
         this.changeDetectorRef.detectChanges();
     }
+
+    logout(){
+        this.tokenService.signOut();
+        window.location.reload();
+    }
 }

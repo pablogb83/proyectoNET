@@ -1,6 +1,7 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import {MatRadioModule} from '@angular/material/radio';
 import {
   MAT_DATE_FORMATS, MatIconModule, MatToolbarModule, MatButtonModule,
   MatListModule, MatCardModule, MatProgressBarModule, MatInputModule,
@@ -8,10 +9,11 @@ import {
   MatProgressSpinnerModule, MatDatepickerModule, MatTableModule,
   MatAutocompleteModule, MatDialogModule, MatTabsModule, MatTooltipModule,
   MatSelectModule, MatPaginatorModule, MatChipsModule, MatButtonToggleModule,
-  MatSlideToggleModule, MatBadgeModule, MatCheckboxModule, MatExpansionModule, MatSortModule
+  MatSlideToggleModule, MatBadgeModule, MatCheckboxModule, MatExpansionModule, MatSortModule, MatRadioButton
 } from '@angular/material';
 import { SelectCheckAllComponent } from './select-check-all/select-check-all.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 export const MY_FORMATS = {
   parse: {
@@ -35,7 +37,7 @@ export const MY_FORMATS = {
     MatAutocompleteModule, MatTableModule, MatDialogModule, MatTabsModule,
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
-    MatExpansionModule, DragDropModule, MatSortModule
+    MatExpansionModule, DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule,
   ],
   exports: [
     CommonModule,
@@ -45,7 +47,7 @@ export const MY_FORMATS = {
     MatAutocompleteModule, MatTableModule, MatDialogModule, MatTabsModule,
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
-    MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule
+    MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule
   ],
   providers: [
     {

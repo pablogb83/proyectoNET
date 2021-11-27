@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {  Router } from '@angular/router';
-import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { Subject, Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Data } from '../acceso/acceso-list/acceso-list.component';
@@ -24,8 +23,6 @@ export class ReconocimientoFacialComponent implements OnInit {
   idPuerta: any;
   showWebcam = true;
   isCameraExist = true;
-  @Output() getPicture = new EventEmitter<WebcamImage>();
-  errors: WebcamInitError[] = [];
   private trigger: Subject<void> = new Subject<void>();
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
   constructor(private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router) { 
@@ -87,10 +84,7 @@ export class ReconocimientoFacialComponent implements OnInit {
 
   
   ngOnInit(): void {
-    WebcamUtil.getAvailableVideoInputs()
-      .then((mediaDevices: MediaDeviceInfo[]) => {
-        this.isCameraExist = mediaDevices && mediaDevices.length > 0;
-      });
+
   }
 
   WIDTH = 640;

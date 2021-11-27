@@ -33,7 +33,7 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.RoleId, pk.UserId });
+            modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.UserId, pk.RoleId });
             TenantMismatchMode = TenantMismatchMode.Ignore;
         }
 

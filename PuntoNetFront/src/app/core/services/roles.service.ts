@@ -17,7 +17,7 @@ export class RolesService {
   constructor(private http: HttpClient) { }
 
   getRoles():Observable<any[]>{
-    return this.http.get<any>(AUTH_API);
+    return this.http.get<any>(AUTH_API+'admin');
   }
 
   getRole(id: number):Observable<any[]>{
