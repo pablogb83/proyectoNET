@@ -221,6 +221,12 @@ namespace NetCoreWebAPI
                         new List<string>()
                     }
                 });
+
+                //c.MapType<TimeSpan>(() => new OpenApiSchema
+                //{
+                //    Type = "string",
+                //    Example = new OpenApiString("00:00:00")
+                //});
             });
         }
 

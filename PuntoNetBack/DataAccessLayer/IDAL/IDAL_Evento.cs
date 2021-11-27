@@ -15,6 +15,6 @@ namespace DataAccessLayer.IDAL
         void CreateEvento(Evento evt);
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
-
+        void CreateEventoRecurrente(Evento evt);
     }
 }
