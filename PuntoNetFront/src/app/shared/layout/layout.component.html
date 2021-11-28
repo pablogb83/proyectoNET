@@ -140,7 +140,8 @@
 
         <a mat-list-item (click)="logout()" *ngIf="rol!=='VISITANTE'" >
           <mat-icon mat-list-icon>exit_to_app</mat-icon>
-          <p mat-line> Logout </p>
+          <p mat-line *ngIf="rol != 'VISITANTE'"> Log out </p>
+          <p mat-line *ngIf="rol === 'VISITANTE'"> Log in </p>
         </a>
 
 

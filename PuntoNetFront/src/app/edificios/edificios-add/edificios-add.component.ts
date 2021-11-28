@@ -66,7 +66,7 @@ export class EdificiosAddComponent implements OnInit {
               telefono:this.telefono
               };
     
-    this.service.postEdificios(val.nombre,val.direccion,val.telefono, this.lat.toString(), this.lng.toString()).subscribe(res=>{
+    this.service.postEdificios(val.nombre,val.direccion,val.telefono, this.lng.toString(), this.lat.toString()).subscribe(res=>{
       this.showSuccessAlert();
     }, err =>{
       this.showErrorAlert();

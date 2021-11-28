@@ -66,6 +66,15 @@ namespace NetCoreWebAPI.Controllers
             //return Ok(commandReadDto);
         }
 
+
+        [HttpPost("recurrente")]
+        public ActionResult CreateEventoRecurrente(EventoRecurrenteCreateDto eventoCreateDto)
+        {
+            //poner aca alguna validacion y tirar las ecepciones
+            _bl.CreateEventoRecurrente(eventoCreateDto);
+            return Ok("Creado correctamente");
+        }
+
         //PUT api/commands/{id}
         [HttpPut("{id}")]
         public ActionResult UpdateEvento(int id, EventoUpdateDto eventoUpdateDto)

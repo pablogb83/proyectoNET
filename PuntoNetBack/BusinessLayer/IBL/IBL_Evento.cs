@@ -1,4 +1,5 @@
-﻿using Shared.ModeloDeDominio;
+﻿using DataAccessLayer.Dtos.Eventos;
+using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace BusinessLayer.IBL
         void CreateEvento(Evento evt);
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
+        void CreateEventoRecurrente(EventoRecurrenteCreateDto evt);
     }
 }

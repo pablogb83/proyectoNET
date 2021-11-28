@@ -24,23 +24,23 @@ export class EdificiosService {
     return this.http.get<any>(AUTH_API+id);
   }
 
-  postEdificios(nombre: string, direccion: string, telefono: string, lat: string, lng: string){
+  postEdificios(nombre: string, direccion: string, telefono: string, lng: string, lat: string){
     return this.http.post(AUTH_API , {
       nombre,
       direccion,
       telefono,
-      lat,
-      lng
+      lng,
+      lat
     },httpOptions);
   }
 
-  putEdificio(id:number, nombre: string, direccion: string, telefono: string, lat: string, lng: string){
+  putEdificio(id:number, nombre: string, direccion: string, telefono: string, lng: string, lat: string){
      return this.http.put(AUTH_API + id, {
       nombre,
       direccion,
       telefono,
-      lat,
-      lng
+      lng,
+      lat
      }, httpOptions);
   }
 

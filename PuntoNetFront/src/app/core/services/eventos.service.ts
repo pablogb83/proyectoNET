@@ -37,7 +37,7 @@ export class EventosService {
     },httpOptions);
   }
 
-  putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: string, FechaFinEvt: string, PhotoFileName: string){
+  putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: Date, FechaFinEvt: Date, PhotoFileName: string){
      return this.http.put(AUTH_API + Id, {
       Nombre,
       Descripcion,

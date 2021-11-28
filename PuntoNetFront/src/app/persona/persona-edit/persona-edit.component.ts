@@ -46,7 +46,9 @@ export class PersonaEditComponent implements OnInit {
 
   updatePersona(){
     const formData:FormData=new FormData();
-    formData.append('uploadedFile',this.file,this.file.name);
+    if(this.file){
+      formData.append('uploadedFile',this.file,this.file.name);
+    }
     this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName = data.toString();
       var id = this.id;

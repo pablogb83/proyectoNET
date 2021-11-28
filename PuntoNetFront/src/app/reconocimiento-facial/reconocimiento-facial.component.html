@@ -7,5 +7,6 @@
         </div>
             <img [src]="imgURL" *ngIf="imgURL">
             <img *ngIf="PhotoFilePath" [src]=PhotoFilePath>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
         </div>
 </div>

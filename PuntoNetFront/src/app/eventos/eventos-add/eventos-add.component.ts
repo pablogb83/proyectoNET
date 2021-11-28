@@ -22,6 +22,7 @@ export class EventosAddComponent implements OnInit {
   fechafin = new FormControl(new Date());
   PhotoFileName?:any;
   PhotoFilePath?:any;
+  fecha = new Date();
 
   dias: any[] = [
     {
@@ -82,13 +83,10 @@ export class EventosAddComponent implements OnInit {
                              this.fechainicio.value._i.month, 
                              this.fechainicio.value._i.date );
 
-    var endDate = new Date (this.fechafin.value._i.year, 
-                            this.fechafin.value._i.month, 
-                            this.fechafin.value._i.date );
   //  console.log(initDate);
     var val = {
-              nombre:this.nombre,
-              descripcion:this.descripcion,
+              nombre: this.nombre,
+              descripcion: this.descripcion,
               fechainicio: initDate, 
               fechafin: endDate,
               PhotoFileName:this.PhotoFileName
@@ -96,6 +94,7 @@ export class EventosAddComponent implements OnInit {
     /*this.service.postEvento(val.nombre,val.descripcion, val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
       this.showSuccessAlert();
     }, err =>{
+      console.log(err);
       this.showErrorAlert();
     });*/
   }
@@ -107,7 +106,7 @@ export class EventosAddComponent implements OnInit {
 
     this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName=data.toString();
-      this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
+      this.PhotoFilePath=this.fileService.PhotoUrl + this.PhotoFileName;
     })
 
   }
@@ -117,7 +116,7 @@ export class EventosAddComponent implements OnInit {
   }
 
   showErrorAlert(msg?) {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+    Swal.fire('Error!', msg ? msg : 'Algo salió mal', 'error');
   }
 
 }
