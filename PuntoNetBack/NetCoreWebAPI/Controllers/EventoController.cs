@@ -72,7 +72,7 @@ namespace NetCoreWebAPI.Controllers
         {
             //poner aca alguna validacion y tirar las ecepciones
             _bl.CreateEventoRecurrente(eventoCreateDto);
-            return Ok("Creado correctamente");
+            return Ok(new { message="Evento recurrente creado correctamente" });
         }
 
         //PUT api/commands/{id}

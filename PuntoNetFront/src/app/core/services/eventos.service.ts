@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -14,8 +15,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class EventosService {
-
-  // readonly PhotoUrl = "https://localhost:44396/Photos/";
 
   constructor(private http: HttpClient) { }
 
@@ -36,6 +35,19 @@ export class EventosService {
       PhotoFileName
     },httpOptions);
   }
+
+  postEventoRecurrente(nombre: string, descripcion: string, fechaInicioEvt: Date, fechaFinEvt: Date, horaInicio: string, duracion: number, dias: number[]){
+    return this.http.post(AUTH_API + 'recurrente' , {
+      nombre,
+      descripcion,
+      fechaInicioEvt,
+      fechaFinEvt,
+      horaInicio,
+      duracion,
+      dias
+    },httpOptions);
+  }
+
 
   putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: Date, FechaFinEvt: Date, PhotoFileName: string){
      return this.http.put(AUTH_API + Id, {

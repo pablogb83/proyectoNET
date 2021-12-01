@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
 import { Time } from '@angular/common';
+import moment from 'moment';
 
 @Component({
   selector: 'app-eventos-add',
@@ -77,26 +78,24 @@ export class EventosAddComponent implements OnInit {
     }).map(x=>{
       return x.value;
     });
-    console.log(diasSeleccionados);
-
-   /* var initDate = new Date (this.fechainicio.value._i.year, 
-                             this.fechainicio.value._i.month, 
-                             this.fechainicio.value._i.date );
-
-  //  console.log(initDate);
-    var val = {
-              nombre: this.nombre,
-              descripcion: this.descripcion,
-              fechainicio: initDate, 
-              fechafin: endDate,
-              PhotoFileName:this.PhotoFileName
-              };
-    /*this.service.postEvento(val.nombre,val.descripcion, val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
-      this.showSuccessAlert();
-    }, err =>{
-      console.log(err);
-      this.showErrorAlert();
-    });*/
+    console.log("Los dias son: ", diasSeleccionados, " La fecha de inicio es: ", new Date(this.fechainicio.value)," La hora es: ", moment(this.hora).format("HH:mm")  );
+    if(this.tipoEvento==="simple"){
+      this.service.postEvento(this.nombre,this.descripcion, this.fechainicio.value, this.fechafin.value, this.PhotoFileName).subscribe(res=>{
+        this.showSuccessAlert();
+      }, err =>{
+        console.log(err);
+        this.showErrorAlert();
+      });
+    }
+    else{
+      this.service.postEventoRecurrente(this.nombre,this.descripcion,this.fechainicio.value, this.fechafin.value,moment(this.hora).format("HH:mm") ,this.duracion,diasSeleccionados).subscribe(data=>{
+        this.showSuccessAlert();
+      },err=>{
+        console.log(err);
+        this.showErrorAlert();
+      });
+    }
+   
   }
 
   uploadPhoto(event){
