@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Dtos.Salon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ namespace DataAccessLayer.Dtos.Eventos
 
         public DateTime FechaInicioEvt { get; set; }
         public DateTime FechaFinEvt { get; set; }
-        public string PhotoFileName { get; set; }
+        public SalonReadDto Salon { get; set; }
+
     }
 }

@@ -25,7 +25,6 @@ namespace Shared.ModeloDeDominio
         [Required]
         public DateTime FechaFinEvt { get; set; }
 
-        public string PhotoFileName { get; set; }
-
+        virtual public Salon Salon { get; set; }
     }
 }

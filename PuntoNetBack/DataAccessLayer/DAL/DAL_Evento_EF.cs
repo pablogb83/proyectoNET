@@ -17,32 +17,16 @@ namespace DataAccessLayer.DAL
 
         public void CreateEvento(Evento evt)
         {
+            var fechaInicio = new DateTime(2021,12,23,14,00,00);
+            var fechaFin = new DateTime(2021, 12, 23, 16, 00, 00);
+
+            var nose = GetSalonesDisponibles(fechaInicio, fechaFin);
             if (evt == null)
             {
                 throw new ArgumentNullException(nameof(evt));
             }
-
-            //IEnumerable<DateTime> dates = EachDay(evt.FechaInicioEvt, evt.FechaFinEvt);
-
-            foreach (DateTime day in EachDay(evt.FechaInicioEvt, evt.FechaFinEvt))
-            {
-                Evento ev = new Evento();
-                ev.Descripcion = evt.Descripcion;
-                ev.Nombre = evt.Nombre;
-                ev.FechaInicioEvt = day.Date;
-                ev.FechaFinEvt = ev.FechaInicioEvt.AddHours(5);
-                ev.PhotoFileName = evt.PhotoFileName;
-                _context.Eventos.Add(ev);
-            }
+            _context.Eventos.Add(evt);
             SaveChanges();
-
-            //_context.Eventos.Add(evt);
-
-            DayOfWeek name = evt.FechaInicioEvt.DayOfWeek;
-
-            //List<DateTime> dates = new List<DateTime>();
-            //IEnumerable<DateTime> dates2 = EachDay(evt.FechaInicioEvt, evt.FechaFinEvt);
-
         }
 
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
@@ -80,6 +64,20 @@ namespace DataAccessLayer.DAL
         {
             //nothing
         }
+
+        public IEnumerable<Evento>  GetEventoSalonFecha(int salonId, DateTime fechainicio, DateTime fechafin)
+        {
+            return _context.Eventos.Where(ev => ev.Salon.Id == salonId && (ev.FechaInicioEvt <= fechafin || ev.FechaFinEvt >= fechainicio));
+        }
+        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        {
+            IQueryable<Salon> entityQuery = from e in _context.Salones
+                                             join ar in _context.Eventos.Where(ev => (ev.FechaInicioEvt.Day == fechainicio.Day && ev.FechaFinEvt.Day == fechafin.Day && (ev.FechaInicioEvt >= fechafin || ev.FechaFinEvt <= fechainicio)))
+                                                 on e.Id equals ar.Id
+                                             select e;
+            return entityQuery;
+        }
+
 
         public void CreateEventoRecurrente(Evento evt)
         {

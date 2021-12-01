@@ -57,8 +57,7 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<EventosReadDto> CreateEvento(EventoCreateDto eventoCreateDto)
         {
             var eventoModel = _mapper.Map<Evento>(eventoCreateDto);
-            _bl.CreateEvento(eventoModel);
-            _bl.SaveChanges();
+            _bl.CreateEvento(eventoModel, eventoCreateDto.SalonId);
 
             var eventoReadDto = _mapper.Map<EventosReadDto>(eventoModel);
 

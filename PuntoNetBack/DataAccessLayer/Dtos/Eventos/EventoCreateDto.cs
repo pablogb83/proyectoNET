@@ -16,5 +16,6 @@ namespace DataAccessLayer.Dtos.Eventos
         public DateTime FechaInicioEvt { get; set; }
         public DateTime FechaFinEvt { get; set; }
         public string PhotoFileName { get; set; }
+        public int SalonId { get; set; }
     }
 }
