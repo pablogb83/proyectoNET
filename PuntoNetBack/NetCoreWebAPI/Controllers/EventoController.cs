@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using DataAccessLayer.Dtos.Salon;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -63,6 +64,13 @@ namespace NetCoreWebAPI.Controllers
 
             return CreatedAtRoute(nameof(GetEventoById), new { Id = eventoReadDto.Id }, eventoReadDto);
             //return Ok(commandReadDto);
+        }
+
+        [HttpGet("salonesdisponibles")]
+        public ActionResult<IEnumerable<EventosReadDto>> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        {
+            var salones = _bl.GetSalonesDisponibles(fechainicio,fechafin);
+            return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(salones));
         }
 
 

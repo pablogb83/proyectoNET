@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using GlobalErrorHandling.Extensions;
 
 namespace NetCoreWebAPI
 {
@@ -245,6 +246,8 @@ namespace NetCoreWebAPI
             app.UseMultiTenant();
 
             app.UseHttpsRedirection();
+
+            app.ConfigureExceptionHandler();
 
             app.UseRouting();
 

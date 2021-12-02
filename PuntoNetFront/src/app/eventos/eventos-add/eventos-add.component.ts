@@ -20,10 +20,12 @@ export class EventosAddComponent implements OnInit {
   duracion=0;
   hora: Time;
   fechainicio = new FormControl(new Date());
+  idsalon: number;
   fechafin = new FormControl(new Date());
   PhotoFileName?:any;
   PhotoFilePath?:any;
   fecha = new Date();
+  salones: any[];
 
   dias: any[] = [
     {
@@ -78,9 +80,9 @@ export class EventosAddComponent implements OnInit {
     }).map(x=>{
       return x.value;
     });
-    console.log("Los dias son: ", diasSeleccionados, " La fecha de inicio es: ", new Date(this.fechainicio.value)," La hora es: ", moment(this.hora).format("HH:mm")  );
     if(this.tipoEvento==="simple"){
-      this.service.postEvento(this.nombre,this.descripcion, this.fechainicio.value, this.fechafin.value, this.PhotoFileName).subscribe(res=>{
+      const fechas = this.getFechaFin();
+      this.service.postEvento(this.nombre,this.descripcion, fechas.fechainicio.format("YYYY-MM-DDTHH:mm:ss"), fechas.fechafin.format("YYYY-MM-DDTHH:mm:ss"), this.idsalon).subscribe(res=>{
         this.showSuccessAlert();
       }, err =>{
         console.log(err);
@@ -108,6 +110,27 @@ export class EventosAddComponent implements OnInit {
       this.PhotoFilePath=this.fileService.PhotoUrl + this.PhotoFileName;
     })
 
+  }
+
+  updateSalones(){
+    console.log("BUENO ARRANCAMOS");
+    const fechas = this.getFechaFin();
+    console.log(fechas);
+    this.service.getSalonesDisponibles(fechas.fechainicio.format("YYYY-MM-DD HH:mm:ss"),fechas.fechafin.format("YYYY-MM-DD HH:mm:ss")).subscribe(data=>{
+      console.log(data);
+      this.salones = data;
+    });
+  }
+
+  getFechaFin(){
+    const fechainicio =  moment(new Date(this.fechainicio.value),"YYYY-MM-DD").format("YYYY-MM-DD");
+    const horainicio =  moment(this.hora,"HH:mm").format("HH:mm");
+    const fechahorainicio =  moment(fechainicio + ' ' + horainicio,"YYYY-MM-DD HH:mm:ss");
+    const fechafin = moment(fechainicio + ' ' + horainicio,"YYYY-MM-DD HH:mm:ss").add(this.duracion,'hours')
+    return {
+      fechainicio: fechahorainicio,
+      fechafin: fechafin
+    }
   }
 
   showSuccessAlert() {

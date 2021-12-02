@@ -17,5 +17,7 @@ namespace BusinessLayer.IBL
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
         void CreateEventoRecurrente(EventoRecurrenteCreateDto evt);
+        IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin);
+
     }
 }

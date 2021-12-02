@@ -29,15 +29,15 @@ namespace BusinessLayer.BL
                 throw new ArgumentNullException(nameof(evt));
             }
             Salon salon =_dalSalon.GetSalonById(SalonId);
-            /*if (salon==null)
+            if (salon==null)
             {
                 throw new AppException("El salon no existe");
 
-            }*/
-            /*if (!SalonDisponible(SalonId, evt.FechaInicioEvt, evt.FechaFinEvt))
+            }
+            if (!SalonDisponible(SalonId, evt.FechaInicioEvt, evt.FechaFinEvt))
             {
                 throw new AppException("El salon seleccionado esta ocupado en la fecha y hora indicada");
-            }*/
+            }
             evt.Salon = salon;
             _dal.CreateEvento(evt);
         }
@@ -101,5 +101,11 @@ namespace BusinessLayer.BL
             var eventos = _dal.GetEventoSalonFecha(salonId, fechaInicio, fechaFin);
             return (eventos==null || eventos.Count()==0);
         }
+
+        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        {
+            return _dal.GetSalonesDisponibles(fechainicio, fechafin);
+        }
+
     }
 }

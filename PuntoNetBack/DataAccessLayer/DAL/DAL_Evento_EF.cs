@@ -17,10 +17,6 @@ namespace DataAccessLayer.DAL
 
         public void CreateEvento(Evento evt)
         {
-            var fechaInicio = new DateTime(2021,12,23,14,00,00);
-            var fechaFin = new DateTime(2021, 12, 23, 16, 00, 00);
-
-            var nose = GetSalonesDisponibles(fechaInicio, fechaFin);
             if (evt == null)
             {
                 throw new ArgumentNullException(nameof(evt));
@@ -67,15 +63,14 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Evento>  GetEventoSalonFecha(int salonId, DateTime fechainicio, DateTime fechafin)
         {
-            return _context.Eventos.Where(ev => ev.Salon.Id == salonId && (ev.FechaInicioEvt <= fechafin || ev.FechaFinEvt >= fechainicio));
+            return _context.Eventos.Where(ev => ev.Salon.Id == salonId && (ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio));
         }
         public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
         {
-            IQueryable<Salon> entityQuery = from e in _context.Salones
-                                             join ar in _context.Eventos.Where(ev => (ev.FechaInicioEvt.Day == fechainicio.Day && ev.FechaFinEvt.Day == fechafin.Day && (ev.FechaInicioEvt >= fechafin || ev.FechaFinEvt <= fechainicio)))
-                                                 on e.Id equals ar.Id
-                                             select e;
-            return entityQuery;
+            var salonesOcupados = _context.Eventos.Where(ev => ((ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio))).Select(ev => ev.Salon.Id).ToArray();
+            var salonesLibres = _context.Salones.Where(salon => !salonesOcupados.Contains(salon.Id));
+            
+            return salonesLibres;
         }
 
 

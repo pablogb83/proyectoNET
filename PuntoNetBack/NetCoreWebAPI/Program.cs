@@ -14,8 +14,6 @@ namespace NetCoreWebAPI
 {
     public class Program
     {
-        const string SUBSCRIPTION_KEY = "PASTE_YOUR_FACE_SUBSCRIPTION_KEY_HERE";
-        const string ENDPOINT = "PASTE_YOUR_FACE_ENDPOINT_HERE";
         public static void Main(string[] args)
         {
             //   CreateHostBuilder(args).Build().Run();

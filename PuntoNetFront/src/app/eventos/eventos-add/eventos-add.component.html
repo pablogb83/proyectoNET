@@ -14,9 +14,15 @@
       <input matInput [(ngModel)]="descripcion" />
     </mat-form-field>
 
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="tipoEvento">
+      <mat-radio-button value="simple" selected>Simple</mat-radio-button>&nbsp;&nbsp;
+      <mat-radio-button value="recurrente">Recurrente</mat-radio-button>
+    </mat-radio-group>
+
+
     <h3 *ngIf="tipoEvento === 'recurrente'">Rango del evento recurrente</h3>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" id="pad">
       <mat-label>Fecha inicio</mat-label>
       <input
         matInput
@@ -28,24 +34,19 @@
       <mat-datepicker #pickerinit></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="tipoEvento === 'recurrente'">
       <mat-label>Fecha fin</mat-label>
-      <input matInput [matDatepicker]="pickerfin" [formControl]="fechafin" />
-      <mat-datepicker-toggle matSuffix [for]="pickerfin">
+      <input matInput [matDatepicker]="pickerfin" [formControl]="fechafin" (dateChange)="updateSalones()" />
+      <mat-datepicker-toggle matSuffix [for]="pickerfin" (dateChange)="updateSalones()">
         <!-- <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon> -->
       </mat-datepicker-toggle>
       <mat-datepicker #pickerfin></mat-datepicker>
     </mat-form-field>
 
-    <mat-radio-group aria-label="Select an option" [(ngModel)]="tipoEvento">
-      <mat-radio-button value="simple" selected>Simple</mat-radio-button>&nbsp;&nbsp;
-      <mat-radio-button value="recurrente">Recurrente</mat-radio-button>
-    </mat-radio-group>
+   
 
-    <div class="container" *ngIf="tipoEvento === 'recurrente'">
+    <div class="container" >
       
-  
-
         <mat-form-field>
             <mat-label>Duracion</mat-label>
             <input matInput [(ngModel)]="duracion" type="number" placeholder="Ingrese segundo valor">
@@ -53,10 +54,17 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Hora</mat-label>
-            <input matTimepicker [(ngModel)]="hora" />
+            <input matTimepicker [(ngModel)]="hora" (timeChange)="updateSalones()" [disabled]="!duracion" />
         </mat-form-field>
 
-        <section class="example-section">
+        <mat-form-field appearance="fill">
+          <mat-label>Salones disponibles</mat-label>
+          <mat-select [(ngModel)]="idsalon">
+            <mat-option [value]="salon.id" *ngFor="let salon of salones">{{salon.denominacion}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <section class="example-section" *ngIf="tipoEvento === 'recurrente'">
             <h4>Seleccione los dias en que se da el evento:</h4>
             <p><mat-checkbox [(ngModel)]="dias[0].selected">Lunes</mat-checkbox></p>
             <p>
