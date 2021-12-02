@@ -40,7 +40,8 @@ export class EventosListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(EventosAddComponent, {
-      width: '500px',
+      width: '50%',
+      maxHeight:'80vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {

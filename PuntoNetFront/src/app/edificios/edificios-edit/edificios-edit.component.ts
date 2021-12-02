@@ -66,6 +66,7 @@ export class EdificiosEditComponent implements OnInit {
   }
 
   updateEdificio(){
+    console.log("LATITUD Y LOGITUD: ", this.lat, " ", this.lng);
     var id = this.id;
     //var idcast: number = +id;
     

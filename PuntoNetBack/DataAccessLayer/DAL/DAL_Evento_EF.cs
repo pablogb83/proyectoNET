@@ -21,28 +21,8 @@ namespace DataAccessLayer.DAL
             {
                 throw new ArgumentNullException(nameof(evt));
             }
-
-            //IEnumerable<DateTime> dates = EachDay(evt.FechaInicioEvt, evt.FechaFinEvt);
-
-            foreach (DateTime day in EachDay(evt.FechaInicioEvt, evt.FechaFinEvt))
-            {
-                Evento ev = new Evento();
-                ev.Descripcion = evt.Descripcion;
-                ev.Nombre = evt.Nombre;
-                ev.FechaInicioEvt = day.Date;
-                ev.FechaFinEvt = ev.FechaInicioEvt.AddHours(5);
-                ev.PhotoFileName = evt.PhotoFileName;
-                _context.Eventos.Add(ev);
-            }
+            _context.Eventos.Add(evt);
             SaveChanges();
-
-            //_context.Eventos.Add(evt);
-
-            DayOfWeek name = evt.FechaInicioEvt.DayOfWeek;
-
-            //List<DateTime> dates = new List<DateTime>();
-            //IEnumerable<DateTime> dates2 = EachDay(evt.FechaInicioEvt, evt.FechaFinEvt);
-
         }
 
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
@@ -80,6 +60,19 @@ namespace DataAccessLayer.DAL
         {
             //nothing
         }
+
+        public IEnumerable<Evento>  GetEventoSalonFecha(int salonId, DateTime fechainicio, DateTime fechafin)
+        {
+            return _context.Eventos.Where(ev => ev.Salon.Id == salonId && (ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio));
+        }
+        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        {
+            var salonesOcupados = _context.Eventos.Where(ev => ((ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio))).Select(ev => ev.Salon.Id).ToArray();
+            var salonesLibres = _context.Salones.Where(salon => !salonesOcupados.Contains(salon.Id));
+            
+            return salonesLibres;
+        }
+
 
         public void CreateEventoRecurrente(Evento evt)
         {

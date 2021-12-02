@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Eventos;
+using DataAccessLayer.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,31 @@ namespace BusinessLayer.BL
     {
         private readonly DataAccessLayer.IDAL.IDAL_Evento _dal;
 
-        public BL_Evento(DataAccessLayer.IDAL.IDAL_Evento dal)
+        private readonly DataAccessLayer.IDAL.IDAL_Salon _dalSalon;
+
+        public BL_Evento(DataAccessLayer.IDAL.IDAL_Evento dal, DataAccessLayer.IDAL.IDAL_Salon dalSalon)
         {
             _dal = dal;
+            _dalSalon = dalSalon;
         }
 
-        public void CreateEvento(Evento evt)
+        public void CreateEvento(Evento evt, int SalonId)
         {
+            if (evt == null)
+            {
+                throw new ArgumentNullException(nameof(evt));
+            }
+            Salon salon =_dalSalon.GetSalonById(SalonId);
+            if (salon==null)
+            {
+                throw new AppException("El salon no existe");
+
+            }
+            if (!SalonDisponible(SalonId, evt.FechaInicioEvt, evt.FechaFinEvt))
+            {
+                throw new AppException("El salon seleccionado esta ocupado en la fecha y hora indicada");
+            }
+            evt.Salon = salon;
             _dal.CreateEvento(evt);
         }
 
@@ -40,7 +59,6 @@ namespace BusinessLayer.BL
                     ev.Nombre = evt.Nombre;
                     ev.FechaInicioEvt = day.Date + evt.HoraInicio;
                     ev.FechaFinEvt = ev.FechaInicioEvt.AddHours(evt.Duracion);
-                    ev.PhotoFileName = evt.PhotoFileName;
                     _dal.CreateEventoRecurrente(ev);
                 } 
             }
@@ -76,6 +94,17 @@ namespace BusinessLayer.BL
         public void UpdateEvento(Evento evt)
         {
             _dal.UpdateEvento(evt);
+        }
+
+        public bool SalonDisponible(int salonId, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var eventos = _dal.GetEventoSalonFecha(salonId, fechaInicio, fechaFin);
+            return (eventos==null || eventos.Count()==0);
+        }
+
+        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        {
+            return _dal.GetSalonesDisponibles(fechainicio, fechafin);
         }
 
     }

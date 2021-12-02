@@ -15,11 +15,13 @@ namespace DataAccessLayer.DAL
     {
         private readonly WebAPIContext _context;
         private readonly UserManager<Usuario> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager)
+        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager, RoleManager<Role> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<Usuario> AutenticarAsync(string email, string password)

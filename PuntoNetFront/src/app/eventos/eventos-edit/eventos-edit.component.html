@@ -29,12 +29,6 @@
             <mat-datepicker #pickerfin></mat-datepicker>
           </mat-form-field>
 
-
-        <div class="ml-3 bd-highlight" style="width: 40%;">
-            <img [src]=PhotoFilePath height="250px;" width="200px;">
-            <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
-        </div>
-
         <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="updateEvento()">Guardar</button>
             <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>

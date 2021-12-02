@@ -14,19 +14,16 @@ namespace NetCoreWebAPI
 {
     public class Program
     {
-        const string SUBSCRIPTION_KEY = "PASTE_YOUR_FACE_SUBSCRIPTION_KEY_HERE";
-        const string ENDPOINT = "PASTE_YOUR_FACE_ENDPOINT_HERE";
         public static void Main(string[] args)
         {
             //   CreateHostBuilder(args).Build().Run();
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)//LogEventLevel.Information
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Error)//LogEventLevel.Information
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.MongoDB(databaseUrl: "mongodb://localhost:27017/LogsDB", collectionName: "Logs")
+                .WriteTo.MongoDB(databaseUrl: "mongodb+srv://mongoNet:1234@cluster0.h9fxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", collectionName: "Logs")
                 .CreateLogger();
-
             try
             {
                 Log.Information(messageTemplate: "Starting web host");

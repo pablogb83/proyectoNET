@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from './core/guards/admin.guard';
+import { AdminporteroGuard } from './core/guards/adminportero.guard';
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { SuperAdminGuard } from './core/guards/superadmin.guard';
@@ -84,7 +85,7 @@ const appRoutes: Routes = [
     {
         path: 'personas',
         loadChildren: './persona/persona.module#PersonaModule',
-        canActivate: [AuthGuard/*, AdminGuard*/]
+        canActivate: [AuthGuard, AdminporteroGuard]
     },
     {
         path: 'reconocimiento-facial',

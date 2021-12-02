@@ -24,6 +24,7 @@ export class SalonService {
 
   updateSalon(id:string, val:any){
     return this.http.put(AUTH_API + id,  val);
- }
+  }
+  
 
 }

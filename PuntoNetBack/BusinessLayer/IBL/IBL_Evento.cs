@@ -13,9 +13,11 @@ namespace BusinessLayer.IBL
         bool SaveChanges();
         IEnumerable<Evento> GetAllEventos();
         Evento GetEventoById(int Id);
-        void CreateEvento(Evento evt);
+        void CreateEvento(Evento evt, int SalonId);
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
         void CreateEventoRecurrente(EventoRecurrenteCreateDto evt);
+        IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin);
+
     }
 }
