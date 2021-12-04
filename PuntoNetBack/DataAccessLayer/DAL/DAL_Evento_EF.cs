@@ -65,12 +65,19 @@ namespace DataAccessLayer.DAL
         {
             return _context.Eventos.Where(ev => ev.Salon.Id == salonId && (ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio));
         }
-        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        //public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        //{
+        //    var salonesOcupados = _context.Eventos.Where(ev => ((ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio))).Select(ev => ev.Salon.Id).ToArray();
+        //    var salonesLibres = _context.Salones.Where(salon => !salonesOcupados.Contains(salon.Id));
+
+        //    return salonesLibres;
+        //}
+
+        public IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin, int edificioId)
         {
-            var salonesOcupados = _context.Eventos.Where(ev => ((ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio))).Select(ev => ev.Salon.Id).ToArray();
-            var salonesLibres = _context.Salones.Where(salon => !salonesOcupados.Contains(salon.Id));
-            
-            return salonesLibres;
+                var salonesOcupados = _context.Eventos.Where(ev => ((ev.FechaInicioEvt <= fechafin && ev.FechaFinEvt >= fechainicio))).Select(ev => ev.Salon.Id).ToArray();
+                var salonesLibres = _context.Salones.Where(salon => !salonesOcupados.Contains(salon.Id) && salon.edificio.Id == edificioId);
+                return salonesLibres;
         }
 
 

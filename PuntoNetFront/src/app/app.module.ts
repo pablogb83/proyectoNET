@@ -10,12 +10,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoggerModule, NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
 import { environment } from '../environments/environment';
 import { AdminGuard } from './core/guards/admin.guard';
+import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PersonaAddComponent
+  ],
+  entryComponents:[
+    PersonaAddComponent
   ],
   imports: [
     BrowserModule,

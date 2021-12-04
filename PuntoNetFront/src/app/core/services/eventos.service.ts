@@ -22,8 +22,16 @@ export class EventosService {
     return this.http.get<any>(AUTH_API);
   }
 
-   getSalonesDisponibles(fechainicio:string, fechafin: string):Observable<any[]>{
-    return this.http.get<any>(AUTH_API+`salonesdisponibles?fechainicio=${fechainicio}&fechafin=${fechafin}`);
+   getSalonesDisponibles(FechaInicioEvt:string, FechaFinEvt: string, EdificioId:number, TipoEvento:string, dias: number[], duracion:number, horaInicio: string):Observable<any[]>{
+    return this.http.post<any>(AUTH_API+'salonesdisponibles' ,{
+      FechaInicioEvt,
+      FechaFinEvt,
+      EdificioId,
+      TipoEvento,
+      dias,
+      duracion,
+      horaInicio
+    }, httpOptions)
   }
 
   getEvento(id: number):Observable<any[]>{
@@ -40,7 +48,7 @@ export class EventosService {
     },httpOptions);
   }
 
-  postEventoRecurrente(nombre: string, descripcion: string, fechaInicioEvt: Date, fechaFinEvt: Date, horaInicio: string, duracion: number, dias: number[]){
+  postEventoRecurrente(nombre: string, descripcion: string, fechaInicioEvt: Date, fechaFinEvt: Date, horaInicio: string, duracion: number, dias: number[],SalonId: number){
     return this.http.post(AUTH_API + 'recurrente' , {
       nombre,
       descripcion,
@@ -48,7 +56,8 @@ export class EventosService {
       fechaFinEvt,
       horaInicio,
       duracion,
-      dias
+      dias,
+      SalonId
     },httpOptions);
   }
 

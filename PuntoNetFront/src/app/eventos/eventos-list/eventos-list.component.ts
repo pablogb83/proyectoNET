@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import Swal from 'sweetalert2';
 import { EventosAddComponent } from '../eventos-add/eventos-add.component';
@@ -13,8 +13,9 @@ import { EventosEditComponent } from '../eventos-edit/eventos-edit.component';
 export class EventosListComponent implements OnInit {
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort,{static: false}) sort: MatSort;
 
-  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin', 'acciones'];
+  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin','hora','edificio','salon', 'acciones'];
 
   constructor(private service: EventosService,public dialog: MatDialog) {
     this.getEventos();
@@ -29,12 +30,13 @@ export class EventosListComponent implements OnInit {
     this.service.getEventos().subscribe(data=>{
 
       this.EventoList = new MatTableDataSource<Evento>(data);
-      for (let fecha of data){
-        fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
-        fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
-      }
+      // for (let fecha of data){
+      //   fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
+      //   fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
+      // }
 
       this.EventoList.paginator = this.paginator;
+      this.EventoList.sort = this.sort;
     });
   }
   

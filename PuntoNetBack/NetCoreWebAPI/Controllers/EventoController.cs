@@ -66,19 +66,18 @@ namespace NetCoreWebAPI.Controllers
             //return Ok(commandReadDto);
         }
 
-        [HttpGet("salonesdisponibles")]
-        public ActionResult<IEnumerable<EventosReadDto>> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin)
+        [HttpPost("salonesdisponibles")]
+        public ActionResult<IEnumerable<EventosReadDto>> GetSalonesDisponibles(SalonesDisponiblesDto datos)
         {
-            var salones = _bl.GetSalonesDisponibles(fechainicio,fechafin);
+            var salones = _bl.GetSalonesDisponibles(datos);
             return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(salones));
         }
-
 
         [HttpPost("recurrente")]
         public ActionResult CreateEventoRecurrente(EventoRecurrenteCreateDto eventoCreateDto)
         {
             //poner aca alguna validacion y tirar las ecepciones
-            _bl.CreateEventoRecurrente(eventoCreateDto);
+            _bl.CreateEventoRecurrente(eventoCreateDto, eventoCreateDto.SalonId);
             return Ok(new { message="Evento recurrente creado correctamente" });
         }
 

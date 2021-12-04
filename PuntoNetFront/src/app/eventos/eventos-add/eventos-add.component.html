@@ -14,6 +14,13 @@
       <input matInput [(ngModel)]="descripcion" />
     </mat-form-field>
 
+    <mat-form-field appearance="fill">
+      <mat-label>Edificio</mat-label>
+      <mat-select [(ngModel)]="idEdificio">
+        <mat-option [value]="edificio.id" *ngFor="let edificio of edificios">{{edificio.nombre}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-radio-group aria-label="Select an option" [(ngModel)]="tipoEvento">
       <mat-radio-button value="simple" selected>Simple</mat-radio-button>&nbsp;&nbsp;
       <mat-radio-button value="recurrente">Recurrente</mat-radio-button>
@@ -36,8 +43,8 @@
 
     <mat-form-field appearance="fill" *ngIf="tipoEvento === 'recurrente'">
       <mat-label>Fecha fin</mat-label>
-      <input matInput [matDatepicker]="pickerfin" [formControl]="fechafin" (dateChange)="updateSalones()" />
-      <mat-datepicker-toggle matSuffix [for]="pickerfin" (dateChange)="updateSalones()">
+      <input matInput [matDatepicker]="pickerfin" [formControl]="fechafin" />
+      <mat-datepicker-toggle matSuffix [for]="pickerfin" >
         <!-- <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon> -->
       </mat-datepicker-toggle>
       <mat-datepicker #pickerfin></mat-datepicker>
@@ -52,15 +59,25 @@
             <input matInput [(ngModel)]="duracion" type="number" placeholder="Ingrese segundo valor">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <div *ngIf="tipoEvento === 'simple'">
+          <mat-form-field appearance="fill">
             <mat-label>Hora</mat-label>
-            <input matTimepicker [(ngModel)]="hora" (timeChange)="updateSalones()" [disabled]="!duracion" />
+            <input matTimepicker [(ngModel)]="hora" [disabled]="!duracion || !idEdificio" />
         </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="fill">
+        <div *ngIf="tipoEvento === 'recurrente'">
+          <mat-form-field appearance="fill">
+            <mat-label>Hora</mat-label>
+            <input matTimepicker [(ngModel)]="hora"   [disabled]="!duracion" />
+        </mat-form-field>
+        </div>
+
+
+        <mat-form-field appearance="fill" (click)="$event.stopPropagation()">
           <mat-label>Salones disponibles</mat-label>
           <mat-select [(ngModel)]="idsalon">
-            <mat-option [value]="salon.id" *ngFor="let salon of salones">{{salon.denominacion}}</mat-option>
+            <mat-option [value]="salon.id" *ngFor="let salon of salones" (click)="$event.stopPropagation()">{{salon.denominacion}}</mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -93,11 +110,14 @@
             <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
         </div> -->
     <div class="example-button-row">
-      <button mat-raised-button color="primary" (click)="agregarEvento()">
+      <button mat-raised-button color="primary" (click)="agregarEvento()" [disabled] = "!habilitarAgregar">
         Agregar
       </button>
       <button mat-raised-button color="accent" (click)="onNoClick()">
         Cancelar
+      </button>
+      <button mat-raised-button (click)="updateSalones()">
+        Chequear disponibilidad
       </button>
     </div>
   </div>

@@ -22,5 +22,6 @@ namespace DataAccessLayer.Dtos.Eventos
         public int Duracion { get; set; }
         [Required]
         public int[] Dias { get; set; }
+        public int SalonId { get; set; }
     }
 }

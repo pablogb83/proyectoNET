@@ -55,7 +55,7 @@ export class SalonListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      //this.getSalones();
+      this.getSalones();
     }); 
   }
 
