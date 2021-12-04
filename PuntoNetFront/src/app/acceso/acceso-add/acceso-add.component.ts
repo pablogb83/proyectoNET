@@ -82,8 +82,8 @@ export class AccesoAddComponent  {
     Swal.fire('OK', 'Acceso registrado con exito!', 'success');
   }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg:any) {
+    Swal.fire('Error!', msg, 'error');
   }
 
 }

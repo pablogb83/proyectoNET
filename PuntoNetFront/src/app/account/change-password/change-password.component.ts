@@ -1,6 +1,6 @@
 import { NotificationService } from './../../core/services/notification.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 
 import { AuthenticationService } from './../../core/services/auth.service';

@@ -5,8 +5,8 @@ import Swal from 'sweetalert2';
 import { InstAddComponent } from '../inst-add/inst-add.component';
 import { InstEditComponent } from '../inst-edit/inst-edit.component';
 import {MatTableDataSource} from '@angular/material/table';
-import { UsersAddComponent } from 'src/app/users/users-add/users-add.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AdminAddComponent } from '../admin-add/admin-add.component';
 
 
 export interface DialogData {
@@ -72,7 +72,7 @@ export class InstitucionListComponent implements AfterViewInit {
   }
   
   openDialogAdmin(inst: any): void {
-    const dialogRef = this.dialog.open(UsersAddComponent, {
+    const dialogRef = this.dialog.open(AdminAddComponent, {
       width: '250px',
       data: {id: inst.id}
     });

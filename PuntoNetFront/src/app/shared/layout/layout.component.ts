@@ -28,6 +28,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     idedificio:number;
     idUsuario:string;
 
+    private autoLogoutSubscription: Subscription;
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private media: MediaMatcher,
@@ -59,8 +60,12 @@ export class LayoutComponent implements OnInit, AfterViewInit {
         }
     }
 
-  
     ngAfterViewInit(): void {
         this.changeDetectorRef.detectChanges();
+    }
+
+    logout(){
+        this.tokenService.signOut();
+        window.location.reload();
     }
 }

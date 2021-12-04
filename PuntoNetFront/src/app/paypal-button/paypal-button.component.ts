@@ -18,6 +18,7 @@ export class PaypalButtonComponent implements OnInit {
 
   ngOnInit() {
     const tenant_id = this.service.getTenant();
+    var subID ="";
       paypal.Buttons({
         style: {
             shape: 'rect',

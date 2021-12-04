@@ -11,8 +11,8 @@ import { WebcamSnapshotComponent } from '../webcam-snapshot/webcam-snapshot.comp
   imports: [
     CommonModule,
     SharedModule,
-    ReconocimientoFacialRoutingModule
-  ],
-  
+    ReconocimientoFacialRoutingModule,
+    MatGridListModule 
+  ]
 })
 export class ReconocimientoFacialModule { }

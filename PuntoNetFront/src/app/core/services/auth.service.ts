@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 import 'rxjs/add/operator/delay';
 
-import { environment } from '../../../environments/environment';
-import { of, EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 const AUTH_API = '/api/usuarios/authenticate/';
 
@@ -63,19 +64,9 @@ export class AuthenticationService {
             email: 'john.doe@gmail.com',
             id: '12312323232',
             alias: 'john.doe@gmail.com'.split('@')[0],
+            expiration: moment().add(1, 'days').toDate(),
             fullName: 'John Doe'
         };
     }
 
-    passwordResetRequest(email: string) {
-        return of(true).delay(1000);
-    }
-
-    changePassword(email: string, currentPwd: string, newPwd: string) {
-        return of(true).delay(1000);
-    }
-
-    passwordReset(email: string, token: string, password: string, confirmPassword: string): any {
-        return of(true).delay(1000);
-    }
 }

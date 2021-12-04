@@ -15,6 +15,7 @@ export class PagoComponent implements OnInit {
 
   pagar(){
 
+    console.log("ESTOY PAGANDO JAA");
     this.pagoService.pagarCuota().subscribe(data=>{
       console.log(data);
       const url = data.link;

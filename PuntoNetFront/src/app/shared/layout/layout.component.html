@@ -44,11 +44,6 @@
         <span>Account</span>
       </a>
 
-      <a mat-menu-item [routerLink]="['/auth/login']">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Log out</span>
-      </a>
-
     </mat-menu>
 
   </mat-toolbar>
@@ -138,10 +133,17 @@
           <p mat-line> Roles </p>
         </a>
 
-        <a mat-list-item [routerLink]="['/auth/login']">
+        <a mat-list-item [routerLink]="['/auth/login']"  *ngIf="rol==='VISITANTE'">
           <mat-icon mat-list-icon>exit_to_app</mat-icon>
-          <p mat-line> Log out </p>
+          <p mat-line> Login </p>
         </a>
+
+        <a mat-list-item (click)="logout()" *ngIf="rol!=='VISITANTE'" >
+          <mat-icon mat-list-icon>exit_to_app</mat-icon>
+          <p mat-line *ngIf="rol != 'VISITANTE'"> Log out </p>
+          <p mat-line *ngIf="rol === 'VISITANTE'"> Log in </p>
+        </a>
+
 
         <mat-divider></mat-divider>
 

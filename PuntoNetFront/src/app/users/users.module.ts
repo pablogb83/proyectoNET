@@ -13,7 +13,7 @@ import { UserEdificioComponent } from './user-edificio/user-edificio.component';
   imports: [
     CommonModule,
     SharedModule,
-    UsersRoutingModule,
+    UsersRoutingModule
   ],
   declarations: [UserListComponent, UserRoleComponent,UsersEditComponent, UsersAddComponent, UserEdificioComponent]
   

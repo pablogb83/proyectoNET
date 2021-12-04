@@ -33,6 +33,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 export const MY_FORMATS = {
   parse: {
@@ -57,6 +59,7 @@ export const MY_FORMATS = {
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
     MatExpansionModule, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule
+    ,DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule,
   ],
   exports: [
     CommonModule,
@@ -66,7 +69,8 @@ export const MY_FORMATS = {
     MatAutocompleteModule, MatTableModule, MatDialogModule, MatTabsModule,
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
-    MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule
+    MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule,
+    SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule
   ],
   providers: [
     {

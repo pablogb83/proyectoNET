@@ -38,4 +38,10 @@
   .hide {
     display: none;
   }
-  
+
+ 
+  img{
+    object-fit: cover !important;
+    width: 20%;
+    margin-right: 2em;
+  }   

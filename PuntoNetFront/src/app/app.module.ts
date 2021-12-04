@@ -10,6 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AdminGuard } from './core/guards/admin.guard';
 import { LoggerConfig, NGXLogger } from 'ngx-logger';
 import { DatePipe } from '@angular/common';
+import { LoggerModule, NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
+import { environment } from '../environments/environment';
+
 
 
 @NgModule({
@@ -29,7 +32,13 @@ import { DatePipe } from '@angular/common';
   providers:[
     AdminGuard,
     LoggerConfig,
-    DatePipe
+    DatePipe,
+    NGXMapperService,
+    NGXLoggerHttpService,
+    AdminGuard
   ]
+
 })
-export class AppModule { }
+export class AppModule {
+  
+ }

@@ -28,9 +28,6 @@ export class ReconocimientoFacialComponent implements OnInit {
   constructor(private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router) { 
     this.idPuerta = data.idpuerta;
   }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
 
   uploadFile(event){
@@ -77,6 +74,10 @@ export class ReconocimientoFacialComponent implements OnInit {
       });
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
   showSuccessAlert(persona: string) {
     Swal.fire('OK', 'La persona de la imagen ingresada se encuentra en el sistema y es el usuario: ' + persona, 'success');
   }
@@ -85,7 +86,10 @@ export class ReconocimientoFacialComponent implements OnInit {
     Swal.fire('Error!', 'La persona no se encontro en el sistema', 'error');
   }
 
- 
+  
+  ngOnInit(): void {
+
+  }
 
   WIDTH = 640;
   HEIGHT = 480;

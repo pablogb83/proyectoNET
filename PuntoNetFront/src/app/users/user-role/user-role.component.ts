@@ -19,7 +19,11 @@ export class UserRoleComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<UserRoleComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private rolservice:RolesService, private userService: UsuariosService) {
     this.user = data.user;
     this.rolservice.getRoles().subscribe(data=>{
-      this.roles = data
+      console.log(data);
+      var roleFilter = data.filter(function (x){
+        return x.name === 'PORTERO' || x.name === 'GESTOR';
+      });
+      this.roles = roleFilter
     });
    }
 

@@ -43,7 +43,7 @@ export class SalonAddComponent implements OnInit {
     Swal.fire('OK', 'Salon agregado con exito!', 'success');
   }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg?) {
+    Swal.fire('Error!', msg ? msg : 'Algo salió mal!', 'error');
   }
 }

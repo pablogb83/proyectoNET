@@ -15,7 +15,7 @@
 
            <mat-form-field appearance="fill">
                 <mat-label>Fecha inicio</mat-label>
-                <input matInput [matDatepicker]="pickerinit" [value]="fechainicio" >
+                <input matInput [matDatepicker]="pickerinit" [(ngModel)]="fechainicio" >
             <mat-datepicker-toggle matSuffix [for]="pickerinit">    
             </mat-datepicker-toggle>
                 <mat-datepicker #pickerinit></mat-datepicker>
@@ -23,17 +23,11 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Fecha fin</mat-label>
-            <input matInput [matDatepicker]="pickerfin" [value]="fechafin">
+            <input matInput [matDatepicker]="pickerfin" [(ngModel)]="fechafin">
             <mat-datepicker-toggle matSuffix [for]="pickerfin">
             </mat-datepicker-toggle>
             <mat-datepicker #pickerfin></mat-datepicker>
           </mat-form-field>
-
-
-        <div class="ml-3 bd-highlight" style="width: 40%;">
-            <img [src]=PhotoFilePath height="250px;" width="200px;">
-            <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
-        </div>
 
         <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="updateEvento()">Guardar</button>

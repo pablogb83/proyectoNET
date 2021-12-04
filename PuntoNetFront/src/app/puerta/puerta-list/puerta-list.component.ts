@@ -58,6 +58,10 @@ export class PuertaListComponent implements OnInit {
     this.getPuertas();
   }
 
+  refreshPage() {
+    window.location.reload();
+   }
+
   getPuertas(): void{
     this.service.getPuertasEdificio(this.idedificio).subscribe(data=>{
       console.log(data);
@@ -119,29 +123,35 @@ export class PuertaListComponent implements OnInit {
       this.usuarioPuertaService.addUserPuerta(this.userId, puerta.id).subscribe(data=>{
         console.log(data);
         this.showSuccessAlert();
+        this.refreshPage();
       },err=>{
-        this.showSuccessAlert();
+        this.showErrorAlert(err.error);
+        //this.refreshPage();
       });
    }
 
    liberarPuerta():void{
      this.usuarioPuertaService.deletePuertaUser(this.userId).subscribe(data=>{
-       this.showSuccessAlertPuertaLiberada();
+      console.log(data) 
+      this.showSuccessAlertLiberar();
+      this.refreshPage();
      },err=>{
-       this.showErrorAlert()
+       console.log(err)
+       this.showErrorAlert(err.error);
+       //this.refreshPage();
      })
    }
 
+   showSuccessAlertLiberar() {
+    Swal.fire('OK', 'Puerta liberada correctamente' , 'success');
+  }
+
    showSuccessAlert() {
-    Swal.fire('OK', 'Puerta asignada' , 'success');
+    Swal.fire('OK', 'Puerta asignada correctamente' , 'success');
   }
 
-  showSuccessAlertPuertaLiberada() {
-    Swal.fire('OK', 'Puerta liberada' , 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg:any) {
+    Swal.fire('Error!', msg, 'error');
   }
 
 }

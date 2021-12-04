@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { FileService } from 'src/app/core/services/file.service';
 import { PersonaService } from 'src/app/core/services/persona.service';
 import Swal from 'sweetalert2';
 
@@ -22,13 +23,13 @@ export class PersonaAddComponent implements OnInit {
   imagePath: string;
   imgURL: any;
 
-  constructor(private service:PersonaService) { }
+  constructor(public dialogRef: MatDialogRef<PersonaAddComponent>, private service:PersonaService, private fileService:FileService) { }
 
   ngOnInit() {
   }
 
   onNoClick(): void {
-    //this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   agregarPersona(){

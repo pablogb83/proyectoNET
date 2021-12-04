@@ -3,10 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AccesoModule } from './acceso/acceso.module';
 import { AccountModule } from './account/account.module';
 import { AuthModule } from './auth/auth.module';
-import { AdminGuard } from './core/guards/admin.guard';
 
-import { AuthGuard } from './core/guards/auth.guard';
-import { SuperAdminGuard } from './core/guards/superadmin.guard';
 import { CustomersModule } from './customers/customers.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { EdificiosModule } from './edificios/edificios.module';
@@ -19,6 +16,12 @@ import { ReconocimientoFacialModule } from './reconocimiento-facial/reconocimien
 import { RolesModule } from './roles/roles.module';
 import { SalonModule } from './salon/salon.module';
 import { UsersModule } from './users/users.module';
+import { AdminGuard } from './core/guards/admin.guard';
+import { AdminporteroGuard } from './core/guards/adminportero.guard';
+
+import { AuthGuard } from './core/guards/auth.guard';
+import { SuperAdminGuard } from './core/guards/superadmin.guard';
+import { PagoComponent } from './pago/pago.component';
 
 const appRoutes: Routes = [
     {

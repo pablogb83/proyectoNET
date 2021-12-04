@@ -17,8 +17,8 @@ export class EventosEditComponent implements OnInit {
   id?:string;
   nombre?:string;
   descripcion?:string;
-  fechainicio?:string;
-  fechafin?:string;
+  fechainicio?:Date;
+  fechafin?:Date;
   PhotoFileName?:any;
   PhotoFilePath?:any;
 
@@ -29,10 +29,10 @@ export class EventosEditComponent implements OnInit {
     this.descripcion = data.descripcion;
 
     let s = new Date(data.fechaInicioEvt)
-    this.fechainicio = s.getMonth()+1 + "/" + s.getDate() + "/" + s.getFullYear(); //06/15/2021
+    this.fechainicio = new Date(data.fechaInicioEvt);//s.getMonth()+1 + "/" + s.getDate() + "/" + s.getFullYear(); //06/15/2021
 
     let s2 = new Date(data.fechaFinEvt)
-    this.fechafin = s2.getMonth()+1 + "/" + s2.getDate() + "/" + s2.getFullYear(); //06/15/2021
+    this.fechafin = new Date(data.fechaFinEvt)//s2.getMonth()+1 + "/" + s2.getDate() + "/" + s2.getFullYear(); //06/15/2021
 
     this.PhotoFileName = data.photoFileName;
     this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
