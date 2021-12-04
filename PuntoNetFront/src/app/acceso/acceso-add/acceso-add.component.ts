@@ -38,7 +38,7 @@ export class AccesoAddComponent  {
       this.service.postAcceso(val).subscribe(res=>{
         this.showSuccessAlert();
       }, err =>{
-        this.showErrorAlert();
+        this.showErrorAlert(err.error);
       });
   }
 

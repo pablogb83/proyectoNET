@@ -59,7 +59,7 @@ export const MY_FORMATS = {
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
     MatExpansionModule, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule
-    ,DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule,
+    ,DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule, MatListModule
   ],
   exports: [
     CommonModule,
@@ -70,7 +70,7 @@ export const MY_FORMATS = {
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
     MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule,
-    SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule
+    SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule, MatListModule
   ],
   providers: [
     {

@@ -64,6 +64,9 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/']);
                 });
             }
+            else{
+                this.router.navigate(['/']);
+            }
         },
         error => {
             this.notificationService.openSnackBar("Credenciales incorrectas");

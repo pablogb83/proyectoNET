@@ -41,17 +41,12 @@ const appRoutes: Routes = [
     {
         path: 'users',
         loadChildren: ()=> UsersModule,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,AdminGuard]
     },
     {
         path: 'eventos',
         loadChildren: () => EventosModule,
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'account',
-        loadChildren: ()=> AccountModule,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,AdminGuard]
     },
     {
         path: 'institucion',
@@ -61,7 +56,7 @@ const appRoutes: Routes = [
     {
         path: 'pago',
         loadChildren: ()=>PagoModule,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,AdminGuard]
     },
     {
         path: 'edificios',

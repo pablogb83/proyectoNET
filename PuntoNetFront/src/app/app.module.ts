@@ -8,16 +8,19 @@ import { SharedModule } from './shared/shared.module';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminGuard } from './core/guards/admin.guard';
-import { LoggerConfig, NGXLogger } from 'ngx-logger';
+import { LoggerConfig } from 'ngx-logger';
 import { DatePipe } from '@angular/common';
-import { LoggerModule, NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
-import { environment } from '../environments/environment';
+import { NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
+import { ReconocimientoFacialComponent } from './reconocimiento-facial/reconocimiento-facial.component';
+import { UsersAddComponent } from './users/users-add/users-add.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ReconocimientoFacialComponent,
+    UsersAddComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,10 @@ import { environment } from '../environments/environment';
     NGXMapperService,
     NGXLoggerHttpService,
     AdminGuard
+  ],
+  entryComponents:[
+    ReconocimientoFacialComponent,
+    UsersAddComponent
   ]
 
 })
