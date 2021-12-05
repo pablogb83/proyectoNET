@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/app/core/services/notification.service';
-import { Title } from '@angular/platform-browser';
-import { NGXLogger } from 'ngx-logger';
-import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { FileService } from 'src/app/core/services/file.service';
+import { NoticiasService } from 'src/app/core/services/noticias.service';
+
 
 @Component({
   selector: 'app-dashboard-home',
@@ -10,21 +10,42 @@ import { AuthenticationService } from 'src/app/core/services/auth.service';
   styleUrls: ['./dashboard-home.component.css']
 })
 export class DashboardHomeComponent implements OnInit {
-  currentUser: any;
+  @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
-  constructor(private notificationService: NotificationService,
-    private authService: AuthenticationService,
-    private titleService: Title,
-    private logger: NGXLogger) {
+  Cards? = [];
+  PhotoFileName?: any;
+  PhotoFilePath?:any;
+
+  constructor(private service: NoticiasService, public dialog: MatDialog, private fileService:FileService) {
+    this.getNoticias();
+    // this.PhotoFileName = this.PhotoFileName.photoFileName;
+    // this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
   }
+
+  getNoticias(): void{
+  this.service.getNoticias().subscribe(data=>{
+    console.log(data);
+    this.Cards = data;
+    this.PhotoFileName = data;
+  });
+
+}
+
+// async getNoticias(): Promise<any> {
+//   this.Cards = await this.service.getNoticias().subscribe();
+//   console.log(this.Cards)
+// }
+
 
   ngOnInit() {
-    this.currentUser = this.authService.getCurrentUser();
-    this.titleService.setTitle('angular-material-template - Dashboard');
-    this.logger.log('Dashboard loaded');
-
-    setTimeout(() => {
-      this.notificationService.openSnackBar('Welcome!');
-    });
   }
+}
+
+export interface Noticias {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  PublicadoPor: string;
+  fechaPublicacion: Date;
+  photoFileName: string;
 }
