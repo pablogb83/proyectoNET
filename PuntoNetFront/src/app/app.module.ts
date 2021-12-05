@@ -13,14 +13,16 @@ import { DatePipe } from '@angular/common';
 import { NGXLoggerHttpService, NGXMapperService } from 'ngx-logger';
 import { ReconocimientoFacialComponent } from './reconocimiento-facial/reconocimiento-facial.component';
 import { UsersAddComponent } from './users/users-add/users-add.component';
-
+import { WebcamModule } from 'ngx-webcam';
+import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ReconocimientoFacialComponent,
-    UsersAddComponent
+    UsersAddComponent,
+    WebcamSnapshotComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +32,7 @@ import { UsersAddComponent } from './users/users-add/users-add.component';
     SharedModule,
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
+    WebcamModule
   ],
   bootstrap: [AppComponent],
   providers:[
@@ -40,6 +43,7 @@ import { UsersAddComponent } from './users/users-add/users-add.component';
     NGXLoggerHttpService,
     AdminGuard
   ],
+  exports:[WebcamModule],
   entryComponents:[
     ReconocimientoFacialComponent,
     UsersAddComponent

@@ -33,15 +33,16 @@ export class ReconocimientoFacialComponent implements OnInit {
   uploadFile(event){
     const files = event.target.files;
     var file=event.target.files[0];
+    /*var file=event.target.files[0];
     if (files.length === 0)
       return;
 
     var mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
+    if (mimeType.match(/image\/) == null) {
       return;
     }
 
-    var reader = new FileReader();
+    /*var reader = new FileReader();
     this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
@@ -58,10 +59,32 @@ export class ReconocimientoFacialComponent implements OnInit {
       this.agregarAcceso(data.id);
     },err=>{
       this.showErrorAlert();
-    });
+    });*/
   }
 
-  
+  fileChangedHandler(imagen){
+    
+    const webcamImage = imagen;
+    const arr = webcamImage.imageAsDataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    const file: File = new File([u8arr],"random")
+    const formData:FormData=new FormData();
+    formData.append('uploadedFile',file,"yoquese");
+    this.fileService.UploadfileFace(formData).subscribe((data: any)=>{
+      this.showSuccessAlert(data.nombres);
+      this.PhotoFilePath = this.fileService.PhotoUrl + data.photoFileName;
+      this.agregarAcceso(data.id);
+    },err=>{
+      console.log(err);
+      this.showErrorAlert();
+    });
+  }
 
   agregarAcceso(idPersona){
     var val = {

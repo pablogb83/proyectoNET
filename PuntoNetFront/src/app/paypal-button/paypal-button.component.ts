@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { window } from 'rxjs-compat/operator/window';
 import { InstitucionService } from '../core/services/institucion.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
 
@@ -29,7 +28,6 @@ export class PaypalButtonComponent implements OnInit {
         },
         onClick: async (data,actions) =>{
           const status = await this.institucionService.isActive().toPromise();
-          console.log("EL STATUS ES: ", status);
           if(status){
             return actions.reject();
           }

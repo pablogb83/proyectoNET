@@ -2,15 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReconocimientoFacialRoutingModule } from './reconocimiento-facial-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { WebcamSnapshotComponent } from '../webcam-snapshot/webcam-snapshot.component';
+import { WebcamModule } from 'ngx-webcam';
 
 
 @NgModule({
-  declarations: [WebcamSnapshotComponent],
+  declarations: [],
   imports: [
     CommonModule,
     SharedModule,
     ReconocimientoFacialRoutingModule,
-  ]
+    WebcamModule
+  ],
+  exports:[WebcamModule]
 })
 export class ReconocimientoFacialModule { }

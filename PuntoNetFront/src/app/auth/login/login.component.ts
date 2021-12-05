@@ -29,8 +29,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.titleService.setTitle('Proyecto .NET Login');
-        //this.authenticationService.logout();
+        this.tokenService.signOut();
         this.createForm();
     }
 

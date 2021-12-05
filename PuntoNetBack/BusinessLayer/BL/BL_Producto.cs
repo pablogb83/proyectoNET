@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Productos;
+using DataAccessLayer.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,21 @@ namespace BusinessLayer.BL
         public bool CreateProduct(ProductoCreateDto producto)
         {
             return _dal.CreateProducto(producto);
+        }
+
+        public List<ProductoReadDto> GetProductos()
+        {
+            return _dal.GetProductos();
+        }
+
+        public ProductoReadDto GetProducto(string id)
+        {
+            return _dal.GetProducto(id);
+        }
+
+        public bool UpdateProductoPrecio(double precio, string plan_id)
+        {
+            return _dal.UpdateProductoPrecio(precio, plan_id);
         }
     }
 }

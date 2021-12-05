@@ -1,67 +1,75 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from "@angular/core";
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Subject, Observable} from 'rxjs';
+import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
 
 @Component({
   selector: "app-webcam-snapshot",
   templateUrl: "./webcam-snapshot.component.html",
   styleUrls: ["./webcam-snapshot.component.css"]
 })
-export class WebcamSnapshotComponent implements AfterViewInit {
-  WIDTH = 640;
-  HEIGHT = 480;
-
-  @ViewChild("video",{static: false})
-  public video: ElementRef;
-
-  @ViewChild("canvas",{static: false})
-  public canvas: ElementRef;
-
-  captures: string[] = [];
-  error: any;
-  isCaptured: boolean;
-
-  async ngAfterViewInit() {
-    await this.setupDevices();
-  }
-
-  async setupDevices() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true
+export class WebcamSnapshotComponent {
+  
+    // toggle webcam on/off
+    public showWebcam = true;
+    public allowCameraSwitch = true;
+    public multipleWebcamsAvailable = false;
+    public deviceId: string;
+    public videoOptions: MediaTrackConstraints = {
+      // width: {ideal: 1024},
+      // height: {ideal: 576}
+    };
+    @Output() fileChanged: EventEmitter<WebcamImage> =   new EventEmitter();
+    public errors: WebcamInitError[] = [];
+  
+    // latest snapshot
+    public webcamImage: WebcamImage = null;
+  
+    // webcam snapshot trigger
+    private trigger: Subject<void> = new Subject<void>();
+    // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+    private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
+  
+    public ngOnInit(): void {
+      WebcamUtil.getAvailableVideoInputs()
+        .then((mediaDevices: MediaDeviceInfo[]) => {
+          this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
         });
-        if (stream) {
-          this.video.nativeElement.srcObject = stream;
-          this.video.nativeElement.play();
-          this.error = null;
-        } else {
-          this.error = "You have no output video device";
-        }
-      } catch (e) {
-        this.error = e;
-      }
     }
-  }
-
-  capture() {
-    this.drawImageToCanvas(this.video.nativeElement);
-    this.captures.push(this.canvas.nativeElement.toDataURL("image/png"));
-    this.isCaptured = true;
-  }
-
-  removeCurrent() {
-    this.isCaptured = false;
-  }
-
-  setPhoto(idx: number) {
-    this.isCaptured = true;
-    var image = new Image();
-    image.src = this.captures[idx];
-    this.drawImageToCanvas(image);
-  }
-
-  drawImageToCanvas(image: any) {
-    this.canvas.nativeElement
-      .getContext("2d")
-      .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
-  }
+  
+    public triggerSnapshot(): void {
+      this.trigger.next();
+    }
+  
+    public toggleWebcam(): void {
+      this.showWebcam = !this.showWebcam;
+    }
+  
+    public handleInitError(error: WebcamInitError): void {
+      this.errors.push(error);
+    }
+  
+    public showNextWebcam(directionOrDeviceId: boolean|string): void {
+      // true => move forward through devices
+      // false => move backwards through devices
+      // string => move to device with given deviceId
+      this.nextWebcam.next(directionOrDeviceId);
+    }
+  
+    public handleImage(webcamImage: WebcamImage): void {
+      this.fileChanged.emit(webcamImage);
+      this.webcamImage = webcamImage;
+    }
+  
+    public cameraWasSwitched(deviceId: string): void {
+      console.log('active device: ' + deviceId);
+      this.deviceId = deviceId;
+    }
+  
+    public get triggerObservable(): Observable<void> {
+      return this.trigger.asObservable();
+    }
+  
+    public get nextWebcamObservable(): Observable<boolean|string> {
+      return this.nextWebcam.asObservable();
+    }
 }

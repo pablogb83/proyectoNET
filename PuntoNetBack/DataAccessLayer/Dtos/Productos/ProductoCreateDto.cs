@@ -10,5 +10,7 @@ namespace DataAccessLayer.Dtos.Productos
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+
+        public double Precio { get; set; }
     }
 }
