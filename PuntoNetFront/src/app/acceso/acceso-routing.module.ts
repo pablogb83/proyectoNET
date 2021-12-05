@@ -14,6 +14,7 @@ const routes: Routes = [
       { path: '', component: AccesoListComponent },
       { path: 'add', component: AccesoAddComponent},
       { path: 'facialrecognition', component: ReconocimientoFacialComponent},
+
     ]
   }
 ];

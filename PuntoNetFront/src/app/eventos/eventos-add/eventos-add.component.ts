@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
@@ -7,6 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Time } from '@angular/common';
 import moment from 'moment';
+import { EdificiosService } from 'src/app/core/services/edificios.service';
 
 @Component({
   selector: 'app-eventos-add',
@@ -26,6 +27,8 @@ export class EventosAddComponent implements OnInit {
   PhotoFilePath?:any;
   fecha = new Date();
   salones: any[];
+  edificios: any[];
+  idEdificio: number;
 
   dias: any[] = [
     {
@@ -59,20 +62,32 @@ export class EventosAddComponent implements OnInit {
   ]
 
   tipoEvento ="simple";
+  habilitarAgregar = false; 
+
+  @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) {
+    console.log(event);
+      this.habilitarAgregar = false;
+      this.salones = []
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService,private fb: FormBuilder) {
-   
+  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService,private fb: FormBuilder, private edificioService: EdificiosService) {
+    this.edificioService.getEdificios().subscribe(data=>{
+      console.log(data); 
+      this.edificios = data;
+     })
    }
 
   ngOnInit() {
    // this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
+
   }
 
-  agregarEvento(){
+  diasSeleccionados(){
     const diasSeleccionados = this.dias.filter(x=>{
       if(x.selected){
         return x;
@@ -80,6 +95,17 @@ export class EventosAddComponent implements OnInit {
     }).map(x=>{
       return x.value;
     });
+    return diasSeleccionados
+  }
+
+  agregarEvento(){
+    // const diasSeleccionados = this.dias.filter(x=>{
+    //   if(x.selected){
+    //     return x;
+    //   }
+    // }).map(x=>{
+    //   return x.value;
+    // });
     if(this.tipoEvento==="simple"){
       const fechas = this.getFechaFin();
       this.service.postEvento(this.nombre,this.descripcion, fechas.fechainicio.format("YYYY-MM-DDTHH:mm:ss"), fechas.fechafin.format("YYYY-MM-DDTHH:mm:ss"), this.idsalon).subscribe(res=>{
@@ -90,7 +116,7 @@ export class EventosAddComponent implements OnInit {
       });
     }
     else{
-      this.service.postEventoRecurrente(this.nombre,this.descripcion,this.fechainicio.value, this.fechafin.value,moment(this.hora).format("HH:mm") ,this.duracion,diasSeleccionados).subscribe(data=>{
+      this.service.postEventoRecurrente(this.nombre,this.descripcion,this.fechainicio.value, this.fechafin.value,moment(this.hora).format("HH:mm") ,this.duracion,this.diasSeleccionados(),this.idsalon).subscribe(data=>{
         this.showSuccessAlert();
       },err=>{
         console.log(err);
@@ -116,10 +142,28 @@ export class EventosAddComponent implements OnInit {
     console.log("BUENO ARRANCAMOS");
     const fechas = this.getFechaFin();
     console.log(fechas);
-    this.service.getSalonesDisponibles(fechas.fechainicio.format("YYYY-MM-DD HH:mm:ss"),fechas.fechafin.format("YYYY-MM-DD HH:mm:ss")).subscribe(data=>{
-      console.log(data);
-      this.salones = data;
-    });
+    if(this.tipoEvento === "simple"){
+      if(fechas && this.idEdificio && this.duracion && this.hora){
+        this.service.getSalonesDisponibles(fechas.fechainicio.format("YYYY-MM-DD HH:mm:ss"),fechas.fechafin.format("YYYY-MM-DD HH:mm:ss"),this.idEdificio,this.tipoEvento, this.diasSeleccionados(), this.duracion, moment(this.hora).format("HH:mm") ).subscribe(data=>{
+          console.log(data);
+          this.habilitarAgregar = true;
+          this.salones = data;
+        });
+      }else{
+          this.showErrorAlert2();
+      }
+    }else{
+      if(fechas && this.idEdificio && this.duracion && this.hora && this.diasSeleccionados().length){
+        this.service.getSalonesDisponibles(this.fechainicio.value, this.fechafin.value,this.idEdificio,this.tipoEvento, this.diasSeleccionados(), this.duracion, moment(this.hora).format("HH:mm") ).subscribe(data=>{
+          console.log(data);
+          this.habilitarAgregar = true;
+          this.salones = data;
+        });
+      }else{
+          this.showErrorAlert2();
+      }
+    }
+    
   }
 
   getFechaFin(){
@@ -139,6 +183,10 @@ export class EventosAddComponent implements OnInit {
 
   showErrorAlert(msg?) {
     Swal.fire('Error!', msg ? msg : 'Algo salió mal', 'error');
+  }
+
+  showErrorAlert2() {
+    Swal.fire('Error!', 'Ingrese todos los datos', 'error');
   }
 
 }

@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Dtos.Eventos;
+using DataAccessLayer.Dtos.Salon;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace BusinessLayer.IBL
         void CreateEvento(Evento evt, int SalonId);
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
-        void CreateEventoRecurrente(EventoRecurrenteCreateDto evt);
-        IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin);
+        void CreateEventoRecurrente(EventoRecurrenteCreateDto evt, int SalonId);
+        IEnumerable<Salon> GetSalonesDisponibles(SalonesDisponiblesDto datos);
 
     }
 }

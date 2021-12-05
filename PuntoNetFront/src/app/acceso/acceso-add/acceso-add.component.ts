@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AccesoService } from 'src/app/core/services/acceso.service';
 import { FileService } from 'src/app/core/services/file.service';
 import { PersonaService } from 'src/app/core/services/persona.service';
+import { PersonaAddComponent } from 'src/app/persona/persona-add/persona-add.component';
 import { Persona } from 'src/app/persona/persona-list/persona-list.component';
 import Swal from 'sweetalert2';
 import { Data } from '../acceso-list/acceso-list.component';
@@ -21,7 +22,7 @@ export class AccesoAddComponent  {
   PhotoFileName?:any;
   PhotoFilePath?:any;
 
-  constructor(public dialogRef: MatDialogRef<AccesoAddComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService,private fileService:FileService, public router: Router) {
+  constructor(public dialogRef: MatDialogRef<AccesoAddComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService,private fileService:FileService, public router: Router,public dialog: MatDialog) {
     this.idPuerta = data.idpuerta;
     console.log(this.idPuerta);
     this.getPersonas();
@@ -74,8 +75,14 @@ export class AccesoAddComponent  {
   }
 
   redireccionar():void{
-    this.router.navigate(['/personas']);
     this.onNoClick();
+      const dialogRef = this.dialog.open(PersonaAddComponent, {
+        width: '500px',
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.router.navigate(['/personas']);
+      }); 
   }
 
   showSuccessAlert() {

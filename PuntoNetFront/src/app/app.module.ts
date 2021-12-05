@@ -15,6 +15,8 @@ import { ReconocimientoFacialComponent } from './reconocimiento-facial/reconocim
 import { UsersAddComponent } from './users/users-add/users-add.component';
 import { WebcamModule } from 'ngx-webcam';
 import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.component';
+import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
+
 
 
 @NgModule({
@@ -22,7 +24,13 @@ import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.compo
     AppComponent,
     ReconocimientoFacialComponent,
     UsersAddComponent,
-    WebcamSnapshotComponent
+    WebcamSnapshotComponent,
+    PersonaAddComponent
+  ],
+  entryComponents:[
+    PersonaAddComponent,
+    ReconocimientoFacialComponent,
+    UsersAddComponent
   ],
   imports: [
     BrowserModule,
@@ -43,11 +51,7 @@ import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.compo
     NGXLoggerHttpService,
     AdminGuard
   ],
-  exports:[WebcamModule],
-  entryComponents:[
-    ReconocimientoFacialComponent,
-    UsersAddComponent
-  ]
+  exports:[WebcamModule]
 
 })
 export class AppModule {
