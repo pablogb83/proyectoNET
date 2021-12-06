@@ -33,6 +33,11 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'noticias',
+        loadChildren: './noticias/noticias.module#NoticiasModule',
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'account',
         loadChildren: './account/account.module#AccountModule',
         canActivate: [AuthGuard]
