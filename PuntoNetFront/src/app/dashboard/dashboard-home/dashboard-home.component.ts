@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { FileService } from 'src/app/core/services/file.service';
 import { NoticiasService } from 'src/app/core/services/noticias.service';
+import { Subscription, Observable } from 'rxjs';
+import { DashboradGetNoticiaComponent } from '../dashborad-get-noticia/dashborad-get-noticia.component';
 
 
 @Component({
@@ -10,38 +12,51 @@ import { NoticiasService } from 'src/app/core/services/noticias.service';
   styleUrls: ['./dashboard-home.component.css']
 })
 export class DashboardHomeComponent implements OnInit {
+  ToString() {
+    throw new Error('Method not implemented.');
+  }
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
-  Cards? = [];
-  PhotoFileName?: any;
-  PhotoFilePath?:any;
+  Cards:any=[];
+  PhotoFileName:any=[];
+  PhotoFilePath:any=[];
 
   constructor(private service: NoticiasService, public dialog: MatDialog, private fileService:FileService) {
     this.getNoticias();
-    // this.PhotoFileName = this.PhotoFileName.photoFileName;
-    // this.PhotoFilePath=this.fileService.PhotoUrl+this.PhotoFileName;
   }
 
   getNoticias(): void{
   this.service.getNoticias().subscribe(data=>{
-    console.log(data);
+
     this.Cards = data;
-    this.PhotoFileName = data;
+    for (let card of this.Cards){
+      card.PhotoFilePath =  this.fileService.PhotoUrl + card.photoFileName;
+    }
+    
+    console.log(this.Cards);
   });
 
 }
 
-// async getNoticias(): Promise<any> {
-//   this.Cards = await this.service.getNoticias().subscribe();
-//   console.log(this.Cards)
-// }
+openDialogNoticia(noticia:any): void {
+  const dialogRef = this.dialog.open(DashboradGetNoticiaComponent, {
+    width: '900px',
+    data: {nombre: noticia.nombre, descripcion: noticia.descripcion, fechaPublicacion: noticia.fechaPublicacion,
+      PhotoFilePath: noticia.PhotoFilePath, publicadoPor: noticia.publicadoPor }
+  });
 
-
-  ngOnInit() {
-  }
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed');
+    this.getNoticias();
+  });
 }
 
-export interface Noticias {
+
+
+  ngOnInit() {}
+}
+
+export interface DashboardHomeComponent {
   id: string;
   nombre: string;
   descripcion: string;
