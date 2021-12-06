@@ -17,6 +17,9 @@ export class AdminGuard implements CanActivate {
             return true;
         }
         if(!active){
+            if(this.router.url.includes("pago")){
+                return true;
+            }
             this.router.navigate(['/pago']);
             return false;
         }

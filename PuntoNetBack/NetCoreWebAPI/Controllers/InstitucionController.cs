@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
 using Shared.ModeloDeDominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -111,6 +112,44 @@ namespace NetCoreWebAPI.Controllers
             var institucion = _bl.GetInstitucionById(id);
             return Ok(institucion != null && institucion.Activa);
         }
+
+        [HttpGet("facturacion")]
+        //[Authorize(Roles = "ADMIN, PORTERO, GESTOR")]
+        public ActionResult<bool> GetFacturacion(string id, DateTime fechainicio, DateTime fechafin)
+        {
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "SUPERADMIN")
+            {
+                return Ok(_bl.GetFacturacion(id, fechainicio, fechafin));
+            }
+            else
+            {
+                var tenant = User.Claims.Skip(1).FirstOrDefault().Value;
+                return Ok(_bl.GetFacturacion(tenant, fechainicio, fechafin));
+            }
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Roles = "ADMIN")]
+        public ActionResult<bool> InstitucionAdmin()
+        {
+            var tenant = User.Claims.Skip(1).FirstOrDefault();
+            string id = tenant.Value;
+            if (string.IsNullOrEmpty(id))
+            {
+                id = "";
+            }
+            var institucion = _bl.GetInstitucionById(id);
+            if (institucion!=null)
+            {
+                return Ok(institucion);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]

@@ -24,10 +24,7 @@ export interface DialogData {
 export class InstitucionListComponent implements AfterViewInit {
 
   constructor(private service:InstitucionService,public dialog: MatDialog) { 
-    this.service.getInstList().subscribe(data=>{
-      this.InstitucionList = new MatTableDataSource<Instituciones>(data);
-      this.InstitucionList.paginator = this.paginator;
-    });
+    this.getInstituciones();
   }
 
   InstitucionList:any=[];
@@ -48,14 +45,19 @@ export class InstitucionListComponent implements AfterViewInit {
   // }
 
 
+  getInstituciones(){
+    this.service.getInstList().subscribe(data=>{
+      this.InstitucionList = new MatTableDataSource<Instituciones>(data);
+      this.InstitucionList.paginator = this.paginator;
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(InstAddComponent, {
-      width: '250px',
+      width: '500px',
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.ngAfterViewInit();
+      this.getInstituciones();
     });
   }
 
@@ -66,8 +68,7 @@ export class InstitucionListComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.ngAfterViewInit();
+      this.getInstituciones();
     });
   }
   
@@ -95,7 +96,7 @@ export class InstitucionListComponent implements AfterViewInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteInst(item.id).subscribe(data=>{
-          this.ngAfterViewInit();
+          this.getInstituciones();
         })
         Swal.fire(
           'Borrado!',

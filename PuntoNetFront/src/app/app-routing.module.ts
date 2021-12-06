@@ -17,11 +17,11 @@ import { RolesModule } from './roles/roles.module';
 import { SalonModule } from './salon/salon.module';
 import { UsersModule } from './users/users.module';
 import { AdminGuard } from './core/guards/admin.guard';
-import { AdminporteroGuard } from './core/guards/adminportero.guard';
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { SuperAdminGuard } from './core/guards/superadmin.guard';
-import { PagoComponent } from './pago/pago.component';
+import { ProductosModule } from './productos/productos.module';
+import { FacturacionModule } from './facturacion/facturacion.module';
 
 const appRoutes: Routes = [
     {
@@ -55,8 +55,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'pago',
-        loadChildren: ()=>PagoModule,
-        canActivate: [AuthGuard,AdminGuard]
+        loadChildren: ()=>PagoModule
     },
     {
         path: 'edificios',
@@ -82,6 +81,16 @@ const appRoutes: Routes = [
         path: 'personas',
         loadChildren: ()=>PersonaModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
+        path: 'productos',
+        loadChildren: ()=>ProductosModule,
+        canActivate: [AuthGuard, SuperAdminGuard]
+    },
+    {
+        path: 'facturacion',
+        loadChildren: ()=>FacturacionModule,
+        canActivate: [AuthGuard]
     },
     {
         path: 'reconocimiento-facial',

@@ -1,4 +1,5 @@
-﻿using Shared.ModeloDeDominio;
+﻿using DataAccessLayer.Helpers;
+using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace DataAccessLayer.IDAL
         void CreateInstitucion(Institucion inst);
         void UpdateInstitucion(Institucion inst);
         void DeleteInstitucion(Institucion inst);
+        List<Transaction> GetFacturacion(string insitucionId, DateTime fechainicio, DateTime fechafin);
     }
 }

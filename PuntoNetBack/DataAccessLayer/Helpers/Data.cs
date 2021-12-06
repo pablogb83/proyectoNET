@@ -155,6 +155,7 @@ namespace DataAccessLayer.Helpers
         public List<CycleExecution> cycle_executions { get; set; }
         public LastPayment last_payment { get; set; }
         public DateTime next_billing_time { get; set; }
+        public DateTime final_payment_time { get; set; }
         public int failed_payments_count { get; set; }
     }
 
@@ -214,7 +215,7 @@ namespace DataAccessLayer.Helpers
             this.transmission_id = transmission_id;
             this.transmission_sig = transmission_sig;
             this.transmission_time = transmission_time;
-            this.webhook_id = "7RS944148F691061T";
+            this.webhook_id = "4F716434J7773954B";
             this.webhook_event = webhook_event;
         }
 
@@ -350,13 +351,19 @@ namespace DataAccessLayer.Helpers
     public class Plan
     {
         public string id { get; set; }
+        public int version { get; set; }
         public string name { get; set; }
         public string status { get; set; }
         public string description { get; set; }
         public string usage_type { get; set; }
+        public List<BillingCycle> billing_cycles { get; set; }
+        public PaymentPreferences payment_preferences { get; set; }
+        public bool quantity_supported { get; set; }
         public DateTime create_time { get; set; }
+        public DateTime update_time { get; set; }
         public List<Link> links { get; set; }
     }
+
 
     public class PlanSuscriptionInfo
     {
@@ -408,5 +415,52 @@ namespace DataAccessLayer.Helpers
     {
         public List<PricingUpdate> pricing_schemes { get; set; }
     }
+
+    public class GrossAmount
+    {
+        public string currency_code { get; set; }
+        public string value { get; set; }
+    }
+
+    public class FeeAmount
+    {
+        public string currency_code { get; set; }
+        public string value { get; set; }
+    }
+
+    public class NetAmount
+    {
+        public string currency_code { get; set; }
+        public string value { get; set; }
+    }
+
+    public class AmountWithBreakdown
+    {
+        public GrossAmount gross_amount { get; set; }
+        public FeeAmount fee_amount { get; set; }
+        public NetAmount net_amount { get; set; }
+    }
+
+    public class PayerName
+    {
+        public string given_name { get; set; }
+        public string surname { get; set; }
+    }
+
+    public class Transaction
+    {
+        public string status { get; set; }
+        public string id { get; set; }
+        public AmountWithBreakdown amount_with_breakdown { get; set; }
+        public PayerName payer_name { get; set; }
+        public string payer_email { get; set; }
+        public DateTime time { get; set; }
+    }
+
+    public class FacturasSuscripcion
+    {
+        public List<Transaction> transactions { get; set; }
+    }
+
 
 }

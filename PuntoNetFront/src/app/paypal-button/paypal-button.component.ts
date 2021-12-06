@@ -17,7 +17,9 @@ export class PaypalButtonComponent implements OnInit {
 
   ngOnInit() {
     const tenant_id = this.service.getTenant();
-    var subID ="";
+    this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
+      console.log(institucionInfo);
+      var subID ="";
       paypal.Buttons({
         style: {
             shape: 'rect',
@@ -35,7 +37,7 @@ export class PaypalButtonComponent implements OnInit {
         createSubscription: async (data: any, actions: any) => {
           return await actions.subscription.create({
             /* Creates the subscription */
-            plan_id: 'P-97818393X7850501NMFRB3JQ',
+            plan_id: institucionInfo.planId,
             custom_id: tenant_id
           });
         },
@@ -48,6 +50,8 @@ export class PaypalButtonComponent implements OnInit {
         onError: (data: any) => {
         }
     }).render(this.paypalElement.nativeElement); 
+    });
+    
 
   }
 }

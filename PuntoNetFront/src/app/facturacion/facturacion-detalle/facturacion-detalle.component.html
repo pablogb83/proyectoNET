@@ -1,0 +1,98 @@
+                       
+<div class="receipt-content">
+    <div class="container center">
+		<div id="factura" #factura class="row">
+			<div class="col-md-12">
+				<div class="invoice-wrapper">
+					<div class="intro">
+						Hi <strong>{{data.payer_name.given_name}} {{data.payer_name.surname}}</strong>, 
+						<br>
+						This is the receipt for a payment of <strong>{{data.amount_with_breakdown.gross_amount.currency_code}} {{data.amount_with_breakdown.gross_amount.value}}</strong>
+					</div>
+
+					<div class="payment-info">
+						<div class="row">
+							<div class="col-sm-6">
+								<span>Payment No.</span>
+								<strong>{{data.id}}</strong>
+							</div>
+							<div class="col-sm-6 text-right">
+								<span>Payment Date</span>
+								<strong>{{data.time | date:'yyyy/MM/dd'}}</strong>
+							</div>
+						</div>
+					</div>
+
+					<div class="payment-details">
+						<div class="row">
+							<div class="col-sm-6">
+								<span>Client</span>
+								<strong>
+									{{data.payer_name.given_name}} {{data.payer_name.surname}}
+								</strong>
+								<p>
+									<a href="#">
+										{{data.payer_email}}
+									</a>
+								</p>
+							</div>
+							<div class="col-sm-6 text-right">
+								<span>Payment To</span>
+								<strong>
+									PuertanTeam
+								</strong>
+							</div>
+						</div>
+					</div>
+
+					<div class="line-items">
+						<div class="headers clearfix">
+							<div class="row">
+								<div class="col-xs-4">Description</div>
+								<div class="col-xs-3">Quantity</div>
+								<div class="col-xs-5 text-right">Amount</div>
+							</div>
+						</div>
+						<div class="items">
+							<div class="row item">
+								<div class="col-xs-4 desc">
+									Suscripcion PUERTAN
+								</div>
+								<div class="col-xs-3 qty">
+									1
+								</div>
+								<div class="col-xs-5 amount text-right">
+									{{data.amount_with_breakdown.net_amount.currency_code}} {{data.amount_with_breakdown.net_amount.value}}
+								</div>
+							</div>
+						</div>
+						<div class="total text-right">
+							<p class="extra-notes">
+								<strong>Extra Notes</strong>
+								Thanks a lot.
+							</p>
+							<div class="field">
+								Subtotal <span>{{data.amount_with_breakdown.net_amount.currency_code}} {{data.amount_with_breakdown.net_amount.value}}</span>
+							</div>
+							<div class="field">
+								Impuestos <span>{{data.amount_with_breakdown.fee_amount.currency_code}} {{data.amount_with_breakdown.fee_amount.value}}</span>
+							</div>
+							<div class="field grand-total">
+								Total <span>{{data.amount_with_breakdown.gross_amount.currency_code}} {{data.amount_with_breakdown.gross_amount.value}}</span>
+							</div>
+						</div>
+
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<a mat-raised-button color="primary" (click)="downloadAsPDF()">
+				<i class="fa fa-print"></i>
+				Print this receipt
+			</a>
+		</div>
+	</div>
+	
+</div>                    

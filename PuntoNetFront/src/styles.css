@@ -141,6 +141,12 @@ p .mat-icon {
   animation-fill-mode: forwards;
 }
 
+
+mat-form-field {
+  width: 100%;
+}
+
+
 @keyframes show {
   from {
     opacity: 0;

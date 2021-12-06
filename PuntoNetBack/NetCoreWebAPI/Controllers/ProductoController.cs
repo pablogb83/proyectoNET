@@ -50,8 +50,7 @@ namespace NetCoreWebAPI.Controllers
                 }
             }
 
-            //DELETE api/salon/{id}
-            [HttpGet("{id}")]
+            [HttpGet("{plan_id}")]
             public ActionResult GetProducto(string id)
             {
                 return Ok(_bl.GetProducto(id));
@@ -63,13 +62,24 @@ namespace NetCoreWebAPI.Controllers
                 return Ok(_bl.GetProductos());
             }
 
-            //PUT api/salon/{id}
             [HttpPut]
             public ActionResult UpdateProduct(string plan_id, double precio)
             {
                 if (_bl.UpdateProductoPrecio(precio, plan_id))
                 {
                     return Ok(new { message="Precio actualizado con exito" });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            [HttpDelete("{plan_id}")]
+            public ActionResult DeleteProduct(string plan_id)
+            {
+                if (_bl.EliminarProducto(plan_id))
+                {
+                    return Ok(new { message = "Producto eliminado con exito" });
                 }
                 else
                 {

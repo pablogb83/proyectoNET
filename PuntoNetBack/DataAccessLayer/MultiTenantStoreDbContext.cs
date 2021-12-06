@@ -3,20 +3,22 @@
 using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Shared.ModeloDeDominio;
 
 namespace DataAccessLayer
 {
 
     public class MultiTenantStoreDbContext : EFCoreStoreDbContext<Institucion>
-    { 
-        public MultiTenantStoreDbContext(DbContextOptions<MultiTenantStoreDbContext> options) : base(options)
+    {
+        private readonly IConfiguration Configuration;
+
+        public MultiTenantStoreDbContext(DbContextOptions<MultiTenantStoreDbContext> options, IConfiguration config) : base(options)
         {
+            Configuration = config;
         }
 
         public virtual DbSet<Institucion> Instituciones { get; set; }
-
-        public virtual DbSet<Producto> Productos { get; set; }
 
         public virtual DbSet<Suscripcion> Suscripciones { get; set; }
 
@@ -24,7 +26,7 @@ namespace DataAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=LAPTOP-IP61HA1Q;Database=NetApi2;Trusted_Connection=True;MultipleActiveResultSets=True");
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("CommanderConnection"));
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

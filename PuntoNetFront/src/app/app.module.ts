@@ -16,6 +16,9 @@ import { UsersAddComponent } from './users/users-add/users-add.component';
 import { WebcamModule } from 'ngx-webcam';
 import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.component';
 import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
+import { ProductosListComponent } from './productos/productos-list/productos-list.component';
+import { ProductosAddComponent } from './productos/productos-add/productos-add.component';
+import { FacturacionListComponent } from './facturacion/facturacion-list/facturacion-list.component';
 
 
 

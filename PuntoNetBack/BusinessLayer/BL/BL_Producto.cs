@@ -44,5 +44,11 @@ namespace BusinessLayer.BL
         {
             return _dal.UpdateProductoPrecio(precio, plan_id);
         }
+
+        public bool EliminarProducto(string plan_id)
+        {
+            return _dal.EliminarProducto(plan_id);
+        }
+
     }
 }

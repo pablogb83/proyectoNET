@@ -16,6 +16,7 @@ namespace BusinessLayer.IBL
         List<ProductoReadDto> GetProductos();
         ProductoReadDto GetProducto(string id);
         bool UpdateProductoPrecio(double precio, string plan_id);
+        bool EliminarProducto(string plan_id);
 
     }
 }

@@ -43,7 +43,15 @@ namespace DataAccessLayer.DAL
             var paypalTools = new PaypalUtil(_clientFactory);
             string token = paypalTools.getPayPalAccessToken();
             var data = paypalTools.getSuscriptionPlans(token);
-            return _mapper.Map<List<ProductoReadDto>>(data);
+            data = data.FindAll(prod => prod.status == "ACTIVE");
+            var convertedData = new List<ProductoReadDto>();
+            foreach(var prod in data)
+            {
+                var convertedProd = _mapper.Map<ProductoReadDto>(prod);
+                convertedProd.price = double.Parse(prod.billing_cycles[0].pricing_scheme.fixed_price.value, CultureInfo.InvariantCulture);
+                convertedData.Add(convertedProd);
+            }
+            return convertedData;
         }
 
         public ProductoReadDto GetProducto(string id)
@@ -57,6 +65,13 @@ namespace DataAccessLayer.DAL
             result.description = planData.description;
             result.price = double.Parse(planData.billing_cycles[0].pricing_scheme.fixed_price.value, CultureInfo.InvariantCulture); 
             return result;
+        }
+
+        public bool EliminarProducto(string plan_id)
+        {
+            var paypalTools = new PaypalUtil(_clientFactory);
+            string token = paypalTools.getPayPalAccessToken();
+            return paypalTools.DeactivatePlan(plan_id, token);
         }
 
         public bool SaveChanges()

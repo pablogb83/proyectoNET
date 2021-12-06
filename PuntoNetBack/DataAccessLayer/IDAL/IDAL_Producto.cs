@@ -19,6 +19,8 @@ namespace DataAccessLayer.IDAL
 
         bool UpdateProductoPrecio(double precio, string plan_id);
 
+        bool EliminarProducto(string plan_id);
+
         bool SaveChanges();
     }
 }

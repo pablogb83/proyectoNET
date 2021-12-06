@@ -32,6 +32,13 @@ namespace DataAccessLayer.DAL
             {
                 Institucion inst =  _context.Instituciones.FirstOrDefault(p => p.Id == body.resource.custom_id);
                 inst.Activa = true;
+                if(inst.Suscripcion == null)
+                {
+                    var suscripcion = new Suscripcion();
+                    suscripcion.Id = body.resource.id;
+                    suscripcion.estado = body.resource.status;
+                    inst.Suscripcion = suscripcion;
+                }
                 _context.SaveChanges();
             }
             return auth;

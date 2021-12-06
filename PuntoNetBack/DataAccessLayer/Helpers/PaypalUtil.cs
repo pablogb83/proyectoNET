@@ -115,18 +115,56 @@ namespace DataAccessLayer.Helpers
             }
         }
 
+        public bool DeactivatePlan(string plan_id, string token)
+        {
+            try
+            {
+                var client = new RestClient("https://api-m.sandbox.paypal.com/v1/billing/plans/" + plan_id + "/deactivate") { Encoding = Encoding.UTF8 };
+                client.AddDefaultHeader("Authorization", string.Format("Bearer {0}", token));
+                var authRequest = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
+                var authResponse = client.Execute(authRequest);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error en la conexion con paypal");
+                return false;
+            }
+        }
+
         public List<Plan> getSuscriptionPlans(string token)
         {
             try
             {
                 var client = new RestClient("https://api-m.sandbox.paypal.com/v1/billing/plans") { Encoding = Encoding.UTF8 };
                 client.AddDefaultHeader("Authorization", string.Format("Bearer {0}", token));
+                client.AddDefaultHeader("Prefer", "return=representation");
                 var authRequest = new RestRequest(Method.GET) { RequestFormat = DataFormat.Json };
                 authRequest.RequestFormat = DataFormat.Json;
                 var authResponse = client.Execute(authRequest);
                 string content = authResponse.Content;
                 PlanSuscriptionInfo obj = JsonConvert.DeserializeObject<PlanSuscriptionInfo>(content);
                 return obj.plans;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error en la conexion con paypal");
+                return null;
+            }
+        }
+
+        public List<Transaction> getFacturasSuscripcion(string token, string subid, DateTime fechainicio, DateTime fechafin)
+        {
+            try
+            {
+                var client = new RestClient("https://api-m.sandbox.paypal.com/v1/billing/subscriptions/" + subid + "/transactions?start_time="+fechainicio.ToString("yyyy-MM-ddTHH:mm:ss") +"z&end_time="+ fechafin.ToString("yyyy-MM-ddTHH:mm:ss")+"z") { Encoding = Encoding.UTF8 };
+                client.AddDefaultHeader("Authorization", string.Format("Bearer {0}", token));
+                var authRequest = new RestRequest(Method.GET) { RequestFormat = DataFormat.Json };
+                authRequest.RequestFormat = DataFormat.Json;
+                var authResponse = client.Execute(authRequest);
+                string content = authResponse.Content;
+                FacturasSuscripcion obj = JsonConvert.DeserializeObject<FacturasSuscripcion>(content);
+                return obj.transactions;
             }
             catch (Exception e)
             {
