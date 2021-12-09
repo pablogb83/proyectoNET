@@ -28,14 +28,24 @@ export class FacturacionListComponent implements OnInit {
 
   constructor(private service: InstitucionService,public dialog: MatDialog, private handleError: HandleErrorsService, private route: ActivatedRoute) { 
     this.route.queryParams.subscribe(params=>{
-      this.service.getInstitucionById(params.id).subscribe((data:any)=>{
-        this.inst = data;
-        console.log(this.inst);
-        this.service.getFacturacion(this.fechainicio.toISOString(),this.fechafin.toISOString(),params.id).subscribe((data: any)=>{
-          this.FacturacionList = new MatTableDataSource<Factura>(data);
-          this.FacturacionList.paginator = this.paginator;
+      if(params.id){
+        this.service.getInstitucionById(params.id).subscribe((data:any)=>{
+          this.inst = data;
+          console.log(this.inst);
+          this.getFacturacion(data.id);
         });
-      });
+      }
+      else{
+        this.getFacturacion();
+      }
+      
+    });
+  }
+
+  getFacturacion(id?){
+    this.service.getFacturacion(this.fechainicio.toISOString(),this.fechafin.toISOString(),id).subscribe((data: any)=>{
+      this.FacturacionList = new MatTableDataSource<Factura>(data);
+      this.FacturacionList.paginator = this.paginator;
     });
   }
 
@@ -44,7 +54,6 @@ export class FacturacionListComponent implements OnInit {
 
   openDialog(element): void {
     const dialogRef = this.dialog.open(FacturacionDetalleComponent, {
-      width: '60vw',
       height: '80vh',
       data: element
     });

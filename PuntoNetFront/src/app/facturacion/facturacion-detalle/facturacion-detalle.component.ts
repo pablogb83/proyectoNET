@@ -6,6 +6,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfmake from 'html-to-pdfmake';
 import html2canvas from 'html2canvas';
+import { ProductoService } from 'src/app/core/services/productos.service';
 
 @Component({
   selector: 'app-facturacion-detalle',
@@ -15,8 +16,10 @@ import html2canvas from 'html2canvas';
 export class FacturacionDetalleComponent implements OnInit {
 
   title = 'factra';
+  producto:any;
+
   @ViewChild('factura') factura: ElementRef;
-  constructor(public dialogRef: MatDialogRef<FacturacionDetalleComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<FacturacionDetalleComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service: ProductoService) {
     console.log(data);
    }
 

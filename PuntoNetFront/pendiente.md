@@ -6,3 +6,6 @@
 4. Quede haciendo obtener roles del administrador.
 5. Poner toda la autorizacion en el back.
 6. Fechas en edit evento.
+7. Verificacion que no exista la cara de la persona.
+8. Subir tambien FaceApi la actualizacion de la cara.
+9. Pueden haber mas de un administrador?

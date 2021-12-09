@@ -52,14 +52,11 @@ namespace NetCoreWebAPI.Controllers
         {
             var institucionModel = _mapper.Map<Institucion>(instituionCreateDto);
             _bl.CreateInstitucion(institucionModel);
-            _bl.SaveChanges();
             var institucionReadDto = _mapper.Map<InstitucionesReadDto>(institucionModel);
-            //CHANCHADA MANUAL
             institucionModel.Identifier = institucionModel.Id;
             _bl.UpdateInstitucion(institucionModel);
             _bl.SaveChanges();
             return CreatedAtRoute(nameof(GetInstitucionById), new { Id = institucionReadDto.Id }, institucionReadDto);
-            //return Ok(commandReadDto);
         }
 
         //PUT api/commands/{id}

@@ -1,21 +1,22 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
     <div fxFlex="95%">
-        <h3>Reconocimiento facial</h3>
+        <h3  class="center">Reconocimiento facial</h3>
         <mat-divider></mat-divider>
         <br>
         <!-- <div class="ml-3 bd-highlight">
             <input type="file" (change)="uploadFile($event)" class="mt-2"/>
         </div> -->
-        <mat-grid-list cols="2" rowHeight="1:1">
-            <mat-grid-tile>
-                <app-webcam-snapshot  (fileChanged)="fileChangedHandler($event)"></app-webcam-snapshot>
-            </mat-grid-tile>
-            <mat-grid-tile>
-                <img [src]="imgURL" *ngIf="imgURL">
-                <img *ngIf="PhotoFilePath" [src]=PhotoFilePath>
-            </mat-grid-tile>
-        </mat-grid-list>
-       
+        <div class="center" >
+            <mat-grid-list cols="2" rowHeight="1:1">
+                <mat-grid-tile>
+                    <app-webcam-snapshot  (fileChanged)="fileChangedHandler($event)"></app-webcam-snapshot>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <img [src]="imgURL" *ngIf="imgURL">
+                    <img *ngIf="PhotoFilePath" [src]=PhotoFilePath>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
         <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
     </div>
 </div>

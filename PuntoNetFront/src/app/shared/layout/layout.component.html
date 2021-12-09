@@ -77,7 +77,7 @@
           <p mat-line> Productos </p>
         </a>
 
-        <a mat-list-item [routerLink]="['/facturacion']" *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/facturacion']" *ngIf="rol==='ADMIN' && instActive" routerLinkActive="active">
           <mat-icon mat-list-icon>
             list
           </mat-icon>
@@ -95,7 +95,7 @@
             <mat-icon mat-list-icon>
               people
             </mat-icon>
-            <p mat-line> Users </p>
+            <p mat-line> Usuarios </p>
           </a>
   
           <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">

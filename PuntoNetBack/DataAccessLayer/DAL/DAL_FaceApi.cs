@@ -189,12 +189,29 @@ namespace DataAccessLayer.DAL
             return detectedFaces.ToList();
         }
 
-        public static async Task<Person> ReconocimientoFacial(Stream imagen)
+        public static async Task<Person> ReconocimientoFacial(Stream imagen,string PersonGroupId)
         {
-            IList<Person> people =await client.PersonGroupPerson.ListAsync(personGroupId);
+            //IList<Person> people = await client.PersonGroupPerson.ListAsync(personGroupId);
+            PersonGroupId = PersonGroupId.ToLower();
             List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, imagen, recognitionModel03);
             Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
-            foreach (Person person in people)
+            try
+            {
+                List<Guid> cara = new List<Guid>();
+                cara.Add(sourceFaceId1);
+                var group = await client.PersonGroup.GetAsync(PersonGroupId);
+                await client.PersonGroup.TrainAsync(PersonGroupId);
+                var status = await client.PersonGroup.GetTrainingStatusAsync(PersonGroupId);
+                var identifyResults = await client.Face.IdentifyAsync(cara, PersonGroupId);
+                var faceid = identifyResults[0].Candidates[0].PersonId;
+                var person = await client.PersonGroupPerson.GetAsync(PersonGroupId, faceid);
+                return person;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+            /*foreach (Person person in people)
             {
                 try
                 {
@@ -211,13 +228,21 @@ namespace DataAccessLayer.DAL
                     Debug.WriteLine(err.Body.Error.Message);
                 }
                
-            }
-            return null;
+            }*/
+        }
+
+        public static async Task CreatePersonGroup(string personGroupId)
+        {
+            await client.PersonGroup.CreateAsync(personGroupId, personGroupId, recognitionModel: recognitionModel03);
+        }
+        public static async Task DeletePersonGroup(string personGroupId)
+        {
+            await client.PersonGroup.DeleteAsync(personGroupId);
         }
 
         private static async Task<List<DetectedFace>> DetectFaceRecognizeStream(IFaceClient faceClient, Stream imagen, string recognition_model)
         {
-            IList<DetectedFace> detectedFaces = await client.Face.DetectWithStreamAsync(imagen, true, false, new FaceAttributeType[] { FaceAttributeType.Age, FaceAttributeType.Gender });
+            IList<DetectedFace> detectedFaces = await client.Face.DetectWithStreamAsync(imagen, true, false, new FaceAttributeType[] { FaceAttributeType.Age, FaceAttributeType.Gender }, recognitionModel03);
             Debug.WriteLine($"{detectedFaces.Count} face(s) detected from image `{Path.GetFileName(url)}`");
             return detectedFaces.ToList();
         }
@@ -228,11 +253,22 @@ namespace DataAccessLayer.DAL
             return result.IsIdentical;
         }
         
-        public static async Task<bool> AgregarPersona(string email, Stream stream)
+        public static async Task<bool> AgregarPersona(string email, Stream stream, string PersonGroupId)
         {
-            Person p1 = await client.PersonGroupPerson.CreateAsync(personGroupId, email);
-            PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(personGroupId, p1.PersonId, stream);
+            PersonGroupId = PersonGroupId.ToLower();
+            Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, email);
+            PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(PersonGroupId, p1.PersonId, stream);
+            await client.PersonGroup.TrainAsync(PersonGroupId);
             return true;
         }
+
+        public static async Task<bool> BorrarPersona(string email, string PersonGroupId)
+        {
+            PersonGroupId = PersonGroupId.ToLower();
+            Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, email);
+            await client.PersonGroup.TrainAsync(PersonGroupId);
+            return true;
+        }
+
     }
 }

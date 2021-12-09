@@ -77,8 +77,7 @@ export class PuertaListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //this.getSalones();
+      this.getPuertas();
     }); 
   }
 

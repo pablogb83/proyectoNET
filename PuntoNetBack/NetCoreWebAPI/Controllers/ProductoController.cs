@@ -24,12 +24,14 @@ namespace NetCoreWebAPI.Controllers
         public class ProductoController : ControllerBase
         {
             private readonly IBL_Producto _bl;
+            private readonly IBL_Institucion _blInst;
             private readonly IMapper _mapper;
             private readonly ILogger<SalonController> _logger;
 
-            public ProductoController(IBL_Producto bl, IMapper mapper, ILogger<SalonController> logger)
+            public ProductoController(IBL_Producto bl, IBL_Institucion blInst, IMapper mapper, ILogger<SalonController> logger)
             {
                 _bl = bl;
+                _blInst = blInst;
                 _mapper = mapper;
                 _logger = logger;
             }
@@ -53,7 +55,17 @@ namespace NetCoreWebAPI.Controllers
             [HttpGet("{plan_id}")]
             public ActionResult GetProducto(string id)
             {
-                return Ok(_bl.GetProducto(id));
+                var role = User.Claims.Skip(2).FirstOrDefault().Value;
+                if (role == "SUPERADMIN")
+                {
+                    return Ok(_bl.GetProducto(id));
+                }
+                else
+                {
+                    var tenant = User.Claims.Skip(1).FirstOrDefault().Value;
+                    var inst = _blInst.GetInstitucionById(tenant);
+                    return Ok(_bl.GetProducto(inst.PlanId));
+                }
             }
 
             [HttpGet]

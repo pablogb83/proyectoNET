@@ -3,6 +3,7 @@
     color: #7793C4; 
   }
   
+  
   .receipt-content .invoice-wrapper {
     background: #FFF;
     border: 1px solid #CDD3E2;
@@ -47,7 +48,6 @@
   }
 
   .receipt-content {
-      align-self: center;
     background: #ECEEF4; 
   }
   @media (min-width: 1200px) {

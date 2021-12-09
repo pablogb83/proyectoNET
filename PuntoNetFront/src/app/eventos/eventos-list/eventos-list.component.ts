@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { CalendarioComponent } from 'src/app/calendario/calendario.component';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import Swal from 'sweetalert2';
 import { EventosAddComponent } from '../eventos-add/eventos-add.component';
@@ -64,6 +65,20 @@ export class EventosListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.getEventos();
+    });
+  }
+
+  openDialogCalendar(): void {
+    this.service.getEventos().subscribe(data=>{
+      const dialogRef = this.dialog.open(CalendarioComponent, {
+        width: '80vw',
+        height:'95vh',
+        data: data
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.getEventos();
+      });
     });
   }
 

@@ -5,7 +5,7 @@
         <mat-card-content>
           <h2>Eventos</h2>
           <button mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
-  
+          <button mat-raised-button color="accent" (click)="openDialogCalendar()">Calendario</button>
           <table mat-table  [dataSource]="EventoList" matSort>
   
             <ng-container matColumnDef="id">

@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
+
     public class WebAPIContext : MultiTenantIdentityDbContext<Usuario, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        private const string defaultTenantId = "240ed6a6-e391-4745-9278-ff5e66189583";
+        private const int adminId = 1;
+        private const int roleId = 1;
         public WebAPIContext(ITenantInfo tenantInfo, DbContextOptions<WebAPIContext> options) : base(tenantInfo, options)
         {
         }
@@ -30,6 +34,27 @@ namespace DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.UserId, pk.RoleId });
+            modelBuilder.Entity<Role>().HasData(new Role { Name = "SUPERADMIN", NormalizedName = "SUPERADMIN", ConcurrencyStamp = new Guid().ToString(), Id = roleId });
+            modelBuilder.Entity<Usuario>().HasData(new Usuario
+            {
+                Id = adminId,
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",
+                Email = "admin@admin.com",
+                NormalizedEmail = "ADMIN@ADMIN.COM",
+                PhoneNumber = "098549382",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = new Guid().ToString("D"),
+                ConcurrencyStamp = new Guid().ToString("D"),
+                TwoFactorEnabled = false,
+                LockoutEnd = new DateTime(),
+                LockoutEnabled = true,
+                AccessFailedCount = 0,
+                PasswordHash = "AQAAAAEAACcQAAAAEDScDguK3Sx4oLf+Zh+A8etz8lIrm2TH0yCx10v7asCjqErAXyq2gOad712ILTfrKg==",
+                TenantId = defaultTenantId
+            }); ;
+            modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId=adminId,RoleId= roleId });
             TenantMismatchMode = TenantMismatchMode.Ignore;
         }
 

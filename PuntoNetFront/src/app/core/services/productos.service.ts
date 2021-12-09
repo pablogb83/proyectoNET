@@ -20,6 +20,10 @@ export class ProductoService {
     return this.http.get<any>(AUTH_API);
   }
 
+  getProducto(id?:string):Observable<any[]>{
+    return this.http.get<any>(AUTH_API+`/${id}`);
+  }
+
   postProducto(val:any){
     return this.http.post(AUTH_API ,val, httpOptions);
   }

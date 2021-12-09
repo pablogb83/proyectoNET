@@ -25,7 +25,7 @@
           </mat-form-field>
 
         <div class="example-button-row">
-            <button mat-raised-button color="primary" (click)="agregarInstitucion()">Agregar</button>
+            <button mat-raised-button color="primary" [disabled]="!productos || !productos.length" (click)="agregarInstitucion()">Agregar</button>
             <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
         </div>
   </div>

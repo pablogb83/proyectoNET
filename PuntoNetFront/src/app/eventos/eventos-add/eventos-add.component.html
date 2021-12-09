@@ -110,7 +110,7 @@
             <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
         </div> -->
     <div class="example-button-row">
-      <button mat-raised-button color="primary" (click)="agregarEvento()" [disabled] = "!habilitarAgregar">
+      <button mat-raised-button color="primary" (click)="agregarEvento()" [disabled] = "!habilitarAgregar || !salones.length">
         Agregar
       </button>
       <button mat-raised-button color="accent" (click)="onNoClick()">

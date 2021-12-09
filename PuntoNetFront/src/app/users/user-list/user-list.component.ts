@@ -54,7 +54,7 @@ export class UserListComponent implements OnInit {
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
   ngOnInit() {
-    this.titleService.setTitle('angular-material-template - Users');
+    this.titleService.setTitle('Usuarios');
     this.getUsuarios();
   }
 

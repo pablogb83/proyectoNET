@@ -19,6 +19,9 @@ import { PersonaAddComponent } from './persona/persona-add/persona-add.component
 import { ProductosListComponent } from './productos/productos-list/productos-list.component';
 import { ProductosAddComponent } from './productos/productos-add/productos-add.component';
 import { FacturacionListComponent } from './facturacion/facturacion-list/facturacion-list.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 
 
@@ -28,7 +31,8 @@ import { FacturacionListComponent } from './facturacion/facturacion-list/factura
     ReconocimientoFacialComponent,
     UsersAddComponent,
     WebcamSnapshotComponent,
-    PersonaAddComponent
+    PersonaAddComponent,
+    CalendarioComponent
   ],
   entryComponents:[
     PersonaAddComponent,
@@ -43,7 +47,8 @@ import { FacturacionListComponent } from './facturacion/facturacion-list/factura
     SharedModule,
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
-    WebcamModule
+    WebcamModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   bootstrap: [AppComponent],
   providers:[

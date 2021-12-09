@@ -4,6 +4,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
+using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
@@ -90,12 +91,12 @@ namespace NetCoreWebAPI.Controllers
             _bl.CreatePersona(personaModel);
             _bl.SaveChanges();
 
-            await DAL_FaceApi.AgregarPersona(personaModel.nro_doc, postedFile.OpenReadStream());
+            var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+            await DAL_FaceApi.AgregarPersona(personaModel.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
 
             var personaReadDto = _mapper.Map<PersonaReadDto>(personaModel);
 
             return CreatedAtRoute(nameof(GetPersonaById), new { Id = personaReadDto.Id }, personaReadDto);
-            //return Ok(commandReadDto);
         }
 
         //PUT api/personas/{id}

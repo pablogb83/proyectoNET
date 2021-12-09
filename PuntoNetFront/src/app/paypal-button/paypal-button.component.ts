@@ -42,7 +42,7 @@ export class PaypalButtonComponent implements OnInit {
           });
         },
         onApprove: (data: any, actions: any) => {
-          this.service.saveStatus(true);
+          //this.service.saveStatus(true);
           this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{

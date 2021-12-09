@@ -26,7 +26,7 @@ export class EventosAddComponent implements OnInit {
   PhotoFileName?:any;
   PhotoFilePath?:any;
   fecha = new Date();
-  salones: any[];
+  salones: any[] = [];
   edificios: any[];
   idEdificio: number;
 

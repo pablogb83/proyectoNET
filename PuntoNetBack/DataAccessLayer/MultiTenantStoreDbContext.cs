@@ -5,6 +5,7 @@ using Finbuckle.MultiTenant.Stores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Shared.ModeloDeDominio;
+using System;
 
 namespace DataAccessLayer
 {
@@ -12,6 +13,8 @@ namespace DataAccessLayer
     public class MultiTenantStoreDbContext : EFCoreStoreDbContext<Institucion>
     {
         private readonly IConfiguration Configuration;
+        private const string id = "240ed6a6-e391-4745-9278-ff5e66189583";
+
 
         public MultiTenantStoreDbContext(DbContextOptions<MultiTenantStoreDbContext> options, IConfiguration config) : base(options)
         {
@@ -33,6 +36,7 @@ namespace DataAccessLayer
         {
             modelBuilder.Entity<Institucion>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Institucion>().Property(e => e.Identifier).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Institucion>().HasData(new Institucion { Id = id, Identifier = id, Name = "Puertan", Activa = false,Telefono="098123232" ,Direccion="Donde se te cante el orto" });
             base.OnModelCreating(modelBuilder);
         }
     }

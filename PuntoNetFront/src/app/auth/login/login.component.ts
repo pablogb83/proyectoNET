@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
 
         this.loading = true;
         this.authenticationService.login(email.toLowerCase(), password).subscribe(data => {
-            console.log(data);
             this.tokenService.saveToken(data.token);
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);

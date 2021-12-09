@@ -27,6 +27,17 @@ namespace DataAccessLayer.DAL
                 throw new ArgumentNullException(nameof(inst));
             }
             _context.Instituciones.Add(inst);
+            _context.SaveChanges();
+            try
+            {
+                DAL_FaceApi.DeletePersonGroup(inst.Name.ToLower()).Wait();
+                DAL_FaceApi.CreatePersonGroup(inst.Name.ToLower()).Wait();
+
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public void DeleteInstitucion(Institucion inst)
@@ -40,7 +51,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Institucion> GetAllInstituciones()
         {
-            return _context.Instituciones.ToList();
+            return _context.Instituciones.Where(inst => inst.Name!="Puertan").ToList();
         }
 
         public Institucion GetInstitucionById(string Id)
