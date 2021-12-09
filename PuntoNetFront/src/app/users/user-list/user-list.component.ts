@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 
 import { NGXLogger } from 'ngx-logger';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { UserRoleComponent } from '../user-role/user-role.component';
 import Swal from 'sweetalert2';
 import { UsersAddComponent } from '../users-add/users-add.component';
@@ -11,6 +10,9 @@ import { UsersEditComponent } from '../users-edit/users-edit.component';
 import { UserEdificioComponent } from '../user-edificio/user-edificio.component';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface DialogData {
@@ -38,7 +40,6 @@ export class UserListComponent implements OnInit {
   displayedColumns: string[] = ['id','email', 'rol', 'acciones'];
 
   constructor(
-    private logger: NGXLogger,
     private titleService: Title,
     private service: UsuariosService,
     public dialog: MatDialog,
@@ -53,7 +54,7 @@ export class UserListComponent implements OnInit {
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
   ngOnInit() {
-    this.titleService.setTitle('angular-material-template - Users');
+    this.titleService.setTitle('Usuarios');
     this.getUsuarios();
   }
 

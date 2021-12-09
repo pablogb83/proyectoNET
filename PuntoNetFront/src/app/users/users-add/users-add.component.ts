@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { EdificiosAddComponent } from 'src/app/edificios/edificios-add/edificios-add.component';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';

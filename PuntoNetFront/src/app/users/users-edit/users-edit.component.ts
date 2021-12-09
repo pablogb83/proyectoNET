@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
 import Swal from 'sweetalert2';

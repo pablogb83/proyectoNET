@@ -1,0 +1,78 @@
+<mat-grid-list cols="3" rowHeight="3:1">
+    <mat-grid-tile>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold" class="btn btn-primary"
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()">
+                Anterior
+            </mat-button-toggle>
+            <mat-button-toggle value="bold" 
+                class="btn btn-outline-secondary"
+                mwlCalendarToday
+                [(viewDate)]="viewDate">
+                    Hoy
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"  
+                class="btn btn-primary"
+                mwlCalendarNextView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()">
+                Siguiente
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </mat-grid-tile>
+    <mat-grid-tile><h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3></mat-grid-tile>
+    <mat-grid-tile>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold" class="btn btn-primary"
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Month)"
+                [class.active]="view === CalendarView.Month">
+                Mes
+            </mat-button-toggle>
+            <mat-button-toggle value="bold" 
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Week)"
+                [class.active]="view === CalendarView.Week">
+                Semana
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"  
+                class="btn btn-primary"
+                (click)="setView(CalendarView.Day)"
+                [class.active]="view === CalendarView.Day">
+                Dia
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </mat-grid-tile>
+</mat-grid-list>
+
+  <br />
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="CalendarView.Month"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event.day)"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="CalendarView.Week"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="CalendarView.Day"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-day-view>
+  </div>
+  

@@ -1,0 +1,16 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+        <h3>Editar precio</h3>
+        <mat-divider></mat-divider>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Precio</mat-label>
+            <input matInput type="number" [(ngModel)]="precio">
+        </mat-form-field>
+
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="editarPrecio()">Guardar</button>
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        </div>
+  </div>
+</div>

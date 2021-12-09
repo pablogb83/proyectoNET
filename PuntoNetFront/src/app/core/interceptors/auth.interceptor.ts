@@ -7,10 +7,9 @@ import { HttpHandler } from '@angular/common/http';
 import { HttpEvent } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 
-import { AuthenticationService } from '../services/auth.service';
-import { MatDialog } from '@angular/material';
 import { TokenStorageService } from '../services/token-storage.service';
 import { InstitucionService } from '../services/institucion.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

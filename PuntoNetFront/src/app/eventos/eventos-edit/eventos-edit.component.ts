@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import { FileService } from 'src/app/core/services/file.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';

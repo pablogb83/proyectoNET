@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LayoutComponent implements OnInit, AfterViewInit {
 
     private _mobileQueryListener: () => void;
     mobileQuery: MediaQueryList;
@@ -52,11 +52,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.instActive = this.tokenService.getStatus();
         this.idUsuario = this.tokenService.getUserId();
         // Auto log-out subscription
-        const timer = TimerObservable.create(2000, 5000);
-        this.autoLogoutSubscription = timer.subscribe(t => {
-            this.authGuard.canActivate();
-        });
-
         console.log(this.idUsuario);
         if(this.rol==='PORTERO' && this.idUsuario){
             this.usuarioEdificio.getEdificioUsuario(this.idUsuario).subscribe(data=>{
@@ -65,12 +60,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
             })
             //this.idedificio = 1;
         }
-    }
-
-    ngOnDestroy(): void {
-        // tslint:disable-next-line: deprecation
-        this.mobileQuery.removeListener(this._mobileQueryListener);
-        this.autoLogoutSubscription.unsubscribe();
     }
 
     ngAfterViewInit(): void {

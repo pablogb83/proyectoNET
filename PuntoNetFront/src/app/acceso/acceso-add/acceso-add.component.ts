@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MatTableDataSource, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AccesoService } from 'src/app/core/services/acceso.service';
 import { FileService } from 'src/app/core/services/file.service';
@@ -39,7 +39,6 @@ export class AccesoAddComponent  {
       this.service.postAcceso(val).subscribe(res=>{
         this.showSuccessAlert();
       }, err =>{
-        console.log(err)
         this.showErrorAlert(err.error);
       });
   }

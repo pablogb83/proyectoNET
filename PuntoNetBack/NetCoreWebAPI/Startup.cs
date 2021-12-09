@@ -191,6 +191,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Acceso, BL_Acceso>();
             services.AddScoped<IDAL_Noticias, DataAccessLayer.DAL.DAL_Noticias_EF>();
             services.AddScoped<IBL_Noticias, BL_Noticias>();
+            services.AddScoped<IDAL_Producto, DataAccessLayer.DAL.DAL_Producto>();
+            services.AddScoped<IBL_Producto, BL_Producto>();
 
             services.AddSwaggerGen(c =>
             {

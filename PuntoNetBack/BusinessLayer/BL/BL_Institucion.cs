@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.IBL;
+using DataAccessLayer.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,11 @@ namespace BusinessLayer.BL
             return _dal.GetAllInstituciones();
         }
 
+        public List<Transaction> GetFacturacion(string insitucionId, DateTime fechainicio, DateTime fechafin)
+        {
+            return _dal.GetFacturacion(insitucionId, fechainicio, fechafin);
+        }
+
         public Institucion GetInstitucionById(string Id)
         {
             return _dal.GetInstitucionById(Id);
@@ -46,5 +52,6 @@ namespace BusinessLayer.BL
         {
             _dal.UpdateInstitucion(inst);
         }
+
     }
 }

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import { Edificio } from 'src/app/edificios/edificios-list/edificios-list.component';
 import { environment } from 'src/environments/environment';
 import * as Mapboxgl from 'mapbox-gl';

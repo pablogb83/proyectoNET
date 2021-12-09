@@ -70,6 +70,19 @@
           <p mat-line> Instituciones </p>
         </a>
 
+        <a mat-list-item [routerLink]="['/productos']" *ngIf="rol==='SUPERADMIN'" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            shopping_cart
+          </mat-icon>
+          <p mat-line> Productos </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/facturacion']" *ngIf="rol==='ADMIN' && instActive" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            list
+          </mat-icon>
+          <p mat-line> Facturacion </p>
+        </a>
         
         <a mat-list-item [routerLink]="['/pago']"  *ngIf="rol==='ADMIN' && !instActive" routerLinkActive="active">
           <mat-icon mat-list-icon>
@@ -82,7 +95,7 @@
             <mat-icon mat-list-icon>
               people
             </mat-icon>
-            <p mat-line> Users </p>
+            <p mat-line> Usuarios </p>
           </a>
   
           <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">

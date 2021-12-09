@@ -29,8 +29,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.titleService.setTitle('Proyecto .NET Login');
-        //this.authenticationService.logout();
+        this.tokenService.signOut();
         this.createForm();
     }
 
@@ -51,7 +50,6 @@ export class LoginComponent implements OnInit {
 
         this.loading = true;
         this.authenticationService.login(email.toLowerCase(), password).subscribe(data => {
-            console.log(data);
             this.tokenService.saveToken(data.token);
             this.tokenService.saveUserName(data.email);
             this.tokenService.saveRoleName(data.role);
@@ -63,6 +61,9 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                     this.router.navigate(['/']);
                 });
+            }
+            else{
+                this.router.navigate(['/']);
             }
         },
         error => {

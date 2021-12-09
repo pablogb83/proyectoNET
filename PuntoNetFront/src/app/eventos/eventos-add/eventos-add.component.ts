@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { EventosService } from 'src/app/core/services/eventos.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Time } from '@angular/common';
 import moment from 'moment';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
@@ -26,7 +26,7 @@ export class EventosAddComponent implements OnInit {
   PhotoFileName?:any;
   PhotoFilePath?:any;
   fecha = new Date();
-  salones: any[];
+  salones: any[] = [];
   edificios: any[];
   idEdificio: number;
 

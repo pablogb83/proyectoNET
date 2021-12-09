@@ -16,6 +16,7 @@ namespace DataAccessLayer.Dtos.Instituciones
         public string Direccion { get; set; }
         [Required]
         public string Telefono { get; set; }
+        public string PlanId { get; set; }
         public string ConnectionString { get; set; }
     }
 }

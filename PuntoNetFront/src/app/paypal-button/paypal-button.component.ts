@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { window } from 'rxjs-compat/operator/window';
 import { InstitucionService } from '../core/services/institucion.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
 
@@ -18,7 +17,9 @@ export class PaypalButtonComponent implements OnInit {
 
   ngOnInit() {
     const tenant_id = this.service.getTenant();
-    var subID ="";
+    this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
+      console.log(institucionInfo);
+      var subID ="";
       paypal.Buttons({
         style: {
             shape: 'rect',
@@ -29,7 +30,6 @@ export class PaypalButtonComponent implements OnInit {
         },
         onClick: async (data,actions) =>{
           const status = await this.institucionService.isActive().toPromise();
-          console.log("EL STATUS ES: ", status);
           if(status){
             return actions.reject();
           }
@@ -37,12 +37,12 @@ export class PaypalButtonComponent implements OnInit {
         createSubscription: async (data: any, actions: any) => {
           return await actions.subscription.create({
             /* Creates the subscription */
-            plan_id: 'P-97818393X7850501NMFRB3JQ',
+            plan_id: institucionInfo.planId,
             custom_id: tenant_id
           });
         },
         onApprove: (data: any, actions: any) => {
-          this.service.saveStatus(true);
+          //this.service.saveStatus(true);
           this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{
@@ -50,6 +50,8 @@ export class PaypalButtonComponent implements OnInit {
         onError: (data: any) => {
         }
     }).render(this.paypalElement.nativeElement); 
+    });
+    
 
   }
 }

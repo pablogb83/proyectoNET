@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
-import { EdificiosAddComponent } from 'src/app/edificios/edificios-add/edificios-add.component';
-import { DialogData } from '../institucion-list/institucion-list.component';
+import { DialogData, InstitucionListComponent } from '../institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
 import { RolesService } from 'src/app/core/services/roles.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-admin-add',
@@ -24,7 +23,7 @@ export class AdminAddComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private roleService:RolesService) {
+  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private roleService:RolesService) {
     if(data){
       this.institucion = data.id
     }
