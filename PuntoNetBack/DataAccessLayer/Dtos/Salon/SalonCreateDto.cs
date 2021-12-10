@@ -10,12 +10,12 @@ namespace DataAccessLayer.Dtos.Salon
 {
     public class SalonCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una denominacion")]
         [MaxLength(250)]
         public string Denominacion { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un numero de  salon")]
         public int Numero { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un edificio asociado")]
         public int idEdificio { get; set; }
     }
 }

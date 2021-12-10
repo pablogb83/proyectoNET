@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
@@ -18,7 +19,7 @@ export class RolesEditComponent implements OnInit {
   direccion?:string;
   telefono?:string;
 
-  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:RolesService) { 
+  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:RolesService, private handleError: HandleErrorsService) { 
     console.log(data);
     this.id = data.id;
     this.nombre = data.nombre;
@@ -40,18 +41,10 @@ export class RolesEditComponent implements OnInit {
     };
 
     this.service.putRole(Number(id), val.nombre).subscribe(res=>{
-    this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err=>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Role actualizado con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 
   ngOnInit() {

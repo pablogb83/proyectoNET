@@ -6,6 +6,8 @@ import { Edificio } from 'src/app/edificios/edificios-list/edificios-list.compon
 import { environment } from 'src/environments/environment';
 import * as Mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
 @Component({
   selector: 'app-edificios-add',
@@ -41,7 +43,7 @@ export class EdificiosAddComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: Edificio, 
-              private service:EdificiosService) { }
+              private service:EdificiosService,private notificationService: NotificationService, private handleError: HandleErrorsService) { }
 
 
   crearMarcador(lng: number, lat: number){
@@ -62,24 +64,21 @@ export class EdificiosAddComponent implements OnInit {
 
   agregarEdificio(){
     var val = {
-              nombre:this.nombre,
-              direccion:this.direccion,
-              telefono:this.telefono
-              };
-    
-    this.service.postEdificios(val.nombre,val.direccion,val.telefono, this.lng.toString(), this.lat.toString()).subscribe(res=>{
-      this.showSuccessAlert();
-    }, err =>{
-      this.showErrorAlert();
-    });
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Edificio agregado con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+      nombre:this.nombre,
+      direccion:this.direccion,
+      telefono:this.telefono
+    };
+    console.log("Coordenadas: ", this.lat, this.lng);
+    if(!this.lat && !this.lng){
+      this.handleError.showErrorAlert(["Seleccione una ubicacion en el mapa"]);
+    }
+    else{
+      this.service.postEdificios(val.nombre,val.direccion,val.telefono, this.lng.toString(), this.lat.toString()).subscribe(res=>{
+        this.handleError.showSuccessAlert();
+      }, err =>{
+        this.handleError.showErrors(err);
+      });
+    }
   }
 
 }

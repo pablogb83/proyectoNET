@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { EdificiosAddComponent } from 'src/app/edificios/edificios-add/edificios-add.component';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
@@ -22,7 +23,7 @@ export class UsersAddComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService) {
+  constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private handleError: HandleErrorsService) {
     if(data){
       this.institucion = data.id
     }
@@ -37,28 +38,20 @@ export class UsersAddComponent implements OnInit {
       password:this.passwordPlano
     };
     if(this.institucion){
-      this.service.postAdmin(val.email,val.password,this.institucion).subscribe(res=>{
-        this.showSuccessAlert();
+      this.service.postAdmin(val.email,val.password,this.institucion).subscribe((res:any)=>{
+        this.handleError.showSuccessAlert(res.message)
       }, err =>{
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }
     else{
-      this.service.postUsuario(val.email,val.password).subscribe(res=>{
-        this.showSuccessAlert();
+      this.service.postUsuario(val.email,val.password).subscribe((res: any)=>{
+        this.handleError.showSuccessAlert(res.message)
+
       }, err =>{
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }
   }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Usuario agregado con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
-  }
-
 
 }

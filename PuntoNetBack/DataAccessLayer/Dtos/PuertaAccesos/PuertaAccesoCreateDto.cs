@@ -9,10 +9,10 @@ namespace DataAccessLayer.Dtos.PuertaAccesos
 {
     public class PuertaCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una denominacion")]
         [MaxLength(250)]
         public string Denominacion { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un edificio asociado")]
         public int idEdificio { get; set; }
     }
 }

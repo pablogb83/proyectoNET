@@ -15,11 +15,12 @@
 
   .title{
     align-content: center;
-  }
+  }*/
   .formEdificio{
-    display : inline-flex;
+    width:300px; 
+    float:left;
   }
- */
+ 
   
   .example-button-row .mat-button-base {
     margin: 8px 8px 8px 0;

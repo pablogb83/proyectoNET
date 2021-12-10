@@ -2,11 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
-import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import { Edificio } from 'src/app/edificios/edificios-list/edificios-list.component';
 import { environment } from 'src/environments/environment';
 import * as Mapboxgl from 'mapbox-gl';
 import Swal from 'sweetalert2';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
 @Component({
   selector: 'app-edificios-edit',
@@ -36,7 +36,7 @@ export class EdificiosEditComponent implements OnInit {
 
   }
 
-  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Edificio, private service:EdificiosService) { 
+  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Edificio, private service:EdificiosService, private handleError: HandleErrorsService) { 
     console.log(data);
     this.id = data.id;
     this.nombre = data.nombre;
@@ -71,24 +71,16 @@ export class EdificiosEditComponent implements OnInit {
     //var idcast: number = +id;
     
     var val = {
-              nombre:this.nombre,
-              direccion:this.direccion,
-              telefono:this.telefono};
+      nombre:this.nombre,
+      direccion:this.direccion,
+      telefono:this.telefono
+    };
 
     this.service.putEdificio(Number(id), val.nombre,val.direccion,val.telefono, this.lng.toString(), this.lat.toString()).subscribe(res=>{
-    this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err=>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
   }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Institucion actualizada con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
-  }
-
 
 }

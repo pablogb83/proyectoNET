@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
 import Swal from 'sweetalert2';
@@ -16,7 +17,7 @@ export class UsersEditComponent implements OnInit {
   email?:string;
   passwordPlano?:string;
 
-  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogDataUser, private service:UsuariosService) { 
+  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogDataUser, private service:UsuariosService, private handleError: HandleErrorsService) { 
     console.log(data);
     this.id = data.id;
     this.email = data.email;
@@ -28,25 +29,16 @@ export class UsersEditComponent implements OnInit {
 
   updateUsuario(){
     var id = this.id;
-    //var idcast: number = +id;
     
     var val = {
       email:this.email,
       passwordPlano:this.passwordPlano
     };
     this.service.putUsuario(id, val.email,val.passwordPlano).subscribe(res=>{
-    this.showSuccessAlert();
+    this.handleError.showSuccessAlert();
     }, err=>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Institucion actualizada con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 
   ngOnInit() {

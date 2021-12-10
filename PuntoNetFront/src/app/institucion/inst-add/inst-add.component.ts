@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { InstitucionService } from 'src/app/core/services/institucion.service';
 import { ProductoService } from 'src/app/core/services/productos.service';
 
@@ -13,7 +14,7 @@ import { DialogData } from '../institucion-list/institucion-list.component';
 })
 export class InstAddComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<InstAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:InstitucionService, private productService: ProductoService) {
+  constructor(public dialogRef: MatDialogRef<InstAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:InstitucionService, private productService: ProductoService, private handleError: HandleErrorsService) {
     this.productService.getProductos().subscribe(data=>{
       console.log(data);
       this.productos = data;
@@ -41,18 +42,10 @@ export class InstAddComponent implements OnInit {
       planid:this.plan_id
     };
     this.service.addInst(val).subscribe(res=>{
-      this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err =>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Institucion agregada con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 
 }

@@ -32,7 +32,6 @@ import { CalendarioComponent } from './calendario/calendario.component';
     UsersAddComponent,
     WebcamSnapshotComponent,
     PersonaAddComponent,
-    CalendarioComponent
   ],
   entryComponents:[
     PersonaAddComponent,
@@ -48,7 +47,6 @@ import { CalendarioComponent } from './calendario/calendario.component';
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
     WebcamModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   bootstrap: [AppComponent],
   providers:[

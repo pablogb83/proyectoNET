@@ -21,7 +21,7 @@ namespace GlobalErrorHandling.Extensions
                         await context.Response.WriteAsync(new ErrorDetails()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = contextFeature.Error.Message
+                            message = contextFeature.Error.Message
                         }.ToString());
                     }
                 });

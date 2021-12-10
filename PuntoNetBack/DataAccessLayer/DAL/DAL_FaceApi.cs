@@ -194,41 +194,31 @@ namespace DataAccessLayer.DAL
             //IList<Person> people = await client.PersonGroupPerson.ListAsync(personGroupId);
             PersonGroupId = PersonGroupId.ToLower();
             List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, imagen, recognitionModel03);
-            Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
-            try
+            if (detectedFaces1.Any())
             {
+                if(detectedFaces1.Count > 1)
+                {
+                    throw new AppException("Por favor ingrese la foto de UN SOLO individuo");
+                }
+                Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
                 List<Guid> cara = new List<Guid>();
                 cara.Add(sourceFaceId1);
-                var group = await client.PersonGroup.GetAsync(PersonGroupId);
-                await client.PersonGroup.TrainAsync(PersonGroupId);
-                var status = await client.PersonGroup.GetTrainingStatusAsync(PersonGroupId);
                 var identifyResults = await client.Face.IdentifyAsync(cara, PersonGroupId);
-                var faceid = identifyResults[0].Candidates[0].PersonId;
-                var person = await client.PersonGroupPerson.GetAsync(PersonGroupId, faceid);
-                return person;
-            }
-            catch(Exception e)
-            {
-                return null;
-            }
-            /*foreach (Person person in people)
-            {
-                try
+                if(identifyResults.Any() && identifyResults[0].Candidates.Any())
                 {
-                    bool verificacion = await VerificarCaras(sourceFaceId1, person.PersonId);
-                    if (verificacion)
-                    {
-                        return person;
-                    }
+                    var faceid = identifyResults[0].Candidates[0].PersonId;
+                    var person = await client.PersonGroupPerson.GetAsync(PersonGroupId, faceid);
+                    return person;
                 }
-                catch(APIErrorException err)
+                else
                 {
-                    Debug.WriteLine(err.Message);
-                    Debug.WriteLine(err.Body.Error.Code);
-                    Debug.WriteLine(err.Body.Error.Message);
+                    throw new AppException("No se encontro la persona de la foto");
                 }
-               
-            }*/
+            }
+            else
+            {
+                throw new AppException("No se encontraron caras en la imagen ingresada");
+            }
         }
 
         public static async Task CreatePersonGroup(string personGroupId)
@@ -262,12 +252,18 @@ namespace DataAccessLayer.DAL
             return true;
         }
 
-        public static async Task<bool> BorrarPersona(string email, string PersonGroupId)
+        public static async Task<bool> BorrarPersona(string documento, string PersonGroupId)
         {
             PersonGroupId = PersonGroupId.ToLower();
-            Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, email);
-            await client.PersonGroup.TrainAsync(PersonGroupId);
-            return true;
+            var personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+            var person = personas.First(x => x.Name == documento);
+            if (person != null)
+            {
+                await client.PersonGroupPerson.DeleteAsync(PersonGroupId, person.PersonId);
+                await client.PersonGroup.TrainAsync(PersonGroupId);
+                return true;
+            }
+            return false;
         }
 
     }
