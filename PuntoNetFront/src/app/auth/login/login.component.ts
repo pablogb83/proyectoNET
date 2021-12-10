@@ -59,11 +59,11 @@ export class LoginComponent implements OnInit {
                 this.service.isActive().subscribe(status=>{
                     this.tokenService.saveStatus(Boolean(status))
                     this.loading = false;
-                    this.router.navigate(['/']);
+                    this.router.navigate(['dashboard']);
                 });
             }
             else{
-                this.router.navigate(['/']);
+                this.router.navigate(['dashboard']);
             }
         },
         error => {

@@ -4,6 +4,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
+using DataAccessLayer.Helpers;
 using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -133,23 +134,27 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost("altaMasiva/{ruta}")]
         public ActionResult<IEnumerable<PersonaCreateDto>> AltaMasiva(string ruta)
         {
-            //var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            //{
-            //    //PrepareHeaderForMatch = args => args.Header.ToLower(),
-            //    Encoding = Encoding.Unicode
-            //};
+            if(ruta == null)
+            {
+                throw new AppException("Falta el archivo o el nombre no es valido");
+            }
             var physicalPath = _env.ContentRootPath + "/Files/csvFiles/" + ruta;
-            //var streamReader = new StreamReader(physicalPath, Encoding.Unicode);
-            ////var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Encoding = Encoding.Unicode };
-            ////var physicalPath = _env.ContentRootPath + "/Photos/" + ruta;
-            ////var reader = new StreamReader(physicalPath);
-            //var csv = new CsvReader(streamReader, config);
-            //var records = csv.GetRecords<PersonaCreateDto>().ToArray();
-            //return Ok(records);
-
             using (var reader = new StreamReader(physicalPath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
+                //chequear headers
+                csv.Read();
+                csv.ReadHeader();
+                List<string> headers = csv.HeaderRecord.ToList();
+                List<string> headersRequiered = HeadersPersonaCSV.HeaderCSV();
+                foreach (var head in headersRequiered)
+                {
+                    if (!headers.Contains(head))
+                    {
+                        throw new AppException("Falta el campo " + head + " en el archivo");
+                    }
+                }
+                //fin chequear headers
                 var records = csv.GetRecords<PersonaCreateDto>().ToList();
 
                 _bl.AltaMasivaPersona(records);

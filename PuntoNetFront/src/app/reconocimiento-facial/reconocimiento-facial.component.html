@@ -17,6 +17,13 @@
                 </mat-grid-tile>
             </mat-grid-list>
         </div>
-        <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+        <div class="example-button-row">
+            <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+            <div *ngIf="noEncontrado">
+                <p>Persona no registrada</p>
+                <button mat-raised-button color="primary" (click)="redireccionar()">Registrar</button>
+            </div>
+        </div>
+
     </div>
 </div>

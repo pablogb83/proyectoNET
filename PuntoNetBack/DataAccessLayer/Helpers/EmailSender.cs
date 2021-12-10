@@ -9,12 +9,14 @@ using sib_api_v3_sdk.Model;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using DataAccessLayer.Helpers;
+using DataAccessLayer.Dtos.Productos;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer.Helpers
 {
     public class EmailSender
     {
-        public static void sendEmail()
+        public static void sendEmail(string emailTo, string name, ProductoReadDto producto)
         {
             if (!Configuration.Default.ApiKey.ContainsKey("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"))
             {
@@ -24,16 +26,16 @@ namespace DataAccessLayer.Helpers
             string SenderName = "Pablo Gaione";
             string SenderEmail = "pablo.gaione@estudiantes.utec.edu.uy";
             SendSmtpEmailSender Email = new SendSmtpEmailSender(SenderName, SenderEmail);
-            string ToEmail = "gaionepablo@gmail.com";
-            string ToName = "Pablo Gaione";
+            string ToEmail = emailTo;
+            string ToName = name;
             SendSmtpEmailTo smtpEmailTo = new SendSmtpEmailTo(ToEmail, ToName);
             List<SendSmtpEmailTo> To = new List<SendSmtpEmailTo>();
             To.Add(smtpEmailTo);
             List<SendSmtpEmailBcc> Bcc = null;
             List<SendSmtpEmailCc> Cc = null;
-            string HtmlContent = "<html><body><h1>This is my first transactional email {{params.parameter}}</h1></body></html>";
+            string HtmlContent = "<html><body><h1>Suscripción realizada exitosamente a {{params.parameter}}</h1><br><h4>Producto {{params.productoNombre}}</h4><br><h4>Precio {{params.precio}}</h4><br><h4>Descripción {{params.productoDescrip}}</h4></body></html>";
             string TextContent = "Hola esto es una prueba";
-            string Subject = "My {{params.subject}}";
+            string Subject = "{{params.subject}}";
             SendSmtpEmailReplyTo ReplyTo = null;
             string AttachmentUrl = null;
             string stringInBase64 = "aGVsbG8gdGhpcyBpcyB0ZXN0";
@@ -45,8 +47,11 @@ namespace DataAccessLayer.Helpers
             Headers.Add("Some-Custom-Name", "unique-id-1234");
             long? TemplateId = null;
             JObject Params = new JObject();
-            Params.Add("parameter", "My param value");
-            Params.Add("subject", "Probando");
+            Params.Add("parameter", "Puertan");
+            Params.Add("subject", "Suscripción exitosa");
+            Params.Add("precio", producto.price);
+            Params.Add("productoNombre", producto.name);
+            Params.Add("productoDescrip", producto.description);
             List<string> Tags = new List<string>();
             Tags.Add("mytag");
             Dictionary<string, object> _parmas = new Dictionary<string, object>();
@@ -58,13 +63,11 @@ namespace DataAccessLayer.Helpers
                 CreateSmtpEmail result = apiInstance.SendTransacEmail(sendSmtpEmail);
                 Debug.WriteLine(result.ToJson());
                 Console.WriteLine(result.ToJson());
-                Console.ReadLine();
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 Console.WriteLine(e.Message);
-                Console.ReadLine();
             }
         }
     }

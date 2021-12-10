@@ -42,7 +42,8 @@ export class PersonaListComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(PersonaAddComponent, {
-      width: '500px',
+      width: "50%",
+      maxHeight:'80vh',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -53,7 +54,7 @@ export class PersonaListComponent implements OnInit {
 
   openDialogAltaMasiva(): void {
     const dialogRef = this.dialog.open(PersonaAltaMasivaComponent, {
-      width: '500px',
+      width: '30%',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -64,7 +65,8 @@ export class PersonaListComponent implements OnInit {
 
   openDialogUpdate(prs:any): void {
     const dialogRef = this.dialog.open(PersonaEditComponent, {
-      width: '500px',
+      width: "50%",
+      maxHeight:'80vh',
       data: {id: prs.id, nombres: prs.nombres, apellidos: prs.apellidos, telefono: prs.telefono, email: prs.email, tipo_doc: prs.tipo_doc, nro_doc: prs.nro_doc, photoFileName: prs.photoFileName}
     });
 

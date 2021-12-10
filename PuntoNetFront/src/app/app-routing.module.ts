@@ -23,6 +23,8 @@ import { SuperAdminGuard } from './core/guards/superadmin.guard';
 import { ProductosModule } from './productos/productos.module';
 import { FacturacionModule } from './facturacion/facturacion.module';
 import { NoticiasModule } from './noticias/noticias.module';
+import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
+import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
 
 const appRoutes: Routes = [
     {
@@ -108,8 +110,12 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
+        path: 'visitantehome',
+        loadChildren: ()=>VisitanteHomeModule
+    },
+    {
         path: '**',
-        redirectTo: 'dashboard',
+        redirectTo: 'visitantehome',
         pathMatch: 'full'
     }
 ];

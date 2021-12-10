@@ -5,21 +5,26 @@
       <h2>Bienvenido de nuevo!</h2>
     </div>
 
-    
-    <mat-card
-    *ngFor="let card of Cards" class="card">
-    <mat-card-header>
-      <mat-card-title>{{card.nombre}}</mat-card-title>
-      <mat-card-subtitle>Publicado por: {{card.publicadoPor}}</mat-card-subtitle>
-    </mat-card-header>
-    <img [src]=card.PhotoFilePath height="250px;" width="200px;">
-    <!-- <img mat-card-image src=PhotoFilePath height="250px;" width="200px;" alt="Imagen no disponible"> -->
-    <mat-card-content>
-      
-      <button mat-raised-button color="primary" (click)="openDialogNoticia(card)">Más Información</button>
-      <!-- <p>{{card.descripcion}}</p> -->
-    </mat-card-content>
+    <mat-card *ngFor="let card of Cards" class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{card.nombre}}</mat-card-title>
+        <mat-card-subtitle>Publicado por: {{card.publicadoPor}}</mat-card-subtitle>
+      </mat-card-header>
+     
+      <!-- <img mat-card-image src=PhotoFilePath height="250px;" width="200px;" alt="Imagen no disponible"> -->
+      <mat-card-content>
+        <img [src]=card.PhotoFilePath height="250px;" width="200px;">
+        
+        <!-- <p>{{card.descripcion}}</p> -->
+        <p>{{card.fechaPublicacion | date:'dd/MM/yyyy hh:mm'}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="openDialogNoticia(card)">Más Información</button>
+      </mat-card-actions>
     </mat-card>
 
-    </div>
+    <!-- <app-calendario></app-calendario> -->
+
+  </div>
 </div>
+

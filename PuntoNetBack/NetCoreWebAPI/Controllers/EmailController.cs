@@ -9,6 +9,9 @@ using sib_api_v3_sdk.Model;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using DataAccessLayer.Helpers;
+using BusinessLayer.IBL;
+using Shared.ModeloDeDominio;
+using Finbuckle.MultiTenant;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -16,7 +19,18 @@ namespace NetCoreWebAPI.Controllers
     [ApiController]
     public class EmailController : ControllerBase
     {
-        [HttpPost]
+
+        private readonly IBL_Usuario _bl;
+        private readonly IBL_Producto _blProd;
+
+        public EmailController(IBL_Usuario bl, IBL_Producto blProd)
+        {
+            _bl = bl;
+            _blProd = blProd;
+        }     
+
+
+            [HttpPost]
         public ActionResult SendEmail()
         {
             Configuration.Default.ApiKey.Add("api-key", "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");
@@ -76,36 +90,36 @@ namespace NetCoreWebAPI.Controllers
                 CreateSmtpEmail result = apiInstance.SendTransacEmail(sendSmtpEmail);
                 Debug.WriteLine(result.ToJson());
                 Console.WriteLine(result.ToJson());
-                //Console.ReadLine();
                 return Ok("Email enviado");
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 Console.WriteLine(e.Message);
-                Console.ReadLine();
             }
-
             return NoContent();
 
         }
 
         [HttpPost ("simple")]
-        public ActionResult SendSimpleEmail()
+        public async Task<ActionResult> SendSimpleEmail()
         {
             try
             {
-                EmailSender.sendEmail();
+                int userId = int.Parse(User.Claims.FirstOrDefault().Value);
+                var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+                string planId = tenant.TenantInfo.PlanId;
+                var producto = _blProd.GetProducto(planId);
+                var user = await _bl.GetUsuarioByIdAsync(userId);
+                EmailSender.sendEmail(user.Email, user.UserName, producto);
                 return Ok("Email enviado");
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 Console.WriteLine(e.Message);
-                Console.ReadLine();
+                return BadRequest();
             }
-
-            return NoContent();
         }
     }
 }

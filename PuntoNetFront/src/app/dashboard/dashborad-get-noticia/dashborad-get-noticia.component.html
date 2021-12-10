@@ -1,27 +1,20 @@
 <div fxLayout="row" fxLayoutAlign="center none">
-    <div fxFlex="95%" class="edificio-container">
+    <div fxFlex="100%" class="edificio-container">
         <div class="title">
-            <h3>Noticia</h3>
+            <h2>{{nombre}}</h2>
             <mat-divider></mat-divider>
         </div>
-        
-        <mat-divider></mat-divider>
-
-        <div style="width:800px;">
-        <div style="width:300px; float:left;">
-            <mat-form-field appearance="fill">
-
-                <input matInput [(ngModel)]="nombre" [readonly]="!editable">
-            </mat-form-field><br>
-            <mat-form-field appearance="fill">
-                <textarea matInput [(ngModel)]="descripcion"
-                matTextareaAutosize matAutosizeMinRows=8 matAutosizeMaxRows=8 [readonly]="!editable">{{descripcion}}</textarea>
-            </mat-form-field>
-
+        <div>
+            
+            <div style="width:80%; float:left;">
+                <p>{{descripcion}}</p>
+            </div>
+            <div style="width:50%; align-items: flex-end;">
+                <img [src]=PhotoFilePath  width="200px;">
+            </div>
+            
         </div>
-        <img [src]=PhotoFilePath height="250px;" width="200px;">
-    </div>
-
+        <mat-divider></mat-divider>
     <div class="example-button-row" style="position: relative;">
         <button mat-raised-button color="accent" (click)="onNoClick()">Cerrar</button>
     </div>

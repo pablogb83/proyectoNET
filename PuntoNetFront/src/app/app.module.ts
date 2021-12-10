@@ -22,6 +22,7 @@ import { FacturacionListComponent } from './facturacion/facturacion-list/factura
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarioComponent } from './calendario/calendario.component';
+import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
 
 
 
@@ -32,7 +33,8 @@ import { CalendarioComponent } from './calendario/calendario.component';
     UsersAddComponent,
     WebcamSnapshotComponent,
     PersonaAddComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    VisitanteHomeComponent
   ],
   entryComponents:[
     PersonaAddComponent,

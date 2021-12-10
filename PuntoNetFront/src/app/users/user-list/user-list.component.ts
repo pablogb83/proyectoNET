@@ -90,7 +90,7 @@ export class UserListComponent implements OnInit {
 
   openDialogAsignarRol(user:any): void {
     const dialogRef = this.dialog.open(UserRoleComponent, {
-      width: '250px',
+      width: 'auto',
       data: {user: user}
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -101,7 +101,7 @@ export class UserListComponent implements OnInit {
 
   openDialogAsignarEdificio(user:any): void {
     const dialogRef = this.dialog.open(UserEdificioComponent, {
-      width: '250px',
+      width: 'auto',
       data: {user: user}
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -112,7 +112,7 @@ export class UserListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(UsersAddComponent, {
-      width: '250px',
+      width: 'auto',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -123,7 +123,7 @@ export class UserListComponent implements OnInit {
 
   openDialogUpdate(user:any): void {
     const dialogRef = this.dialog.open(UsersEditComponent, {
-      width: '250px',
+      width: 'auto',
       data: {id: user.id, email: user.email}
     });
 

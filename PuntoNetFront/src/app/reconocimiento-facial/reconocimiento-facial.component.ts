@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Inject, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {  Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -7,6 +7,7 @@ import { Data } from '../acceso/acceso-list/acceso-list.component';
 import { AccesoService } from '../core/services/acceso.service';
 import { FileService } from '../core/services/file.service';
 import { PersonaService } from '../core/services/persona.service';
+import { PersonaAddComponent } from '../persona/persona-add/persona-add.component';
 
 @Component({
   selector: 'app-reconocimiento-facial',
@@ -23,9 +24,11 @@ export class ReconocimientoFacialComponent implements OnInit {
   idPuerta: any;
   showWebcam = true;
   isCameraExist = true;
+  noEncontrado = false;
+
   private trigger: Subject<void> = new Subject<void>();
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
-  constructor(private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router) { 
+  constructor(public dialog: MatDialog,private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router) { 
     this.idPuerta = data.idpuerta;
   }
 
@@ -79,9 +82,11 @@ export class ReconocimientoFacialComponent implements OnInit {
     this.fileService.UploadfileFace(formData).subscribe((data: any)=>{
       this.showSuccessAlert(data.nombres);
       this.PhotoFilePath = this.fileService.PhotoUrl + data.photoFileName;
+      this.noEncontrado = false;
       this.agregarAcceso(data.id);
     },err=>{
       console.log(err);
+      this.noEncontrado = true;
       this.showErrorAlert();
     });
   }
@@ -160,6 +165,17 @@ export class ReconocimientoFacialComponent implements OnInit {
     this.canvas.nativeElement
       .getContext("2d")
       .drawImage(image, 0, 0, this.WIDTH, this.HEIGHT);
+  }
+
+  redireccionar():void{
+    this.onNoClick();
+      const dialogRef = this.dialog.open(PersonaAddComponent, {
+        width: '500px',
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.router.navigate(['/personas']);
+      }); 
   }
 }
 

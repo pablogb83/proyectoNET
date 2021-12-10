@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { NoticiasService } from 'src/app/core/services/noticias.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
 @Component({

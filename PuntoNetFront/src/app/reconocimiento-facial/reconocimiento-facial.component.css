@@ -49,3 +49,8 @@
     width: 50%;
     margin-right: 2em;
   }   
+
+  .example-button-row {
+    display: table-cell;
+    width: 490px;
+  }

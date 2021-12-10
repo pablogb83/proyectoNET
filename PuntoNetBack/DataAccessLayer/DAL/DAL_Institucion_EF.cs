@@ -66,10 +66,19 @@ namespace DataAccessLayer.DAL
 
         public List<Transaction> GetFacturacion(string insitucionId, DateTime fechainicio, DateTime fechafin)
         {
-            var paypalTools = new PaypalUtil(_clientFactory);
-            string token = paypalTools.getPayPalAccessToken();
-            var inst = _context.Instituciones.FirstOrDefault(p => p.Id == insitucionId);
-            return paypalTools.getFacturasSuscripcion(token,inst.Suscripcion.Id,fechainicio,fechafin);
+  
+            try
+            {
+                var paypalTools = new PaypalUtil(_clientFactory);
+                string token = paypalTools.getPayPalAccessToken();
+                var inst = _context.Instituciones.FirstOrDefault(p => p.Id == insitucionId);
+                return paypalTools.getFacturasSuscripcion(token, inst.Suscripcion.Id, fechainicio, fechafin);
+            }
+            catch(Exception e)
+            {
+                return new List<Transaction>(); 
+            }
+            
         }
 
         public void UpdateInstitucion(Institucion inst)
