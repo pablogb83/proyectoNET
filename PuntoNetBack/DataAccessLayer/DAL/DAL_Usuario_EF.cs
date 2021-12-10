@@ -74,36 +74,17 @@ namespace DataAccessLayer.DAL
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("El password es requerido");
             _context.TenantMismatchMode = Finbuckle.MultiTenant.TenantMismatchMode.Ignore;
-            /*var hashedPassword = _userManager.PasswordHasher.HashPassword(usr,password);
-            var admin = new Usuario
+            
+            var result = await _userManager.CreateAsync(usr, password);
+            if (result.Succeeded)
             {
-                UserName = usr.UserName,
-                NormalizedUserName = usr.UserName,
-                Email = usr.Email,
-                NormalizedEmail = usr.Email.ToUpper(),
-                PhoneNumber = usr.PhoneNumber,
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                SecurityStamp = new Guid().ToString("D"),
-                ConcurrencyStamp = new Guid().ToString("D"),
-                TwoFactorEnabled = false,
-                LockoutEnd = new DateTime(),
-                LockoutEnabled = true,
-                AccessFailedCount = 0,
-                PasswordHash = hashedPassword,
-                TenantId = usr.TenantId
-            };*/
-            try
-            {
-                var result = await _userManager.CreateAsync(usr, password);
                 var createdUser = _userManager.Users.IgnoreQueryFilters().SingleOrDefault(x => x.Email == usr.Email);
                 await _userManager.AddToRoleAsync(createdUser, "ADMIN");
             }
-            catch (Exception e)
+            else
             {
-                Debug.WriteLine("La excepcion: ", e);
+                throw new AppException("Error en la creacion del usuario");
             }
-           
         }
 
         public void DeleteUsuario(Usuario usr)

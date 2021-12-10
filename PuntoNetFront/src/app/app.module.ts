@@ -16,12 +16,6 @@ import { UsersAddComponent } from './users/users-add/users-add.component';
 import { WebcamModule } from 'ngx-webcam';
 import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.component';
 import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
-import { ProductosListComponent } from './productos/productos-list/productos-list.component';
-import { ProductosAddComponent } from './productos/productos-add/productos-add.component';
-import { FacturacionListComponent } from './facturacion/facturacion-list/facturacion-list.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { CalendarioComponent } from './calendario/calendario.component';
 import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
 
 
@@ -33,7 +27,7 @@ import { VisitanteHomeComponent } from './visitante-home/visitante-home.componen
     UsersAddComponent,
     WebcamSnapshotComponent,
     PersonaAddComponent,
-    CalendarioComponent,
+
     VisitanteHomeComponent
   ],
   entryComponents:[
@@ -50,7 +44,6 @@ import { VisitanteHomeComponent } from './visitante-home/visitante-home.componen
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
     WebcamModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   bootstrap: [AppComponent],
   providers:[

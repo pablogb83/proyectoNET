@@ -66,7 +66,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/persona
         [HttpPost]
-        public async Task<ActionResult<PersonaReadDto>> CreatePersona()
+        public async Task<ActionResult<PersonaReadDto>> CreatePersona([FromForm]PersonaCreateDto personaInfo)
         {
             var httpRequest = Request.Form;
             var postedFile = httpRequest.Files[0];
@@ -74,28 +74,20 @@ namespace NetCoreWebAPI.Controllers
             string filename = postedFile.FileName;
             var randomString = RandomString.RandomizeString(10);
             filename = randomString + filename;
-
-            Persona personaModel = new Persona();
-            personaModel.Nombres = httpRequest["nombres"];
-            personaModel.Apellidos = httpRequest["apellidos"];
-            personaModel.Telefono = httpRequest["telefono"];
-            personaModel.Email = httpRequest["email"];
-            personaModel.tipo_doc = (TipoDocumento)Int32.Parse(httpRequest["tipo_doc"]);
-            personaModel.nro_doc = httpRequest["nro_doc"];
-            personaModel.PhotoFileName = filename;
-
+            personaInfo.PhotoFileName = filename;
             var physicalPath = _env.ContentRootPath + "/Files/Photos/" + filename;
             using (var stream = new FileStream(physicalPath, FileMode.Create))
             {
                 postedFile.CopyTo(stream);
             }
-            _bl.CreatePersona(personaModel);
+            var persona = _mapper.Map<Persona>(personaInfo);
+            _bl.CreatePersona(persona);
             _bl.SaveChanges();
 
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
-            await DAL_FaceApi.AgregarPersona(personaModel.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
+            await DAL_FaceApi.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
 
-            var personaReadDto = _mapper.Map<PersonaReadDto>(personaModel);
+            var personaReadDto = _mapper.Map<PersonaReadDto>(persona);
 
             return CreatedAtRoute(nameof(GetPersonaById), new { Id = personaReadDto.Id }, personaReadDto);
         }
@@ -127,6 +119,8 @@ namespace NetCoreWebAPI.Controllers
             }
             _bl.DeletePersona(personaModelFromRepo);
             _bl.SaveChanges();
+            var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+            DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
             return NoContent();
         }
 

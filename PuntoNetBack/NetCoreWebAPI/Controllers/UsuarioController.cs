@@ -234,8 +234,7 @@ namespace NetCoreWebAPI.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<bool>> compareFaces()
         {
-            try
-            {
+            
                 var tenant = HttpContext.GetMultiTenantContext<Institucion>();
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
@@ -251,11 +250,7 @@ namespace NetCoreWebAPI.Controllers
                 {
                     return BadRequest(new { message = "No se encontro la persona"});
                 }
-            }
-            catch (Exception)
-            {
-                return new JsonResult("No se pudo subir el archivo");
-            }
+          
         }
     }
 }

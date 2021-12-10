@@ -10,12 +10,12 @@ namespace DataAccessLayer.Dtos.Edificios
 {
     public class EdificioCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "El campo nombre es requerido")]
         [MaxLength(250)]
         public string Nombre { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo direccion es requerido")]
         public string Direccion { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo telefono es requerido")]
         public string Telefono { get; set; }
 
         public string lng { get; set; }

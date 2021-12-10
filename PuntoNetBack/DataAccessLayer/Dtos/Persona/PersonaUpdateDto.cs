@@ -11,18 +11,19 @@ namespace DataAccessLayer.Dtos.Persona
     public class PersonaUpdateDto
     {
 
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un nombre")]
         [MaxLength(250)]
         public string Nombres { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un apellido")]
         public string Apellidos { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un telefono")]
         public string Telefono { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un email")]
+        [EmailAddress(ErrorMessage = "Debe ingresar un email valido")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un tipo de documento")]
         public TipoDocumento tipo_doc { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un numero de documento")]
         public string nro_doc { get; set; }
 
         public string PhotoFileName { get; set; }

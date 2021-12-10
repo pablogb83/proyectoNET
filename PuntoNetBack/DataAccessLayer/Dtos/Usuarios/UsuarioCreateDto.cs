@@ -10,10 +10,11 @@ namespace DataAccessLayer.Dtos.Usuarios
     public class UsuarioCreateDto
     {
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Debe ingresar un email")]
+        [EmailAddress(ErrorMessage = "Debe ingresar un email valido")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una contraseña")]
+        [RegularExpression(@"^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])).+$", ErrorMessage = "La contraseña debe tener 8 caracteres incluyendo: mayusculas, minusculas, numeros y simbolos")]
         public string PasswordPlano { get; set; }
 
     }

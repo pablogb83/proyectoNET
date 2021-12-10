@@ -30,9 +30,8 @@ namespace DataAccessLayer.DAL
             _context.SaveChanges();
             try
             {
-                DAL_FaceApi.DeletePersonGroup(inst.Name.ToLower()).Wait();
+                DAL_FaceApi.DeletePersonGroup(inst.Name.ToLower()).GetAwaiter();
                 DAL_FaceApi.CreatePersonGroup(inst.Name.ToLower()).Wait();
-
             }
             catch (Exception e)
             {

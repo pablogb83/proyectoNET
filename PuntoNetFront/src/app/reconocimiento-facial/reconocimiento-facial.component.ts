@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { Data } from '../acceso/acceso-list/acceso-list.component';
 import { AccesoService } from '../core/services/acceso.service';
 import { FileService } from '../core/services/file.service';
+import { HandleErrorsService } from '../core/services/handle.errors.service';
 import { PersonaService } from '../core/services/persona.service';
 import { PersonaAddComponent } from '../persona/persona-add/persona-add.component';
 
@@ -28,42 +29,10 @@ export class ReconocimientoFacialComponent implements OnInit {
 
   private trigger: Subject<void> = new Subject<void>();
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
-  constructor(public dialog: MatDialog,private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router) { 
+  constructor(public dialog: MatDialog,private fileService: FileService, public dialogRef: MatDialogRef<ReconocimientoFacialComponent>,@Inject(MAT_DIALOG_DATA) public data: Data, private service:AccesoService, private personaService:PersonaService, public router: Router,private handleError: HandleErrorsService,) { 
     this.idPuerta = data.idpuerta;
   }
 
-
-  uploadFile(event){
-    const files = event.target.files;
-    var file=event.target.files[0];
-    /*var file=event.target.files[0];
-    if (files.length === 0)
-      return;
-
-    var mimeType = files[0].type;
-    if (mimeType.match(/image\/) == null) {
-      return;
-    }
-
-    /*var reader = new FileReader();
-    this.imagePath = files;
-    reader.readAsDataURL(files[0]); 
-    reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
-    }
-    var file=event.target.files[0];
-    const formData:FormData=new FormData();
-    formData.append('uploadedFile',file,file.name);
-
-    this.fileService.UploadfileFace(formData).subscribe((data: any)=>{
-      console.log(data);
-      this.showSuccessAlert(data.nombres);
-      this.PhotoFilePath = this.fileService.PhotoUrl + data.photoFileName;
-      this.agregarAcceso(data.id);
-    },err=>{
-      this.showErrorAlert();
-    });*/
-  }
 
   fileChangedHandler(imagen){
     
@@ -87,7 +56,7 @@ export class ReconocimientoFacialComponent implements OnInit {
     },err=>{
       console.log(err);
       this.noEncontrado = true;
-      this.showErrorAlert();
+      this.handleError.showErrors(err)
     });
   }
 

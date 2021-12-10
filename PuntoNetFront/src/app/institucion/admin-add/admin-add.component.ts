@@ -4,6 +4,7 @@ import { DialogData, InstitucionListComponent } from '../institucion-list/instit
 import Swal from 'sweetalert2';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
 @Component({
   selector: 'app-admin-add',
@@ -23,7 +24,7 @@ export class AdminAddComponent implements OnInit {
   }
 
 
-  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private roleService:RolesService) {
+  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private handleError: HandleErrorsService) {
     if(data){
       this.institucion = data.id
     }
@@ -38,10 +39,10 @@ export class AdminAddComponent implements OnInit {
       password:this.passwordPlano
     };
     if(this.institucion){
-      this.service.postAdmin(val.email,val.password,this.institucion).subscribe(res=>{
-        this.showSuccessAlert();
+      this.service.postAdmin(val.email,val.password,this.institucion).subscribe((res:any)=>{
+        this.handleError.showSuccessAlert(res.message)
       }, err =>{
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }
   }

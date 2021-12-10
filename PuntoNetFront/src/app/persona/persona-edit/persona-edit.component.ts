@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'src/app/core/services/file.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { PersonaService } from 'src/app/core/services/persona.service';
 import Swal from 'sweetalert2';
 import { Persona } from '../persona-list/persona-list.component';
@@ -25,7 +26,7 @@ export class PersonaEditComponent implements OnInit {
   imagePath: string;
   imgURL: any;
 
-  constructor(public dialogRef: MatDialogRef<PersonaEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Persona, private service:PersonaService,private fileService:FileService) { 
+  constructor(public dialogRef: MatDialogRef<PersonaEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Persona, private service:PersonaService,private fileService:FileService, private handleError: HandleErrorsService) { 
     this.id=data.id;
     this.nombres=data.nombres;
     this.apellidos=data.apellidos;
@@ -63,9 +64,9 @@ export class PersonaEditComponent implements OnInit {
       };
   
       this.service.putPersona(id, val).subscribe(res=>{
-      this.showSuccessAlert();
+        this.handleError.showSuccessAlert();
       }, err=>{
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }); 
     
@@ -89,14 +90,5 @@ export class PersonaEditComponent implements OnInit {
       this.imgURL = reader.result; 
     }
   }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Datos actualizados con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
-  }
-
 
 }

@@ -10,6 +10,9 @@ import { LocalDatePipe } from './pipes/local-date.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { LayoutComponent } from './layout/layout.component';
 import { CustomMaterialModule } from '../custom-material/custom-material.module';
+import { CalendarioComponent } from '../calendario/calendario.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   imports: [
@@ -18,9 +21,12 @@ import { CustomMaterialModule } from '../custom-material/custom-material.module'
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+
   ],
   declarations: [
     ConfirmDialogComponent,
+    CalendarioComponent,
     ContentPlaceholderAnimationComponent,
     LimitToPipe,
     LocalDatePipe,

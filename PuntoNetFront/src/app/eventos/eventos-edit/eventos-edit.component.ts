@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import { FileService } from 'src/app/core/services/file.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { InstEditComponent } from 'src/app/institucion/inst-edit/inst-edit.component';
 import Swal from 'sweetalert2';
 import { Evento } from '../eventos-list/eventos-list.component';
@@ -22,7 +23,7 @@ export class EventosEditComponent implements OnInit {
   PhotoFileName?:any;
   PhotoFilePath?:any;
 
-  constructor(public dialogRef: MatDialogRef<EventosEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Evento, private service:EventosService,private fileService:FileService) { 
+  constructor(public dialogRef: MatDialogRef<EventosEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Evento, private service:EventosService,private fileService:FileService, private handleError: HandleErrorsService) { 
     console.log(data);
     this.id = data.id;
     this.nombre = data.nombre;
@@ -47,17 +48,17 @@ export class EventosEditComponent implements OnInit {
     var idcast: number = +id;
     
     var val = {
-              nombre:this.nombre,
-              descripcion:this.descripcion,
-              fechainicio:this.fechainicio,
-              fechafin:this.fechafin,
-              PhotoFileName: this.PhotoFileName
-            };
+      nombre:this.nombre,
+      descripcion:this.descripcion,
+      fechainicio:this.fechainicio,
+      fechafin:this.fechafin,
+      PhotoFileName: this.PhotoFileName
+    };
 
     this.service.putEvento(Number(id), val.nombre,val.descripcion, val.fechainicio, val.fechafin, val.PhotoFileName).subscribe(res=>{
-    this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err=>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
   }
 

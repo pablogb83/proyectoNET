@@ -50,6 +50,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost]
         public ActionResult<InstitucionesReadDto> CreateInstitucion(InstitucionCreateDto instituionCreateDto)
         {
+            Console.WriteLine(HttpContext);
             var institucionModel = _mapper.Map<Institucion>(instituionCreateDto);
             _bl.CreateInstitucion(institucionModel);
             var institucionReadDto = _mapper.Map<InstitucionesReadDto>(institucionModel);

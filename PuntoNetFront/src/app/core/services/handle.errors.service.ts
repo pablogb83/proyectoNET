@@ -16,13 +16,18 @@ export class HandleErrorsService {
         messages.push('<br>' + err.msg);
       });
     }
+    else if(!errores.error.message){
+      for(const err in ckErrorArray){
+        messages.push('<br>' + ckErrorArray[err][0]);
+      }
+    }
     else{
       messages.push(errores.error.message);
     }
     this.showErrorAlert(messages);
   }
 
-  showSuccessAlert(message: string) {
+  showSuccessAlert(message?: string) {
     Swal.fire('OK', message ?? "Ok", 'success');
   }
 
