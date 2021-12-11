@@ -4,6 +4,8 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
+using DataAccessLayer.Helpers;
+using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
@@ -64,7 +66,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/persona
         [HttpPost]
-        public async Task<ActionResult<PersonaReadDto>> CreatePersona()
+        public async Task<ActionResult<PersonaReadDto>> CreatePersona([FromForm]PersonaCreateDto personaInfo)
         {
             var httpRequest = Request.Form;
             var postedFile = httpRequest.Files[0];
@@ -72,30 +74,22 @@ namespace NetCoreWebAPI.Controllers
             string filename = postedFile.FileName;
             var randomString = RandomString.RandomizeString(10);
             filename = randomString + filename;
-
-            Persona personaModel = new Persona();
-            personaModel.Nombres = httpRequest["nombres"];
-            personaModel.Apellidos = httpRequest["apellidos"];
-            personaModel.Telefono = httpRequest["telefono"];
-            personaModel.Email = httpRequest["email"];
-            personaModel.tipo_doc = (TipoDocumento)Int32.Parse(httpRequest["tipo_doc"]);
-            personaModel.nro_doc = httpRequest["nro_doc"];
-            personaModel.PhotoFileName = filename;
-
+            personaInfo.PhotoFileName = filename;
             var physicalPath = _env.ContentRootPath + "/Files/Photos/" + filename;
             using (var stream = new FileStream(physicalPath, FileMode.Create))
             {
                 postedFile.CopyTo(stream);
             }
-            _bl.CreatePersona(personaModel);
+            var persona = _mapper.Map<Persona>(personaInfo);
+            _bl.CreatePersona(persona);
             _bl.SaveChanges();
 
-            await DAL_FaceApi.AgregarPersona(personaModel.nro_doc, postedFile.OpenReadStream());
+            var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+            await DAL_FaceApi.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
 
-            var personaReadDto = _mapper.Map<PersonaReadDto>(personaModel);
+            var personaReadDto = _mapper.Map<PersonaReadDto>(persona);
 
             return CreatedAtRoute(nameof(GetPersonaById), new { Id = personaReadDto.Id }, personaReadDto);
-            //return Ok(commandReadDto);
         }
 
         //PUT api/personas/{id}
@@ -125,6 +119,8 @@ namespace NetCoreWebAPI.Controllers
             }
             _bl.DeletePersona(personaModelFromRepo);
             _bl.SaveChanges();
+            var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+            DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
             return NoContent();
         }
 
@@ -132,23 +128,27 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost("altaMasiva/{ruta}")]
         public ActionResult<IEnumerable<PersonaCreateDto>> AltaMasiva(string ruta)
         {
-            //var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            //{
-            //    //PrepareHeaderForMatch = args => args.Header.ToLower(),
-            //    Encoding = Encoding.Unicode
-            //};
+            if(ruta == null)
+            {
+                throw new AppException("Falta el archivo o el nombre no es valido");
+            }
             var physicalPath = _env.ContentRootPath + "/Files/csvFiles/" + ruta;
-            //var streamReader = new StreamReader(physicalPath, Encoding.Unicode);
-            ////var config = new CsvConfiguration(CultureInfo.InvariantCulture) { Encoding = Encoding.Unicode };
-            ////var physicalPath = _env.ContentRootPath + "/Photos/" + ruta;
-            ////var reader = new StreamReader(physicalPath);
-            //var csv = new CsvReader(streamReader, config);
-            //var records = csv.GetRecords<PersonaCreateDto>().ToArray();
-            //return Ok(records);
-
             using (var reader = new StreamReader(physicalPath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
+                //chequear headers
+                csv.Read();
+                csv.ReadHeader();
+                List<string> headers = csv.HeaderRecord.ToList();
+                List<string> headersRequiered = HeadersPersonaCSV.HeaderCSV();
+                foreach (var head in headersRequiered)
+                {
+                    if (!headers.Contains(head))
+                    {
+                        throw new AppException("Falta el campo " + head + " en el archivo");
+                    }
+                }
+                //fin chequear headers
                 var records = csv.GetRecords<PersonaCreateDto>().ToList();
 
                 _bl.AltaMasivaPersona(records);

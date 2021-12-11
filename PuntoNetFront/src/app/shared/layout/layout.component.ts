@@ -9,13 +9,14 @@ import { SpinnerService } from '../../core/services/spinner.service';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-layout',
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LayoutComponent implements OnInit, AfterViewInit {
 
     private _mobileQueryListener: () => void;
     mobileQuery: MediaQueryList;
@@ -36,7 +37,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         private authService: AuthenticationService,
         private authGuard: AuthGuard,
         private tokenService: TokenStorageService,
-        private usuarioEdificio: UsuarioEdificioService) {
+        private usuarioEdificio: UsuarioEdificioService,
+        private router: Router) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -50,11 +52,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.instActive = this.tokenService.getStatus();
         this.idUsuario = this.tokenService.getUserId();
         // Auto log-out subscription
-        const timer = TimerObservable.create(2000, 5000);
-        this.autoLogoutSubscription = timer.subscribe(t => {
-            this.authGuard.canActivate();
-        });
-
         console.log(this.idUsuario);
         if(this.rol==='PORTERO' && this.idUsuario){
             this.usuarioEdificio.getEdificioUsuario(this.idUsuario).subscribe(data=>{
@@ -65,13 +62,13 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    ngOnDestroy(): void {
-        // tslint:disable-next-line: deprecation
-        this.mobileQuery.removeListener(this._mobileQueryListener);
-        this.autoLogoutSubscription.unsubscribe();
-    }
-
     ngAfterViewInit(): void {
         this.changeDetectorRef.detectChanges();
+    }
+
+    logout(){
+        this.tokenService.signOut();
+        //window.location.reload();
+        this.router.navigate(['auth/login']);
     }
 }

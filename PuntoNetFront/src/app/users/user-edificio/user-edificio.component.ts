@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ok } from 'assert';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
 import Swal from 'sweetalert2';

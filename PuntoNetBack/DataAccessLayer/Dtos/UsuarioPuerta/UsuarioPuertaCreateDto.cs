@@ -9,9 +9,9 @@ namespace DataAccessLayer.Dtos.UsuarioPuerta
 {
     public class UsuarioPuertaCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un usuario")]
         public int UsuarioId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una puerta")]
         public int PuertaId { get; set; }
     }
 }

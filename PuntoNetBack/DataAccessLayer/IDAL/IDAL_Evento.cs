@@ -16,5 +16,7 @@ namespace DataAccessLayer.IDAL
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
         void CreateEventoRecurrente(Evento evt);
+        IEnumerable<Evento> GetEventoSalonFecha(int salonId, DateTime fechainicio, DateTime fechafin);
+        IEnumerable<Salon> GetSalonesDisponibles(DateTime fechainicio, DateTime fechafin, int edificioId);
     }
 }

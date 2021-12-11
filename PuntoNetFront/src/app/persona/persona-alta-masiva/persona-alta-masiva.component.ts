@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FileService } from 'src/app/core/services/file.service';
 import { PersonaService } from 'src/app/core/services/persona.service';
 import Swal from 'sweetalert2';
@@ -36,15 +36,20 @@ export class PersonaAltaMasivaComponent implements OnInit {
 
   aceptar():void{
     console.log(this.PhotoFileName);
-    this.service.altaMasiva(this.PhotoFileName).subscribe();
+    this.service.altaMasiva(this.PhotoFileName).subscribe(data=>{
+      this.showSuccessAlert();
+    },err=>{
+      console.log(err)
+      this.showErrorAlert(err.error.Message);
+    });
   }
 
   showSuccessAlert() {
     Swal.fire('OK', 'Archivo cargado con exito!', 'success');
   }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
+  showErrorAlert(msg: string) {
+    Swal.fire('Error!',msg, 'error');
   }
 
 }

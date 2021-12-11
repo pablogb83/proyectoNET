@@ -8,8 +8,10 @@ namespace DataAccessLayer.Dtos.Productos
 {
     public class ProductoReadDto
     {
-        public string Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public double price { get; set; }
+        public string status { get; set; }
     }
 }

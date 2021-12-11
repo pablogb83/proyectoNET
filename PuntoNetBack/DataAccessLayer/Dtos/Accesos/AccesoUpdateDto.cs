@@ -9,7 +9,7 @@ namespace DataAccessLayer.Dtos.Accesos
 {
     public class AccesoUpdateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una hora de acceso")]
         public DateTime FechaHora { get; set; }
     }
 }

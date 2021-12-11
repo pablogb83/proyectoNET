@@ -1,9 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
 import { FileService } from 'src/app/core/services/file.service';
 import { NoticiasService } from 'src/app/core/services/noticias.service';
 import { Subscription, Observable } from 'rxjs';
 import { DashboradGetNoticiaComponent } from '../dashborad-get-noticia/dashborad-get-noticia.component';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { Title } from '@angular/platform-browser';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { Noticias } from 'src/app/noticias/noticias-list/noticias-list.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -15,20 +21,31 @@ export class DashboardHomeComponent implements OnInit {
   ToString() {
     throw new Error('Method not implemented.');
   }
+  
+  currentUser: any;
+
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
   Cards:any=[];
   PhotoFileName:any=[];
   PhotoFilePath:any=[];
+  
+  ngOnInit() {
+    this.currentUser = this.authService.getCurrentUser();
+    this.titleService.setTitle('PuertanFront');
+  }
 
-  constructor(private service: NoticiasService, public dialog: MatDialog, private fileService:FileService) {
+  constructor(private notificationService: NotificationService,
+    private authService: AuthenticationService,
+    private titleService: Title,private service: NoticiasService, public dialog: MatDialog, private fileService:FileService) {
     this.getNoticias();
   }
 
   getNoticias(): void{
   this.service.getNoticias().subscribe(data=>{
 
-    this.Cards = data;
+    this.Cards = data
+  
     for (let card of this.Cards){
       card.PhotoFilePath =  this.fileService.PhotoUrl + card.photoFileName;
     }
@@ -40,7 +57,7 @@ export class DashboardHomeComponent implements OnInit {
 
 openDialogNoticia(noticia:any): void {
   const dialogRef = this.dialog.open(DashboradGetNoticiaComponent, {
-    width: '900px',
+    width: '700px',
     data: {nombre: noticia.nombre, descripcion: noticia.descripcion, fechaPublicacion: noticia.fechaPublicacion,
       PhotoFilePath: noticia.PhotoFilePath, publicadoPor: noticia.publicadoPor }
   });
@@ -53,7 +70,6 @@ openDialogNoticia(noticia:any): void {
 
 
 
-  ngOnInit() {}
 }
 
 export interface DashboardHomeComponent {

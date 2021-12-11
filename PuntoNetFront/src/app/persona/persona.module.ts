@@ -10,7 +10,7 @@ import { PersonaAltaMasivaComponent } from './persona-alta-masiva/persona-alta-m
 
 
 @NgModule({
-  declarations: [PersonaListComponent, PersonaAddComponent, PersonaEditComponent, PersonaAltaMasivaComponent],
+  declarations: [PersonaListComponent, PersonaEditComponent, PersonaAltaMasivaComponent],
   imports: [
     CommonModule,
     PersonaRoutingModule,

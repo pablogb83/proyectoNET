@@ -4,6 +4,9 @@ using DataAccessLayer.Helpers;
 using System.Net.Http;
 using DataAccessLayer.Dtos.Productos;
 using Shared.Enum;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace DataAccessLayer.DAL
 {
@@ -12,22 +15,69 @@ namespace DataAccessLayer.DAL
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly MultiTenantStoreDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DAL_Producto(IHttpClientFactory clientFactory,MultiTenantStoreDbContext context)
+
+        public DAL_Producto(IHttpClientFactory clientFactory,MultiTenantStoreDbContext context, IMapper mapper)
         {
             _clientFactory = clientFactory;
             _context = context;
+            _mapper = mapper;
         }
         public bool CreateProducto(ProductoCreateDto producto)
         {
             var paypalTools = new PaypalUtil(_clientFactory);
             string token = paypalTools.getPayPalAccessToken();
-            string id = paypalTools.createProduct(token, ProductNameEnum.CHICO);
-            return true;
+            return paypalTools.createSuscriptionPlan(producto.Nombre, producto.Descripcion, producto.Precio, token);
         }
+
+        public bool UpdateProductoPrecio(double precio, string plan_id)
+        {
+            var paypalTools = new PaypalUtil(_clientFactory);
+            string token = paypalTools.getPayPalAccessToken();
+            return paypalTools.UpdatePlanPrice(precio, token, plan_id);
+        }
+
+        public List<ProductoReadDto> GetProductos()
+        {
+            var paypalTools = new PaypalUtil(_clientFactory);
+            string token = paypalTools.getPayPalAccessToken();
+            var data = paypalTools.getSuscriptionPlans(token);
+            data = data.FindAll(prod => prod.status == "ACTIVE");
+            var convertedData = new List<ProductoReadDto>();
+            foreach(var prod in data)
+            {
+                var convertedProd = _mapper.Map<ProductoReadDto>(prod);
+                convertedProd.price = double.Parse(prod.billing_cycles[0].pricing_scheme.fixed_price.value, CultureInfo.InvariantCulture);
+                convertedData.Add(convertedProd);
+            }
+            return convertedData;
+        }
+
+        public ProductoReadDto GetProducto(string id)
+        {
+            var paypalTools = new PaypalUtil(_clientFactory);
+            string token = paypalTools.getPayPalAccessToken();
+            var planData = paypalTools.getSuscriptionPlan(token, id);
+            var result = new ProductoReadDto();
+            result.id = planData.id;
+            result.name = planData.name;
+            result.description = planData.description;
+            result.price = double.Parse(planData.billing_cycles[0].pricing_scheme.fixed_price.value, CultureInfo.InvariantCulture); 
+            return result;
+        }
+
+        public bool EliminarProducto(string plan_id)
+        {
+            var paypalTools = new PaypalUtil(_clientFactory);
+            string token = paypalTools.getPayPalAccessToken();
+            return paypalTools.DeactivatePlan(plan_id, token);
+        }
+
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
         }
+
     }
 }

@@ -3,20 +3,25 @@
 using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Stores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Shared.ModeloDeDominio;
+using System;
 
 namespace DataAccessLayer
 {
 
     public class MultiTenantStoreDbContext : EFCoreStoreDbContext<Institucion>
-    { 
-        public MultiTenantStoreDbContext(DbContextOptions<MultiTenantStoreDbContext> options) : base(options)
+    {
+        private readonly IConfiguration Configuration;
+        private const string id = "240ed6a6-e391-4745-9278-ff5e66189583";
+
+
+        public MultiTenantStoreDbContext(DbContextOptions<MultiTenantStoreDbContext> options, IConfiguration config) : base(options)
         {
+            Configuration = config;
         }
 
         public virtual DbSet<Institucion> Instituciones { get; set; }
-
-        public virtual DbSet<Producto> Productos { get; set; }
 
         public virtual DbSet<Suscripcion> Suscripciones { get; set; }
 
@@ -24,13 +29,14 @@ namespace DataAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=LAPTOP-PBMLVKPJ\\SQLEXPRESS;Database=NetApi2;Trusted_Connection=True;MultipleActiveResultSets=True");
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("CommanderConnection"));
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Institucion>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Institucion>().Property(e => e.Identifier).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Institucion>().HasData(new Institucion { Id = id, Identifier = id, Name = "Puertan", Activa = false,Telefono="098123232" ,Direccion="Donde se te cante el orto" });
             base.OnModelCreating(modelBuilder);
         }
     }

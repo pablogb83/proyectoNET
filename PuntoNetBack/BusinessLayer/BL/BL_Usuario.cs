@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.IBL;
+using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
@@ -67,6 +68,10 @@ namespace BusinessLayer.BL
             if (rol == null)
             {
                 throw new KeyNotFoundException("El rol no existe");
+            }
+            if(rol.NormalizedName != "PORTERO" || rol.NormalizedName != "GESTOR")
+            {
+                throw new AppException("No puede asignar ese rol al usuario");
             }
             Usuario user = await _dal.GetUsuarioByIdAsync(userId);
             if (user == null)

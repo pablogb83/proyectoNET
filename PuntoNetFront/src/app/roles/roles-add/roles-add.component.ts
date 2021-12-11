@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { DialogData } from 'src/app/institucion/institucion-list/institucion-list.component';
 import Swal from 'sweetalert2';
@@ -19,7 +20,7 @@ export class RolesAddComponent implements OnInit {
   }
 
 
-  constructor(public dialogRef: MatDialogRef<RolesAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:RolesService) { }
+  constructor(public dialogRef: MatDialogRef<RolesAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:RolesService, private handleError: HandleErrorsService) { }
 
   ngOnInit() {
   }
@@ -28,19 +29,11 @@ export class RolesAddComponent implements OnInit {
     var val = {
       nombre:this.nombre,  
     };
-    this.service.postRole(val.nombre).subscribe(res=>{
-      this.showSuccessAlert();
+    this.service.postRole(val.nombre).subscribe((res:any)=>{
+      this.handleError.showSuccessAlert(res.message)
     }, err =>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Role agregado con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 
 }

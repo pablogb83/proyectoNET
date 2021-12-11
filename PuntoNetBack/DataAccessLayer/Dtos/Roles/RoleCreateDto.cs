@@ -9,7 +9,7 @@ namespace DataAccessLayer.Dtos.Roles
 {
     public class RoleCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un nombre")]
         [MaxLength(250)]
         public string Name { get; set; }
 

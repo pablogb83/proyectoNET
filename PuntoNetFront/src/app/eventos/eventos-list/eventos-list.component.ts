@@ -1,5 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { CalendarioComponent } from 'src/app/calendario/calendario.component';
 import { EventosService } from 'src/app/core/services/eventos.service';
 import Swal from 'sweetalert2';
 import { EventosAddComponent } from '../eventos-add/eventos-add.component';
@@ -13,8 +17,9 @@ import { EventosEditComponent } from '../eventos-edit/eventos-edit.component';
 export class EventosListComponent implements OnInit {
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort,{static: false}) sort: MatSort;
 
-  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin', 'acciones'];
+  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin','hora','edificio','salon', 'acciones'];
 
   constructor(private service: EventosService,public dialog: MatDialog) {
     this.getEventos();
@@ -29,18 +34,20 @@ export class EventosListComponent implements OnInit {
     this.service.getEventos().subscribe(data=>{
 
       this.EventoList = new MatTableDataSource<Evento>(data);
-      for (let fecha of data){
-        fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
-        fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
-      }
+      // for (let fecha of data){
+      //   fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
+      //   fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
+      // }
 
       this.EventoList.paginator = this.paginator;
+      this.EventoList.sort = this.sort;
     });
   }
   
   openDialog(): void {
     const dialogRef = this.dialog.open(EventosAddComponent, {
-      width: '500px',
+      width: '50%',
+      maxHeight:'80vh'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -58,6 +65,20 @@ export class EventosListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.getEventos();
+    });
+  }
+
+  openDialogCalendar(): void {
+    this.service.getEventos().subscribe(data=>{
+      const dialogRef = this.dialog.open(CalendarioComponent, {
+        width: '80vw',
+        height:'95vh',
+        data: data
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.getEventos();
+      });
     });
   }
 

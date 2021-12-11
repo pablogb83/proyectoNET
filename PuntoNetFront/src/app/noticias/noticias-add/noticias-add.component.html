@@ -1,30 +1,28 @@
 <div fxLayout="row" fxLayoutAlign="center none">
     <div fxFlex="95%" class="edificio-container">
-        <div class="title">
             <h3>Agregar noticia</h3>
             <mat-divider></mat-divider>
-        </div>    
-        <div style="width:800px;">
-        <div class="formEdificio" style="width:300px; float:left;">
-            <mat-form-field appearance="fill">
-                <mat-label>Titulo</mat-label>
-                <input matInput [(ngModel)]="nombre">
-            </mat-form-field><br>
+            <div class="example-container">
+                <mat-form-field appearance="fill">
+                    <mat-label>Titulo</mat-label>
+                    <input matInput [(ngModel)]="nombre">
+                </mat-form-field><br>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Descripcion</mat-label>
-                <textarea matInput [(ngModel)]="descripcion"
-                matTextareaAutosize matAutosizeMinRows=8 matAutosizeMaxRows=8></textarea>
-            </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Descripcion</mat-label>
+                    <textarea matInput [(ngModel)]="descripcion"
+                    matTextareaAutosize matAutosizeMinRows=8 matAutosizeMaxRows=8></textarea>
+                </mat-form-field>
 
-        </div>
-        <img [src]=PhotoFilePath height="250px;" width="200px;">
-        <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
-    </div>
+                <div class="ml-3 bd-highlight" style="width: 40%;">
+                    <img [src]=PhotoFilePath height="250px;" width="200px;" *ngIf="PhotoFilePath">
+                    <input type="file" (change)="uploadPhoto($event)" class="mt-2"/>
+                </div>
+            </div>
 
-    <div class="example-button-row" style="position: relative;">
+    <div class="example-button-row">
         <button mat-raised-button color="primary" (click)="agregarNoticia()">Agregar</button>
         <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
     </div>
 </div>
-</div>
+

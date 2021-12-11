@@ -11,10 +11,6 @@ namespace Shared.ModeloDeDominio
         [Key]
         public string Id { get; set; }
         [Required]
-        public DateTime fechainicio { get; set; }
-        [Required]
-        public SuscriptionEnum estado { get; set; }
-        [Required]
-        public virtual Producto Producto { get; set; }
+        public string estado { get; set; }
     }
 }

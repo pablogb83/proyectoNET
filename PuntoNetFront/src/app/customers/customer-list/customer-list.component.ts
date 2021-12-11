@@ -38,14 +38,11 @@ export class CustomerListComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
-    private logger: NGXLogger,
-    private notificationService: NotificationService,
     private titleService: Title
   ) { }
 
   ngOnInit() {
     this.titleService.setTitle('angular-material-template - Customers');
-    this.logger.log('Customers loaded');
     this.dataSource.sort = this.sort;
 
   }

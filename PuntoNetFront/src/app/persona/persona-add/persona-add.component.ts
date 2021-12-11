@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FileService } from 'src/app/core/services/file.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { PersonaService } from 'src/app/core/services/persona.service';
 import Swal from 'sweetalert2';
 
@@ -11,29 +12,33 @@ import Swal from 'sweetalert2';
 })
 export class PersonaAddComponent implements OnInit {
 
-  nombres?:string;
-  apellidos?:string;
-  telefono?:string;
-  email?:string;
-  tipo_doc?: string;
-  nro_doc?: string
-  PhotoFileName?:any;
+  nombres?:string = "";
+  apellidos?:string = "";
+  telefono?:string = "";
+  email?:string = "";
+  tipo_doc?: string = "";
+  nro_doc?: string = "";
+  PhotoFileName?:any = "";
   PhotoFilePath?:any;
   file: any;
   imagePath: string;
   imgURL: any;
 
-  constructor(public dialogRef: MatDialogRef<PersonaAddComponent>, private service:PersonaService, private fileService:FileService) { }
+  constructor(private dialogRef: MatDialogRef<PersonaAddComponent>, private service:PersonaService, private fileService:FileService, private handleError: HandleErrorsService) { }
 
   ngOnInit() {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   agregarPersona(){
     const formData:FormData=new FormData();
+    if(!this.file){
+      this.handleError.showErrorAlert(["Seleccione una imagen para la persona"]);
+      return;
+    }
     formData.append('uploadedFile',this.file,this.file.name);
     formData.append("nombres",this.nombres);
     formData.append("apellidos",this.apellidos);
@@ -42,9 +47,9 @@ export class PersonaAddComponent implements OnInit {
     formData.append("tipo_doc",this.tipo_doc);
     formData.append("nro_doc",this.nro_doc);
     this.service.postPersona(formData).subscribe(res=>{
-      this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err =>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
   }
 
@@ -65,14 +70,6 @@ export class PersonaAddComponent implements OnInit {
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
     }
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Persona agregada con exito!', 'success');
-  }
-
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
   }
 
 }

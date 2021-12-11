@@ -12,6 +12,45 @@
     border-radius: 2px;
   }
   
+  .center{
+    text-align: center;
+  }
+
   ul.links {
     padding-bottom: 10px;
+  }
+  .snap-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .list-unstyled {
+    list-style: none;
+  }
+  
+  .list-unstyled li {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }
+
+ 
+  img{
+    object-fit: cover !important;
+    width: 50%;
+    margin-right: 2em;
+  }   
+
+  .example-button-row {
+    display: table-cell;
+    width: 490px;
   }

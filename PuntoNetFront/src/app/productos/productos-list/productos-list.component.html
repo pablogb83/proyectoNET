@@ -1,0 +1,65 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+      <mat-card>
+        <mat-card-content>
+          <h2>Productos del sistema</h2>
+          <button mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
+  
+          <table mat-table  [dataSource]="ProductosList" matSort>
+  
+            <!-- Name Column -->
+            <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- direccion Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+          
+            <!-- telefono Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+              <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <div class="example-button-row">
+                        <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="openDialogUpdate(element)">
+                            <mat-icon>update</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" aria-label="Example icon button with a delete icon" (click)="deleteProduct(element)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons 
+                 aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

@@ -1,10 +1,12 @@
 ﻿using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
+using Finbuckle.MultiTenant;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +17,13 @@ namespace DataAccessLayer.DAL
     {
         private readonly WebAPIContext _context;
         private readonly UserManager<Usuario> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager)
+        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager, RoleManager<Role> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<Usuario> AutenticarAsync(string email, string password)
@@ -69,12 +73,18 @@ namespace DataAccessLayer.DAL
 
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("El password es requerido");
-            // var u1 = _context.Usuarios.Add(usr);
-            //_context.SaveChanges();
             _context.TenantMismatchMode = Finbuckle.MultiTenant.TenantMismatchMode.Ignore;
+            
             var result = await _userManager.CreateAsync(usr, password);
-            var createdUser = _userManager.Users.IgnoreQueryFilters().SingleOrDefault(x => x.Email == usr.Email);
-            await _userManager.AddToRoleAsync(createdUser, "ADMIN");
+            if (result.Succeeded)
+            {
+                var createdUser = _userManager.Users.IgnoreQueryFilters().SingleOrDefault(x => x.Email == usr.Email);
+                await _userManager.AddToRoleAsync(createdUser, "ADMIN");
+            }
+            else
+            {
+                throw new AppException("Error en la creacion del usuario");
+            }
         }
 
         public void DeleteUsuario(Usuario usr)

@@ -1,20 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WebcamComponent, WebcamModule } from 'ngx-webcam';
 import { ReconocimientoFacialRoutingModule } from './reconocimiento-facial-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { ReconocimientoFacialComponent } from './reconocimiento-facial.component';
-import { MatGridListModule } from '@angular/material';
+import { WebcamModule } from 'ngx-webcam';
 
 
 @NgModule({
-  declarations: [ReconocimientoFacialComponent],
+  declarations: [],
   imports: [
     CommonModule,
     SharedModule,
     ReconocimientoFacialRoutingModule,
-    WebcamModule,
-    MatGridListModule 
-  ]
+    WebcamModule
+  ],
+  exports:[WebcamModule]
 })
 export class ReconocimientoFacialModule { }

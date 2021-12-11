@@ -31,7 +31,7 @@ namespace NetCoreWebAPI.Controllers
 
         [HttpPost]
         [Route("confirm")]
-        public ActionResult webHookTest(PaypalSuscriptionActivated suscription)
+        public ActionResult Confirm(PaypalSuscriptionActivated suscription)
         {
             Ok();
             _bl.AuthorizePayment(Request.Headers,suscription);

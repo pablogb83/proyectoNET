@@ -48,6 +48,11 @@ namespace DataAccessLayer.DAL
             return _context.Roles.ToList();
         }
 
+        public IEnumerable<Role> GetAllRolesAdmin()
+        {
+            return _context.Roles.ToList();
+        }
+
         public Role GetRoleById(int Id)
         {
             return _context.Roles.FirstOrDefault(p => p.Id == Id);

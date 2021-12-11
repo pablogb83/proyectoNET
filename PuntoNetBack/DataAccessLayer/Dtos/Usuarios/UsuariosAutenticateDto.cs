@@ -9,10 +9,11 @@ namespace DataAccessLayer.Dtos.Usuarios
 {
     public class UsuarioAutenticateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar un email")]
+        [EmailAddress(ErrorMessage = "Debe ingresar un email valido")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una contraseña")]
         public string Password { get; set; }
     }
 }

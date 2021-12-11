@@ -59,17 +59,17 @@ export class PasswordResetComponent implements OnInit {
 
     this.loading = true;
 
-    this.authService.passwordReset(this.email, this.token, password, passwordConfirm)
-      .subscribe(
-        data => {
-          this.notificationService.openSnackBar('Your password has been changed.');
-          this.router.navigate(['/auth/login']);
-        },
-        error => {
-          this.notificationService.openSnackBar(error.error);
-          this.loading = false;
-        }
-      );
+    // this.authService.passwordReset(this.email, this.token, password, passwordConfirm)
+    //   .subscribe(
+    //     data => {
+    //       this.notificationService.openSnackBar('Your password has been changed.');
+    //       this.router.navigate(['/auth/login']);
+    //     },
+    //     error => {
+    //       this.notificationService.openSnackBar(error.error);
+    //       this.loading = false;
+    //     }
+    //   );
   }
 
   cancel() {

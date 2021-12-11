@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { NoticiasService } from 'src/app/core/services/noticias.service';
 import Swal from 'sweetalert2';
 import { NoticiasAddComponent } from '../noticias-add/noticias-add.component';
@@ -40,7 +42,8 @@ export class NoticiasListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(NoticiasAddComponent, {
-      width: '900px',
+      width: 'auto',
+      
     });
 
     dialogRef.afterClosed().subscribe(result => {

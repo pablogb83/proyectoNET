@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SalonService } from 'src/app/core/services/salon.service';
 import Swal from 'sweetalert2';
 import { EdificioIdData } from '../salon-list/salon-list.component';
@@ -23,7 +23,6 @@ export class SalonAddComponent implements OnInit {
   }
 
   agregarSalon(){
-
     var val = {
       denominacion:this.denominacion,
       numero:this.numero,

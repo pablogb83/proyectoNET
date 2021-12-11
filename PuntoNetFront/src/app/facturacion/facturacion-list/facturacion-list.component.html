@@ -1,0 +1,58 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="95%">
+      <mat-card>
+        <mat-card-content>
+          <h2 *ngIf="inst">Facturas de {{inst.name}} </h2>
+          <table mat-table  [dataSource]="FacturacionList" matSort>
+  
+            <!-- Name Column -->
+            <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+          
+            <!-- direccion Column -->
+            <ng-container matColumnDef="pago">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Pago </th>
+              <td mat-cell *matCellDef="let element"> {{element.amount_with_breakdown.gross_amount.value}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email de pago  </th>
+              <td mat-cell *matCellDef="let element"> {{element.payer_email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de facturacion  </th>
+                <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <div class="example-button-row">
+                        <button mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="openDialog(element)">
+                            <mat-icon>info</mat-icon>
+                        </button>
+                    </div>
+                </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons 
+                 aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

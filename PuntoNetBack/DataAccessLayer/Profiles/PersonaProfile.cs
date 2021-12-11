@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Dtos.Persona;
+using Microsoft.AspNetCore.Http;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace DataAccessLayer.Profiles
             CreateMap<PersonaCreateDto, Persona>();
             CreateMap<PersonaUpdateDto, Persona>();
             CreateMap<Persona, PersonaUpdateDto>();
+            CreateMap<IFormCollection, PersonaUpdateDto>();
         }
     }
 }

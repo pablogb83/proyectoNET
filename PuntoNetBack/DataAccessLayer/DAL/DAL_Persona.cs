@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.IDAL;
+﻿using DataAccessLayer.Helpers;
+using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace DataAccessLayer.DAL
                 throw new ArgumentNullException(nameof(prs));
             }
             _context.Personas.Add(prs);
+ 
         }
 
         public void DeletePersona(Persona prs)
@@ -63,7 +65,15 @@ namespace DataAccessLayer.DAL
 
         public bool SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            try
+            {
+                return (_context.SaveChanges() >= 0);
+            }
+            catch(Exception e)
+            {
+                throw new AppException(e.Message);
+            }
+            
         }
 
         public void UpdatePersona(Persona prs)

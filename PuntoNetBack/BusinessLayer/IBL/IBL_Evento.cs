@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Dtos.Eventos;
+using DataAccessLayer.Dtos.Salon;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,11 @@ namespace BusinessLayer.IBL
         bool SaveChanges();
         IEnumerable<Evento> GetAllEventos();
         Evento GetEventoById(int Id);
-        void CreateEvento(Evento evt);
+        void CreateEvento(Evento evt, int SalonId);
         void UpdateEvento(Evento evt);
         void DeleteEvento(Evento evt);
-        void CreateEventoRecurrente(EventoRecurrenteCreateDto evt);
+        void CreateEventoRecurrente(EventoRecurrenteCreateDto evt, int SalonId);
+        IEnumerable<Salon> GetSalonesDisponibles(SalonesDisponiblesDto datos);
+
     }
 }

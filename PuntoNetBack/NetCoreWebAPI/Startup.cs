@@ -22,6 +22,12 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
+using GlobalErrorHandling.Extensions;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using System.Resources;
+using System.Reflection;
 
 namespace NetCoreWebAPI
 {
@@ -43,11 +49,17 @@ namespace NetCoreWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.Configure<RequestLocalizationOptions>(options => {
+                List<CultureInfo> supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("es"),
+                };
+                options.DefaultRequestCulture = new RequestCulture("es");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
             services.AddHttpClient();
-            //services.AddScoped<TenantInfo>();
-            //services.UseDiscriminatorColumn(Configuration);
-
-            //services.AddMultiTenant<TenantInfo>().WithStaticStrategy("1").WithEFCoreStore<MultiTenantStoreDbContext>();
             var appSettingsSection = Configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<AppSettings>();
             byte[] key = Encoding.ASCII.GetBytes(appSettings.Secret);
@@ -111,56 +123,6 @@ namespace NetCoreWebAPI
             });
 
 
-            /*services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer();*/
-
-            // configure jwt authentication
-
-            /*services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer();
-            
-            // configure jwt authentication
-         
-            /*services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = context =>
-                    {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService <IDAL_Usuario>();
-                        var userId = int.Parse(context.Principal.Identity.Name);
-                        var user = userService.GetUsuarioById(userId);
-                        if (user == null)
-                        {
-                            // return unauthorized if user no longer exists
-                            context.Fail("Unauthorized");
-                        }
-                        return Task.CompletedTask;
-                    }
-                };
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });*/
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Inyeccion de dependencias
@@ -190,6 +152,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Acceso, BL_Acceso>();
             services.AddScoped<IDAL_Noticias, DataAccessLayer.DAL.DAL_Noticias_EF>();
             services.AddScoped<IBL_Noticias, BL_Noticias>();
+            services.AddScoped<IDAL_Producto, DataAccessLayer.DAL.DAL_Producto>();
+            services.AddScoped<IBL_Producto, BL_Producto>();
 
             services.AddSwaggerGen(c =>
             {
@@ -235,6 +199,8 @@ namespace NetCoreWebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -242,11 +208,14 @@ namespace NetCoreWebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NetCoreWebAPI v1"));
             }
 
+
             //app.UseMiddleware<JwtMiddleware>();
 
             app.UseMultiTenant();
 
             app.UseHttpsRedirection();
+
+            app.ConfigureExceptionHandler();
 
             app.UseRouting();
 

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { PuertaService } from 'src/app/core/services/puerta.service';
@@ -75,8 +77,7 @@ export class PuertaListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //this.getSalones();
+      this.getPuertas();
     }); 
   }
 

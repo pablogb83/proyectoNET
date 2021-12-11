@@ -33,7 +33,19 @@ export class InstitucionService {
   }
 
   isActive(){
-   
     return this.http.get(AUTH_API  + 'active/');
   }
+
+  getInstitucion(){
+    return this.http.get(AUTH_API  + 'admin/');
+  }
+
+  getInstitucionById(id:string){
+    return this.http.get(AUTH_API  + id);
+  }
+
+  getFacturacion(fechainicio: string, fechafin: string,id?: string){
+    return this.http.get(AUTH_API  + `facturacion?id=${id}&fechainicio=${fechainicio}&fechafin=${fechafin}`);
+  }
+
 }

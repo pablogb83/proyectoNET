@@ -143,6 +143,9 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost("admin")]
         public async Task<ActionResult> CreateAdminAsync(AdminCreateDto usuarioCreateDto)
         {
+            Institucion falsoTenant = new Institucion { Name ="FalsaInstitucion", Id="12131",Identifier="12131",Activa=true,PlanId="121212",Direccion="BENGOA", Suscripcion=new Suscripcion(),Telefono="098776123" };
+            HttpContext.TrySetTenantInfo(falsoTenant, true);
+            var tenantActual = HttpContext.GetMultiTenantContext<Institucion>();
             var UsuarioModel = _mapper.Map<Usuario>(usuarioCreateDto);
             try
             {
@@ -220,7 +223,7 @@ namespace NetCoreWebAPI.Controllers
                 await _bl.AddRoleToUserAsync(parametros.RolId, parametros.UserId);
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return NoContent();
 
@@ -231,12 +234,12 @@ namespace NetCoreWebAPI.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<bool>> compareFaces()
         {
-            try
-            {
+            
+                var tenant = HttpContext.GetMultiTenantContext<Institucion>();
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream());
+                var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream(), tenant.TenantInfo.Name);
                 if (result!=null)
                 {
                     Persona coincidencia = _blPersona.GetPersonaByDocumento(result.Name);
@@ -245,13 +248,9 @@ namespace NetCoreWebAPI.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest(new { message = "No se encontro la persona"});
                 }
-            }
-            catch (Exception)
-            {
-                return new JsonResult("No se pudo subir el archivo");
-            }
+          
         }
     }
 }

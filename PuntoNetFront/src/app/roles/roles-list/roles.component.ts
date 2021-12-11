@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatDialog, MatTableDataSource } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { RolesAddComponent } from 'src/app/roles/roles-add/roles-add.component';
 import { RolesEditComponent } from 'src/app/roles/roles-edit/roles-edit.component';

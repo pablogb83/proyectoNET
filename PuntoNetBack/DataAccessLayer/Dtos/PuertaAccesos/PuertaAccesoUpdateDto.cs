@@ -9,7 +9,7 @@ namespace DataAccessLayer.Dtos.PuertaAccesos
 {
     public class PuertaUpdateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Debe ingresar una denominacion")]
         [MaxLength(250)]
         public string Denominacion { get; set; }
     }

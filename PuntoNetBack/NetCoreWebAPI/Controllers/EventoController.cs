@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using DataAccessLayer.Dtos.Salon;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -57,8 +58,7 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<EventosReadDto> CreateEvento(EventoCreateDto eventoCreateDto)
         {
             var eventoModel = _mapper.Map<Evento>(eventoCreateDto);
-            _bl.CreateEvento(eventoModel);
-            _bl.SaveChanges();
+            _bl.CreateEvento(eventoModel, eventoCreateDto.SalonId);
 
             var eventoReadDto = _mapper.Map<EventosReadDto>(eventoModel);
 
@@ -66,13 +66,19 @@ namespace NetCoreWebAPI.Controllers
             //return Ok(commandReadDto);
         }
 
+        [HttpPost("salonesdisponibles")]
+        public ActionResult<IEnumerable<EventosReadDto>> GetSalonesDisponibles(SalonesDisponiblesDto datos)
+        {
+            var salones = _bl.GetSalonesDisponibles(datos);
+            return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(salones));
+        }
 
         [HttpPost("recurrente")]
         public ActionResult CreateEventoRecurrente(EventoRecurrenteCreateDto eventoCreateDto)
         {
             //poner aca alguna validacion y tirar las ecepciones
-            _bl.CreateEventoRecurrente(eventoCreateDto);
-            return Ok("Creado correctamente");
+            _bl.CreateEventoRecurrente(eventoCreateDto, eventoCreateDto.SalonId);
+            return Ok(new { message="Evento recurrente creado correctamente" });
         }
 
         //PUT api/commands/{id}

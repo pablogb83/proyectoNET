@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { EventosRoutingModule } from './eventos-routing.module';
 import { EventosAddComponent } from './eventos-add/eventos-add.component';
 import { EventosEditComponent } from './eventos-edit/eventos-edit.component';

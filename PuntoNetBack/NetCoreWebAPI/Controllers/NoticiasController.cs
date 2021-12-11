@@ -30,7 +30,16 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<NoticiaReadDto>> GetAllNoticias()
         {
             var noticias = _bl.GetAllNoticias();
-            return Ok(_mapper.Map<IEnumerable<NoticiaReadDto>>(noticias));
+            if (noticias != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<NoticiaReadDto>>(noticias));
+
+            }
+            else
+            {
+                return NotFound();
+            }
+            
         }
 
         //GET api/noticias/{id}

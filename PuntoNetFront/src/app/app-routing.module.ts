@@ -1,108 +1,121 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AccesoModule } from './acceso/acceso.module';
+import { AccountModule } from './account/account.module';
+import { AuthModule } from './auth/auth.module';
+
+import { CustomersModule } from './customers/customers.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { EdificiosModule } from './edificios/edificios.module';
+import { EventosModule } from './eventos/eventos.module';
+import { InstitucionModule } from './institucion/institucion.module';
+import { PagoModule } from './pago/pago.module';
+import { PersonaModule } from './persona/persona.module';
+import { PuertaModule } from './puerta/puerta.module';
+import { ReconocimientoFacialModule } from './reconocimiento-facial/reconocimiento-facial.module';
+import { RolesModule } from './roles/roles.module';
+import { SalonModule } from './salon/salon.module';
+import { UsersModule } from './users/users.module';
 import { AdminGuard } from './core/guards/admin.guard';
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { SuperAdminGuard } from './core/guards/superadmin.guard';
-import { PagoComponent } from './pago/pago.component';
+import { ProductosModule } from './productos/productos.module';
+import { FacturacionModule } from './facturacion/facturacion.module';
+import { NoticiasModule } from './noticias/noticias.module';
+import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
+import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
 
 const appRoutes: Routes = [
     {
         path: 'auth',
-        loadChildren: './auth/auth.module#AuthModule'
+        loadChildren: ()=> AuthModule
     },
     {
         path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule',
+        loadChildren: () => DashboardModule,
         canActivate: [AuthGuard]
     },
     {
         path: 'customers',
-        loadChildren: './customers/customers.module#CustomersModule',
+        loadChildren: ()=> CustomersModule,
         canActivate: [AuthGuard]
     },
     {
         path: 'users',
-        loadChildren: './users/users.module#UsersModule',
-        canActivate: [AuthGuard]
+        loadChildren: ()=> UsersModule,
+        canActivate: [AuthGuard,AdminGuard]
     },
     {
         path: 'eventos',
-        loadChildren: './eventos/eventos.module#EventosModule',
+        loadChildren: ()=> EventosModule,
         canActivate: [AuthGuard]
     },
     {
         path: 'noticias',
-        loadChildren: './noticias/noticias.module#NoticiasModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'account',
-        loadChildren: './account/account.module#AccountModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'icons',
-        loadChildren: './icons/icons.module#IconsModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'typography',
-        loadChildren: './typography/typography.module#TypographyModule',
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'about',
-        loadChildren: './about/about.module#AboutModule',
+        loadChildren: ()=> NoticiasModule,
         canActivate: [AuthGuard]
     },
     {
         path: 'institucion',
-        loadChildren: './institucion/institucion.module#InstitucionModule',
+        loadChildren: ()=>InstitucionModule,
         canActivate: [AuthGuard, SuperAdminGuard]
     },
     {
         path: 'pago',
-        loadChildren: './pago/pago.module#PagoModule',
-        canActivate: [AuthGuard]
+        loadChildren: ()=>PagoModule
     },
     {
         path: 'edificios',
-        loadChildren: './edificios/edificios.module#EdificiosModule',
+        loadChildren: ()=>EdificiosModule,
         canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: 'roles',
-        loadChildren: './roles/roles.module#RolesModule',
+        loadChildren: ()=>RolesModule,
         canActivate: [AuthGuard, SuperAdminGuard]
     },
     {
         path: 'salones',
-        loadChildren: './salon/salon.module#SalonModule',
+        loadChildren: ()=>SalonModule,
         canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: 'puertas',
-        loadChildren: './puerta/puerta.module#PuertaModule',
+        loadChildren: ()=>PuertaModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
         path: 'personas',
-        loadChildren: './persona/persona.module#PersonaModule',
+        loadChildren: ()=>PersonaModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
+        path: 'productos',
+        loadChildren: ()=>ProductosModule,
+        canActivate: [AuthGuard, SuperAdminGuard]
+    },
+    {
+        path: 'facturacion',
+        loadChildren: ()=>FacturacionModule,
+        canActivate: [AuthGuard]
     },
     {
         path: 'reconocimiento-facial',
-        loadChildren: './reconocimiento-facial/reconocimiento-facial.module#ReconocimientoFacialModule',
+        loadChildren: ()=>ReconocimientoFacialModule,
     },
     {
         path: 'accesos',
-        loadChildren: './acceso/acceso.module#AccesoModule',
+        loadChildren: ()=>AccesoModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
+        path: 'visitantehome',
+        loadChildren: ()=>VisitanteHomeModule
+    },
+    {
         path: '**',
-        redirectTo: 'dashboard',
+        redirectTo: 'visitantehome',
         pathMatch: 'full'
     }
 ];

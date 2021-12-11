@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { window } from 'rxjs-compat/operator/window';
+import { EmailService } from '../core/services/email.service';
 import { InstitucionService } from '../core/services/institucion.service';
+import { ProductoService } from '../core/services/productos.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
 
 declare var paypal: any;
@@ -13,12 +14,23 @@ declare var paypal: any;
 })
 export class PaypalButtonComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
-  constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router) { }
+  
+  Producto: any;
+  institucion: any;
+
+  constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router, private emailService: EmailService, private productoService: ProductoService) { }
 
 
   ngOnInit() {
     const tenant_id = this.service.getTenant();
-    var subID ="";
+    this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
+      console.log(institucionInfo);
+      this.institucion = institucionInfo;
+      var subID ="";
+      this.productoService.getProducto().subscribe(data=>{
+        console.log('Este es el producto' , data)
+        this.Producto = data;
+      })
       paypal.Buttons({
         style: {
             shape: 'rect',
@@ -29,7 +41,6 @@ export class PaypalButtonComponent implements OnInit {
         },
         onClick: async (data,actions) =>{
           const status = await this.institucionService.isActive().toPromise();
-          console.log("EL STATUS ES: ", status);
           if(status){
             return actions.reject();
           }
@@ -37,12 +48,13 @@ export class PaypalButtonComponent implements OnInit {
         createSubscription: async (data: any, actions: any) => {
           return await actions.subscription.create({
             /* Creates the subscription */
-            plan_id: 'P-97818393X7850501NMFRB3JQ',
+            plan_id: institucionInfo.planId,
             custom_id: tenant_id
           });
         },
         onApprove: (data: any, actions: any) => {
-          this.service.saveStatus(true);
+          //this.service.saveStatus(true);
+          this.emailService.sendEmail().subscribe();
           this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{
@@ -50,6 +62,8 @@ export class PaypalButtonComponent implements OnInit {
         onError: (data: any) => {
         }
     }).render(this.paypalElement.nativeElement); 
+    });
+    
 
   }
 }

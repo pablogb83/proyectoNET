@@ -1,13 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material';
 import {MatPaginator} from '@angular/material/paginator';
 import { InstitucionService } from 'src/app/core/services/institucion.service';
 import Swal from 'sweetalert2';
 import { InstAddComponent } from '../inst-add/inst-add.component';
 import { InstEditComponent } from '../inst-edit/inst-edit.component';
 import {MatTableDataSource} from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { AdminAddComponent } from '../admin-add/admin-add.component';
-import { UsersAddComponent } from 'src/app/users/users-add/users-add.component';
 
 
 export interface DialogData {
@@ -25,10 +24,7 @@ export interface DialogData {
 export class InstitucionListComponent implements AfterViewInit {
 
   constructor(private service:InstitucionService,public dialog: MatDialog) { 
-    this.service.getInstList().subscribe(data=>{
-      this.InstitucionList = new MatTableDataSource<Instituciones>(data);
-      this.InstitucionList.paginator = this.paginator;
-    });
+    this.getInstituciones();
   }
 
   InstitucionList:any=[];
@@ -49,14 +45,19 @@ export class InstitucionListComponent implements AfterViewInit {
   // }
 
 
+  getInstituciones(){
+    this.service.getInstList().subscribe(data=>{
+      this.InstitucionList = new MatTableDataSource<Instituciones>(data);
+      this.InstitucionList.paginator = this.paginator;
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(InstAddComponent, {
-      width: '250px',
+      width: '500px',
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.ngAfterViewInit();
+      this.getInstituciones();
     });
   }
 
@@ -67,8 +68,7 @@ export class InstitucionListComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.ngAfterViewInit();
+      this.getInstituciones();
     });
   }
   
@@ -96,7 +96,7 @@ export class InstitucionListComponent implements AfterViewInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteInst(item.id).subscribe(data=>{
-          this.ngAfterViewInit();
+          this.getInstituciones();
         })
         Swal.fire(
           'Borrado!',

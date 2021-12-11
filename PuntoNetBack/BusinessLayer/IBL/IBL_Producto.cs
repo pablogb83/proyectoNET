@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Dtos.Productos;
+using DataAccessLayer.Helpers;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,10 @@ namespace BusinessLayer.IBL
     {
         bool CreateProduct(ProductoCreateDto producto);
         void SaveChanges();
+        List<ProductoReadDto> GetProductos();
+        ProductoReadDto GetProducto(string id);
+        bool UpdateProductoPrecio(double precio, string plan_id);
+        bool EliminarProducto(string plan_id);
+
     }
 }

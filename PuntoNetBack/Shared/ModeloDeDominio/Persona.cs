@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Finbuckle.MultiTenant;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Shared.ModeloDeDominio
 {
     [MultiTenant]

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { InstitucionService } from 'src/app/core/services/institucion.service';
 
 import Swal from 'sweetalert2';
@@ -17,7 +18,7 @@ export class InstEditComponent implements OnInit {
   direccion?:string;
   telefono?:string;
 
-  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:InstitucionService) {
+  constructor(public dialogRef: MatDialogRef<InstEditComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:InstitucionService,private handleError: HandleErrorsService) {
     this.id = data.id;
     this.nombre = data.nombre;
     this.direccion = data.direccion;
@@ -41,18 +42,12 @@ export class InstEditComponent implements OnInit {
               telefono:this.telefono};
 
     this.service.updateInst(String(id), val).subscribe(res=>{
-    this.showSuccessAlert();
+      this.handleError.showSuccessAlert();
     }, err=>{
-      this.showErrorAlert();
+      this.handleError.showErrors(err);
     });
   }
 
-  showSuccessAlert() {
-    Swal.fire('OK', 'Institucion actualizada con exito!', 'success');
-  }
 
-  showErrorAlert() {
-    Swal.fire('Error!', 'Algo salió mal!', 'error');
-  }
 
 }

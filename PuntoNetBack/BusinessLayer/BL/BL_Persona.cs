@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Persona;
+using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
@@ -29,8 +30,11 @@ namespace BusinessLayer.BL
             {
                 persona = _mapper.Map<Persona>(prs);
                 persona.PhotoFileName = "anonymous.png";
-                _dal.CreatePersona(persona);
-                SaveChanges();
+                if(GetPersonaByDocumento(persona.nro_doc) == null)
+                {
+                    _dal.CreatePersona(persona);
+                    SaveChanges();
+                }
             }
         }
 
@@ -73,5 +77,6 @@ namespace BusinessLayer.BL
         {
             _dal.UpdatePersona(prs);
         }
+
     }
 }
