@@ -69,7 +69,7 @@ namespace BusinessLayer.BL
             {
                 throw new KeyNotFoundException("El rol no existe");
             }
-            if(rol.NormalizedName != "PORTERO" || rol.NormalizedName != "GESTOR")
+            if(rol.NormalizedName != "PORTERO" && rol.NormalizedName != "GESTOR")
             {
                 throw new AppException("No puede asignar ese rol al usuario");
             }

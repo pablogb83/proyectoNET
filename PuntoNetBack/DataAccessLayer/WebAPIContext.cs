@@ -55,7 +55,7 @@ namespace DataAccessLayer
                 PasswordHash = "AQAAAAEAACcQAAAAEDScDguK3Sx4oLf+Zh+A8etz8lIrm2TH0yCx10v7asCjqErAXyq2gOad712ILTfrKg==",
                 TenantId = defaultTenantId
             }); ;
-            modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId=adminId,RoleId= roleId });
+            modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId=adminId, RoleId= roleId });
             TenantMismatchMode = TenantMismatchMode.Ignore;
         }
 

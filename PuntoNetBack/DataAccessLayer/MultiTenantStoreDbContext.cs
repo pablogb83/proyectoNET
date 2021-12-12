@@ -36,7 +36,7 @@ namespace DataAccessLayer
         {
             modelBuilder.Entity<Institucion>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Institucion>().Property(e => e.Identifier).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Institucion>().HasData(new Institucion { Id = id, Identifier = id, Name = "Puertan", Activa = false,Telefono="098123232" ,Direccion="Donde se te cante el orto" });
+            modelBuilder.Entity<Institucion>().HasData(new Institucion { Id = id, Identifier = id, Name = "Puertan", Activa = false,Telefono="0999999" ,Direccion="Segurola 1234" });
             base.OnModelCreating(modelBuilder);
         }
     }
