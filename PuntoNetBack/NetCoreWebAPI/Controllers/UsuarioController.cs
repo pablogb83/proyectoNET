@@ -225,7 +225,6 @@ namespace NetCoreWebAPI.Controllers
             }
             catch (Exception)
             {
-                //    return NoContent();
                 return BadRequest(new { message = "No se pudo asignar el rol" });
             }
         }

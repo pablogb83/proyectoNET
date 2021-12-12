@@ -37,6 +37,11 @@ namespace BusinessLayer.BL
             return _dal.GetNoticiaById(Id);
         }
 
+        public IEnumerable<Noticias> GetUltimasNoticias()
+        {
+            return _dal.GetUltimasNoticias();
+        }
+
         public bool SaveChanges()
         {
             return _dal.SaveChanges();

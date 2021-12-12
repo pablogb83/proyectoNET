@@ -1,8 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailService } from '../core/services/email.service';
 import { InstitucionService } from '../core/services/institucion.service';
-import { ProductoService } from '../core/services/productos.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
 
 declare var paypal: any;
@@ -14,23 +13,16 @@ declare var paypal: any;
 })
 export class PaypalButtonComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
-  
-  Producto: any;
-  institucion: any;
 
-  constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router, private emailService: EmailService, private productoService: ProductoService) { }
 
+  constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router, private emailService: EmailService) {
+   }
 
   ngOnInit() {
     const tenant_id = this.service.getTenant();
     this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
       console.log(institucionInfo);
-      this.institucion = institucionInfo;
       var subID ="";
-      this.productoService.getProducto().subscribe(data=>{
-        console.log('Este es el producto' , data)
-        this.Producto = data;
-      })
       paypal.Buttons({
         style: {
             shape: 'rect',
@@ -64,6 +56,5 @@ export class PaypalButtonComponent implements OnInit {
     }).render(this.paypalElement.nativeElement); 
     });
     
-
   }
 }

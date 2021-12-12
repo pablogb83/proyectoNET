@@ -42,6 +42,22 @@ namespace NetCoreWebAPI.Controllers
             
         }
 
+        [HttpGet("ultimas")]
+        public ActionResult<IEnumerable<NoticiaReadDto>> GetUltimasNoticias()
+        {
+            var noticias = _bl.GetUltimasNoticias();
+            if (noticias != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<NoticiaReadDto>>(noticias));
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
         //GET api/noticias/{id}
         [HttpGet("{id}", Name = "GetNoticiaById")]
         public ActionResult<NoticiaReadDto> GetNoticiaById(int id)

@@ -125,11 +125,11 @@ namespace NetCoreWebAPI.Controllers
             {
                 DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 return NoContent();
             }
-
+            
             return NoContent();
         }
 
