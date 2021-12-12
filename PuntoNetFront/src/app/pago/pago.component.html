@@ -1,1 +1,24 @@
-<app-paypal-button></app-paypal-button>
+<mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+        <mat-card class="example-card" *ngIf="Producto">
+            <mat-card-title>{{Producto.name}}</mat-card-title>
+                <mat-card-subtitle>{{institucion.name}}</mat-card-subtitle>
+                    <mat-card-content>
+                        <p>{{Producto.description}}</p>
+                        <p><b>U$S {{Producto.price}} mensuales</b></p>
+                    </mat-card-content>
+                <mat-card-actions>
+                    <!-- <app-paypal-button></app-paypal-button> -->
+            </mat-card-actions>
+      </mat-card>
+      <mat-divider></mat-divider>
+   
+    </mat-grid-tile>
+      
+    <mat-grid-tile>
+        <img src="../../assets/pago.png" alt="">
+    </mat-grid-tile>
+
+   
+</mat-grid-list>
+

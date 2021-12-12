@@ -36,6 +36,12 @@ namespace DataAccessLayer.DAL
         public IEnumerable<Noticias> GetAllNoticias() 
         {
             return _context.Noticias.ToList();
+
+        }
+
+        public IEnumerable<Noticias> GetUltimasNoticias()
+        {
+            return _context.Noticias.OrderByDescending(not => not.FechaPublicacion).Take(5);
         }
 
         public Noticias GetNoticiaById(int Id) 

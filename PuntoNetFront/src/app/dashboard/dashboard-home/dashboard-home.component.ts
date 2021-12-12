@@ -42,7 +42,7 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   getNoticias(): void{
-  this.service.getNoticias().subscribe(data=>{
+  this.service.getUltimasNoticias().subscribe(data=>{
 
     this.Cards = data
   
