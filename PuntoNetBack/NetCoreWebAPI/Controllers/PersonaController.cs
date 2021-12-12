@@ -112,6 +112,7 @@ namespace NetCoreWebAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeletePersona(int id)
         {
+
             var personaModelFromRepo = _bl.GetPersonaById(id);
             if (personaModelFromRepo == null)
             {
@@ -120,7 +121,15 @@ namespace NetCoreWebAPI.Controllers
             _bl.DeletePersona(personaModelFromRepo);
             _bl.SaveChanges();
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
-            DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
+            try
+            {
+                DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
+            }
+            catch(Exception e)
+            {
+                return NoContent();
+            }
+            
             return NoContent();
         }
 

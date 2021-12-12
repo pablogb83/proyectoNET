@@ -11,6 +11,7 @@ namespace DataAccessLayer.IDAL
     public interface IDAL_Noticias
     {
         IEnumerable<Noticias> GetAllNoticias();
+        IEnumerable<Noticias> GetUltimasNoticias();
         Noticias GetNoticiaById(int Id);
         void CreateNoticia(Noticias not);
         void UpdateNoticia(Noticias not);
