@@ -28,17 +28,17 @@ export class HandleErrorsService {
   }
 
   showSuccessAlert(message?: string) {
-    Swal.fire('OK', message ?? "Ok", 'success');
+    Swal.fire('OK', message ? message :  "Ok", 'success');
   }
 
   showErrorAlert(messages: string[]) {
-    Swal.fire('Error!', messages.toString() ?? "Algo salio mal", 'error');
+    Swal.fire('Error!', messages.toString() ? messages.toString() : "Algo salio mal", 'error');
   }
 
   async showConfirmDelete(msg?:string){
     return await Swal.fire({
       title: 'Esta seguro?',
-      text: msg ?? "Una vez eliminado no podra restaurarse",
+      text: msg ? msg :  "Una vez eliminado no podra restaurarse",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

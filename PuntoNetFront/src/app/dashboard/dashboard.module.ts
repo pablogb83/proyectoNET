@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { DashboradGetNoticiaComponent } from './dashborad-get-noticia/dashborad-get-noticia.component';
 
+
 @NgModule({
   declarations: [DashboardHomeComponent, DashboradGetNoticiaComponent],
   imports: [

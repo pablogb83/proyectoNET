@@ -10,6 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Noticias } from 'src/app/noticias/noticias-list/noticias-list.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { CalendarioComponent } from 'src/app/calendario/calendario.component';
 
 
 @Component({
@@ -18,22 +19,27 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./dashboard-home.component.css']
 })
 export class DashboardHomeComponent implements OnInit {
+
   ToString() {
     throw new Error('Method not implemented.');
   }
   
-  currentUser: any;
+
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
+  currentUser: any;
   Cards:any=[];
   PhotoFileName:any=[];
   PhotoFilePath:any=[];
-  
+
+
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
     this.titleService.setTitle('PuertanFront');
+    
   }
+
 
   constructor(private notificationService: NotificationService,
     private authService: AuthenticationService,
@@ -41,15 +47,16 @@ export class DashboardHomeComponent implements OnInit {
     this.getNoticias();
   }
 
+
   getNoticias(): void{
   this.service.getNoticias().subscribe(data=>{
 
     this.Cards = data
-  
+    // this.Cards  = new MatTableDataSource<DashboardHomeComponent>(data);
     for (let card of this.Cards){
       card.PhotoFilePath =  this.fileService.PhotoUrl + card.photoFileName;
     }
-    
+    this.Cards.paginator = this.paginator;
     console.log(this.Cards);
   });
 

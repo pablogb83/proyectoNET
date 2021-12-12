@@ -4,6 +4,9 @@ import {
   ViewChild,
   TemplateRef,
   Inject,
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   startOfDay,
@@ -53,6 +56,7 @@ export class CalendarioComponent {
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
+
 
   modalData: {
     action: string;

@@ -1,0 +1,8 @@
+div {
+    height: 200px;
+    background-color: #EEE;
+    text-align: center;
+}
+div p {
+    line-height: 200px;
+}
