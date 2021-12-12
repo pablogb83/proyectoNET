@@ -7,3 +7,4 @@
 9. Pueden haber mas de un administrador?
 10. Mostrar la lista de los administradores?
 11. Verificaciones alta masiva.
+12. Adminisrtador ve todo los accesos.
