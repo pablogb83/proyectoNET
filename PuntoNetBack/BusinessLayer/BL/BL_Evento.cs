@@ -61,7 +61,6 @@ namespace BusinessLayer.BL
                 throw new AppException("El salon no existe");
 
             }
-
             foreach (DateTime day in EachDay(evt.FechaInicioEvt, evt.FechaFinEvt))
             {
                 if (evt.Dias.Contains<int>(((int)day.DayOfWeek)))
@@ -124,7 +123,7 @@ namespace BusinessLayer.BL
             {
                 throw new AppException("El edificio no existe");
             }
-            if(datos.TipoEvento == "simple")
+            if (datos.TipoEvento == "simple")
             {
                 salonesDisponibles = _dal.GetSalonesDisponibles(datos.FechaInicioEvt, datos.FechaFinEvt, datos.EdificioId).ToList();
             }

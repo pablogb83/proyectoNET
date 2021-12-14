@@ -80,6 +80,10 @@ namespace NetCoreWebAPI.Controllers
             {
                 postedFile.CopyTo(stream);
             }
+            if (_bl.GetPersonaByDocumento(personaInfo.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
+            }
             var persona = _mapper.Map<Persona>(personaInfo);
             _bl.CreatePersona(persona);
             _bl.SaveChanges();
@@ -100,6 +104,10 @@ namespace NetCoreWebAPI.Controllers
             if (personaModelFromRepo == null)
             {
                 return NotFound();
+            }
+            if(personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
             }
             _mapper.Map(personaUpdateDto, personaModelFromRepo);
             _bl.UpdatePersona(personaModelFromRepo);
