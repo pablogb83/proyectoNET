@@ -9,6 +9,8 @@ import { Time } from '@angular/common';
 import moment from 'moment';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
 
 @Component({
   selector: 'app-eventos-add',
@@ -28,7 +30,7 @@ export class EventosAddComponent implements OnInit {
   PhotoFilePath?:any;
   fecha = new Date();
   salones: any[] = [];
-  edificios: any[];
+  edificios: any[] = [];
   idEdificio: number;
 
   dias: any[] = [
@@ -76,16 +78,24 @@ export class EventosAddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService,private fb: FormBuilder, private edificioService: EdificiosService, private handleError: HandleErrorsService) {
-    this.edificioService.getEdificios().subscribe(data=>{
-      console.log(data); 
-      this.edificios = data;
-     })
+  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService, private edificioService: EdificiosService, private handleError: HandleErrorsService, private tokenService: TokenStorageService, private usuarioEdificioService: UsuarioEdificioService) {
+    if(tokenService.getRoleName()==="GESTOR"){
+      usuarioEdificioService.getEdificioUsuario().subscribe(data=>{
+        if(data){
+          this.edificios.push(data);
+        }
+      });
+    }
+    else{
+      this.edificioService.getEdificios().subscribe(data=>{
+        console.log(data); 
+        this.edificios = data;
+       })
+    }
    }
 
   ngOnInit() {
    // this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
-
   }
 
   diasSeleccionados(){

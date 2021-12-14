@@ -6,6 +6,7 @@ using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,11 @@ namespace BusinessLayer.BL
             _dal.CreatePersona(prs);
         }
 
+        public async Task CreatePersonaConFoto(Persona prs, Stream stream, string tenantName)
+        {
+            await _dal.CreatePersonaConFoto(prs, stream, tenantName);
+        }
+
         public void DeletePersona(Persona prs)
         {
             _dal.DeletePersona(prs);
@@ -73,9 +79,14 @@ namespace BusinessLayer.BL
             return _dal.SaveChanges();
         }
 
-        public void UpdatePersona(Persona prs)
+        public async Task UpdatePersona(Persona prs, string documentoViejo, string tenant)
         {
-            _dal.UpdatePersona(prs);
+            await _dal.UpdatePersona(prs,documentoViejo,tenant);
+        }
+
+        public async Task UpdatePersonaConFoto(string documentoViejo, string documentoNuevo, Stream imagen, string tenant)
+        {
+            await _dal.UpdatePersonaConFoto(documentoViejo,documentoNuevo,imagen,tenant);
         }
 
     }

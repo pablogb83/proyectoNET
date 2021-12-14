@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmailService } from '../core/services/email.service';
 import { InstitucionService } from '../core/services/institucion.service';
@@ -11,14 +11,13 @@ declare var paypal: any;
   templateUrl: './paypal-button.component.html',
   styleUrls: ['./paypal-button.component.css']
 })
-export class PaypalButtonComponent implements OnInit {
+export class PaypalButtonComponent implements AfterContentInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
 
 
   constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router, private emailService: EmailService) {
    }
-
-  ngOnInit() {
+  ngAfterContentInit(): void {
     const tenant_id = this.service.getTenant();
     this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
       console.log(institucionInfo);
@@ -56,5 +55,9 @@ export class PaypalButtonComponent implements OnInit {
     }).render(this.paypalElement.nativeElement); 
     });
     
+  }
+
+  ngOnInit() {
+   
   }
 }

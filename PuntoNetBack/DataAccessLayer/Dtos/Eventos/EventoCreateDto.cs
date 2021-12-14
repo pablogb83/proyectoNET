@@ -17,7 +17,6 @@ namespace DataAccessLayer.Dtos.Eventos
         public DateTime FechaInicioEvt { get; set; }
         [Required(ErrorMessage = "La fecha de fin es requerida")]
         public DateTime FechaFinEvt { get; set; }
-        public string PhotoFileName { get; set; }
         [Required(ErrorMessage ="Debe ingresar un salon")]
         public int SalonId { get; set; }
     }

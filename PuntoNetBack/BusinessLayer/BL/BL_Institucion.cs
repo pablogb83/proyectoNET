@@ -53,5 +53,9 @@ namespace BusinessLayer.BL
             _dal.UpdateInstitucion(inst);
         }
 
+        public async Task UpdateInstitucionAzure(Institucion inst, string nombreViejo)
+        {
+            await _dal.UpdateInstitucionAzure(inst, nombreViejo);
+        }
     }
 }

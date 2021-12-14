@@ -50,9 +50,15 @@ export class PersonaEditComponent implements OnInit {
     if(this.file){
       formData.append('uploadedFile',this.file,this.file.name);
     }
-    this.fileService.UploadPhoto(formData).subscribe((data)=>{
+    formData.append("nombres",this.nombres);
+    formData.append("apellidos",this.apellidos);
+    formData.append("telefono",this.telefono);
+    formData.append("email",this.email);
+    formData.append("tipo_doc",this.tipo_doc);
+    formData.append("nro_doc",this.nro_doc);
+    console.log(formData);
+    /*this.fileService.UploadPhoto(formData).subscribe((data)=>{
       this.PhotoFileName = data.toString();
-      var id = this.id;
       var val = {
         nombres:this.nombres,
         apellidos:this.apellidos,
@@ -62,14 +68,13 @@ export class PersonaEditComponent implements OnInit {
         nro_doc: this.nro_doc,
         PhotoFileName:this.PhotoFileName
       };
-  
-      this.service.putPersona(id, val).subscribe(res=>{
-        this.handleError.showSuccessAlert();
-      }, err=>{
-        this.handleError.showErrors(err);
-      });
-    }); 
-    
+    }); */
+    var id = this.id;
+    this.service.putPersona(id, formData).subscribe(res=>{
+      this.handleError.showSuccessAlert();
+    }, err=>{
+      this.handleError.showErrors(err);
+    });
   }
 
   uploadPhoto(event){

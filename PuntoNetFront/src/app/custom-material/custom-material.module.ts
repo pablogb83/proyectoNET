@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SelectCheckAllComponent } from './select-check-all/select-check-all.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,6 +36,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatRadioModule} from '@angular/material/radio';
 import { MatTimepickerModule } from 'mat-timepicker';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 export const MY_FORMATS = {
   parse: {
@@ -60,7 +61,7 @@ export const MY_FORMATS = {
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
     MatExpansionModule, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule
-    ,DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule, MatListModule, MatGridListModule
+    ,DragDropModule, MatSortModule,MatRadioModule,MatTimepickerModule, MatListModule, MatGridListModule,NgxMatDatetimePickerModule, NgxMatTimepickerModule,
   ],
   exports: [
     CommonModule,
@@ -71,7 +72,8 @@ export const MY_FORMATS = {
     MatTooltipModule, MatSelectModule, MatPaginatorModule, MatChipsModule,
     MatButtonToggleModule, MatSlideToggleModule, MatBadgeModule, MatCheckboxModule,
     MatExpansionModule, SelectCheckAllComponent, DragDropModule, MatSortModule,MatDividerModule,MatFormFieldModule,
-    SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule, MatListModule, MatGridListModule
+    SelectCheckAllComponent, DragDropModule, MatSortModule, MatRadioModule,MatTimepickerModule, MatListModule, MatGridListModule,NgxMatDatetimePickerModule, NgxMatTimepickerModule,
+    MatNativeDateModule  
   ],
   providers: [
     {
@@ -87,6 +89,9 @@ export class CustomMaterialModule {
     return {
       ngModule: CustomMaterialModule,
       providers: [
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgxMatNativeDateModule
       ]
     };
   }

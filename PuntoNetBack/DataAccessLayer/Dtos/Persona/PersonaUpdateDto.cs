@@ -17,6 +17,8 @@ namespace DataAccessLayer.Dtos.Persona
         [Required(ErrorMessage = "Debe ingresar un apellido")]
         public string Apellidos { get; set; }
         [Required(ErrorMessage = "Debe ingresar un telefono")]
+        [RegularExpression(@"^((?=.*[0-9])).+$", ErrorMessage = "El telefono solo puede tener numeros")]
+        [MaxLength(9, ErrorMessage = "El telefono puede tener un largo maximo de 9 numeros")]
         public string Telefono { get; set; }
         [Required(ErrorMessage = "Debe ingresar un email")]
         [EmailAddress(ErrorMessage = "Debe ingresar un email valido")]

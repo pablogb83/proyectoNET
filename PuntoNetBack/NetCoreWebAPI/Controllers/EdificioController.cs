@@ -3,6 +3,7 @@ using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Edificios;
 using DataAccessLayer.Dtos.PuertaAccesos;
 using DataAccessLayer.Dtos.Salon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -33,6 +34,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/edificios
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<IEnumerable<EdificiosReadDto>> GetAllEdificios()
         {
             var edificios = _bl.GetAllEdificios();
@@ -49,6 +51,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/edificios/{id}
         [HttpGet("{id}", Name = "GetEdificioById")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<EdificiosReadDto> GetEdificioById(int id)
         {
             var edificio = _bl.GetEdificioById(id);
@@ -61,6 +64,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/edificio
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<EdificiosReadDto> CreateEdificio(EdificioCreateDto edificioCreateDto)
         {
 
@@ -76,6 +80,7 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult UpdateEdificio(int id, EdificioUpdateDto edificioUpdateDto)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -101,6 +106,7 @@ namespace NetCoreWebAPI.Controllers
 
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult PartialEdificioUpdtate(int id, JsonPatchDocument<EdificioUpdateDto> patchDoc)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -123,6 +129,7 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult DeleteEdificio(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -140,6 +147,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("salones/{id}")]
+        [Authorize(Roles = "ADMIN, GESTOR")]
         public ActionResult <IEnumerable<SalonReadDto>> GetSalones(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -152,6 +160,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("puertas/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<IEnumerable<SalonReadDto>> GetPuertas(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);

@@ -5,6 +5,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CalendarioComponent } from 'src/app/calendario/calendario.component';
 import { EventosService } from 'src/app/core/services/eventos.service';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
+import { Edificio } from 'src/app/edificios/edificios-list/edificios-list.component';
+import { Salon } from 'src/app/salon/salon-list/salon-list.component';
 import Swal from 'sweetalert2';
 import { EventosAddComponent } from '../eventos-add/eventos-add.component';
 import { EventosEditComponent } from '../eventos-edit/eventos-edit.component';
@@ -19,9 +23,11 @@ export class EventosListComponent implements OnInit {
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
   @ViewChild(MatSort,{static: false}) sort: MatSort;
 
-  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin','hora','edificio','salon', 'acciones'];
+  permiso: boolean = true;
 
-  constructor(private service: EventosService,public dialog: MatDialog) {
+  displayedColumns: string[] = ['id','nombre', 'descripcion', 'fechainicio', 'fechafin','horainicio','horafin','edificio','salon', 'acciones'];
+
+  constructor(private service: EventosService,public dialog: MatDialog,private usuarioEdificioService: UsuarioEdificioService, private tokenService: TokenStorageService) {
     this.getEventos();
   }
 
@@ -30,15 +36,27 @@ export class EventosListComponent implements OnInit {
   ngOnInit() {
   }
 
-  getEventos(): void{
+  getEventos(){
+    if(this.tokenService.getRoleName()==="ADMIN"){
+      this.getEventosAdmin();
+    }
+    else if(this.tokenService.getRoleName()==="GESTOR"){
+      this.usuarioEdificioService.getEdificioUsuario().subscribe(data=>{
+        this.permiso = !!data;
+        if(this.permiso){
+          this.service.getEventosEdificio().subscribe(data=>{
+            this.EventoList = new MatTableDataSource<Evento>(data);
+            this.EventoList.paginator = this.paginator;
+            this.EventoList.sort = this.sort;
+          })
+        }
+      });
+    }
+  }
+
+  getEventosAdmin(): void{
     this.service.getEventos().subscribe(data=>{
-
       this.EventoList = new MatTableDataSource<Evento>(data);
-      // for (let fecha of data){
-      //   fecha.fechaInicioEvt = fecha.fechaInicioEvt.substr(0,10);
-      //   fecha.fechaFinEvt = fecha.fechaFinEvt.substr(0,10);
-      // }
-
       this.EventoList.paginator = this.paginator;
       this.EventoList.sort = this.sort;
     });
@@ -56,10 +74,10 @@ export class EventosListComponent implements OnInit {
     }); 
   }
 
-  openDialogUpdate(evt:any): void {
+  openDialogUpdate(evt:Evento): void {
     const dialogRef = this.dialog.open(EventosEditComponent, {
       width: '500px',
-      data: {id: evt.id, nombre: evt.nombre, descripcion: evt.descripcion, fechaInicioEvt: evt.fechaInicioEvt, fechaFinEvt: evt.fechaFinEvt, photoFileName: evt.photoFileName}
+      data: evt
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -94,13 +112,13 @@ export class EventosListComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteEvento(item.id).subscribe(data=>{
+          Swal.fire(
+            'Borrado!',
+            'El evento ha sido eliminado.',
+            'success'
+          )
           this.getEventos()
         })
-        Swal.fire(
-          'Borrado!',
-          'El evento ha sido eliminado.',
-          'success'
-        )
       }
     })
   }
@@ -110,7 +128,8 @@ export interface Evento {
   id: string;
   nombre: string;
   descripcion: string;
-  fechaInicioEvt: Date;
-  fechaFinEvt: Date;
-  photoFileName: string;
+  fechaInicioEvt: string;
+  fechaFinEvt: string;
+  salon: Salon,
+  edificio: Edificio
 }

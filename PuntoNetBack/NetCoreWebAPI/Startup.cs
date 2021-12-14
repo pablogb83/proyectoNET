@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Resources;
 using System.Reflection;
+using NetCoreWebAPI.Middleware;
 
 namespace NetCoreWebAPI
 {
@@ -227,6 +228,8 @@ namespace NetCoreWebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<InstitucionActivaMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

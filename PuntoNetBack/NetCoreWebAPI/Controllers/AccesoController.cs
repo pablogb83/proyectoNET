@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Accesos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
 using System;
@@ -24,6 +25,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<IEnumerable<AccesoReadDto>> GetAllAccesos()
         {
             var accesos = _bl.GetAllAccesos();
@@ -40,6 +42,7 @@ namespace NetCoreWebAPI.Controllers
 
 
         [HttpGet("{id}", Name = "GetAccesoById")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<AccesoReadDto> GetAccesoById(int id)
         {
             var acceso = _bl.GetAccesoById(id);
@@ -51,6 +54,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<AccesoReadDto> CreateAcceso(AccesoCreateDto accesoCreateDto)
         {
             try
@@ -71,6 +75,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult UpdateAcceso(int id, AccesoUpdateDto accesoUpdateDto)
         {
             var accesoModelFromRepo = _bl.GetAccesoById(id);
@@ -85,6 +90,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult DeleteAcceso(int id)
         {
             var accesoModelFromRepo = _bl.GetAccesoById(id);
@@ -98,6 +104,8 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("edificio/{id}")]
+        [Authorize(Roles = "ADMIN")]
+
         public ActionResult<IEnumerable<AccesoReadDto>> GetAccesosEdificio(int id)
         {
             var accesosEdificio = _bl.GetAccesosEdificio(id);
@@ -110,6 +118,8 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("puertas/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
+
         public ActionResult<IEnumerable<AccesoReadDto>> GetAccesosPuerta(int id)
         {
             var accesosPuerta = _bl.GetAccesosPuerta(id);
@@ -122,6 +132,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("persona/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<IEnumerable<AccesoReadDto>> GetAccesosPersona(int id)
         {
             var accesosPersona = _bl.GetAccesosPersona(id);

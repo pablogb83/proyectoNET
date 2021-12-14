@@ -91,5 +91,9 @@ namespace DataAccessLayer.DAL
             _context.Eventos.Add(evt);
         }
 
+        public IEnumerable<Evento> GetAllEventosEdificio(int idedificio)
+        {
+            return _context.Eventos.Where(ed => ed.Salon.edificio.Id == idedificio).ToList();
+        }
     }
 }

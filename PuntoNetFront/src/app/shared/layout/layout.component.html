@@ -34,8 +34,13 @@
         <span *ngIf="rol === 'VISITANTE'"> Log in </span> 
       </a>
 
-    </mat-menu>
+      <a mat-menu-item (click)="logout()" *ngIf="rol!=='VISITANTE'" >
+        <mat-icon mat-list-icon>exit_to_app</mat-icon>
+        <span *ngIf="rol != 'VISITANTE'"> Log out </span>
+        <span *ngIf="rol === 'VISITANTE'"> Log in </span> 
+      </a>
 
+    </mat-menu>
   </mat-toolbar>
 
   <mat-sidenav-container class="navbar-sidenav-container">
@@ -94,18 +99,8 @@
             </mat-icon>
             <p mat-line> Edificios </p>
           </a>
-          <a mat-list-item [routerLink]="['/eventos']" routerLinkActive="active">
-            <mat-icon mat-list-icon>
-              event
-            </mat-icon>
-            <p mat-line> Eventos </p>
-          </a>
-          <a mat-list-item [routerLink]="['/noticias']" routerLinkActive="active">
-            <mat-icon mat-list-icon>
-              list_alt
-            </mat-icon>
-            <p mat-line> Noticias </p>
-          </a>
+   
+    
           <a mat-list-item [routerLink]="['/personas']" routerLinkActive="active">
             <mat-icon mat-list-icon>
               people
@@ -113,7 +108,18 @@
             <p mat-line> Personas </p>
           </a>
         </div>
-
+        <a mat-list-item [routerLink]="['/eventos']" *ngIf="(rol==='GESTOR'|| rol==='ADMIN') && instActive" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            event
+          </mat-icon>
+          <p mat-line> Eventos </p>
+        </a>
+        <a mat-list-item [routerLink]="['/noticias']" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            list_alt
+          </mat-icon>
+          <p mat-line> Noticias </p>
+        </a>
         <div *ngIf="rol==='PORTERO' && instActive">
           <a mat-list-item [routerLink]="['/puertas']" [queryParams]="{idedificio: idedificio}" routerLinkActive="active">
             <mat-icon mat-list-icon>
@@ -164,7 +170,7 @@
     <mat-sidenav-content class="sidenav-content">
 
       <div class="progress-bar-container">
-        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async">
+        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="loading">
         </mat-progress-bar> 
         <!-- <mat-spinner class="spinner" [diameter]="50" *ngIf="showSpinner"></mat-spinner> -->
       </div>

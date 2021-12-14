@@ -16,6 +16,8 @@ namespace DataAccessLayer.Dtos.Edificios
         [Required(ErrorMessage = "El campo direccion es requerido")]
         public string Direccion { get; set; }
         [Required(ErrorMessage = "El campo telefono es requerido")]
+        [RegularExpression(@"^((?=.*[0-9])).+$", ErrorMessage = "El telefono solo puede tener numeros")]
+        [MaxLength(9, ErrorMessage = "El telefono puede tener un largo maximo de 9 numeros")]
         public string Telefono { get; set; }
 
         public string lng { get; set; }

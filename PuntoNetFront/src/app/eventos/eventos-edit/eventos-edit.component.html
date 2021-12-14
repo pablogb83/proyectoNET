@@ -13,22 +13,34 @@
                 <input matInput [(ngModel)]="descripcion">
             </mat-form-field>
 
-           <mat-form-field appearance="fill">
-                <mat-label>Fecha inicio</mat-label>
-                <input matInput [matDatepicker]="pickerinit" [(ngModel)]="fechainicio" >
-            <mat-datepicker-toggle matSuffix [for]="pickerinit">    
-            </mat-datepicker-toggle>
-                <mat-datepicker #pickerinit></mat-datepicker>
-            </mat-form-field>
+            <mat-form-field appearance="fill" (click)="$event.stopPropagation()">
+                <mat-label>Salones</mat-label>
+                <mat-select [(ngModel)]="salonId">
+                  <mat-option [value]="salon.id" *ngFor="let salon of salones" (change)="$event.stopPropagation()">{{salon.denominacion}}</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-          <mat-form-field appearance="fill">
-            <mat-label>Fecha fin</mat-label>
-            <input matInput [matDatepicker]="pickerfin" [(ngModel)]="fechafin">
-            <mat-datepicker-toggle matSuffix [for]="pickerfin">
-            </mat-datepicker-toggle>
-            <mat-datepicker #pickerfin></mat-datepicker>
-          </mat-form-field>
+              <mat-form-field>
+                <input matInput [ngxMatDatetimePicker]="pickerinicio" placeholder="Choose a date" [(ngModel)]="fechainicio"
+                  >
+                <mat-datepicker-toggle matSuffix [for]="pickerinicio"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #pickerinicio [showSpinners]="true" [showSeconds]="true"
+                   [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                   [touchUi]="true" [color]="" [enableMeridian]="true" 
+                   [disableMinute]="false" [hideTime]="false">
+                </ngx-mat-datetime-picker>
+             </mat-form-field>
 
+             <mat-form-field>
+                <input matInput [ngxMatDatetimePicker]="pickerfin" placeholder="Choose a date" [(ngModel)]="fechafin"
+                  >
+                <mat-datepicker-toggle matSuffix [for]="pickerfin"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #pickerfin [showSpinners]="true" [showSeconds]="true"
+                   [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                   [touchUi]="true" [color]="" [enableMeridian]="true" 
+                   [disableMinute]="false" [hideTime]="false">
+                </ngx-mat-datetime-picker>
+             </mat-form-field>
         <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="updateEvento()">Guardar</button>
             <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>

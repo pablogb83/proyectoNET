@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Salon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared.ModeloDeDominio;
@@ -13,6 +14,8 @@ namespace NetCoreWebAPI.Controllers
 {
     [Route("api/salon")]
     [ApiController]
+    [Authorize(Roles = "ADMIN")]
+
     public class SalonController : ControllerBase
     {
         private readonly IBL_Salon _bl;
@@ -28,6 +31,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/salon
         [HttpGet]
+
         public ActionResult<IEnumerable<SalonReadDto>> GetAllSalones()
         {
             var salones = _bl.GetAllSalon(); ;
@@ -36,6 +40,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/salon/{id}
         [HttpGet("{id}", Name = "GetSalonById")]
+
         public ActionResult<SalonReadDto> GetSalonById(int id)
         {
             var salon = _bl.GetSalonById(id);
