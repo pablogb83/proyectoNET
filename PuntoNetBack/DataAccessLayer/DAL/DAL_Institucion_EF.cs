@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.DAL
 {
@@ -30,8 +31,8 @@ namespace DataAccessLayer.DAL
             _context.SaveChanges();
             try
             {
-                DAL_FaceApi.DeletePersonGroup(inst.Name.ToLower()).GetAwaiter();
-                DAL_FaceApi.CreatePersonGroup(inst.Name.ToLower()).Wait();
+                //DAL_FaceApi.DeletePersonGroup(inst).GetAwaiter();
+                DAL_FaceApi.CreatePersonGroup(inst).Wait();
             }
             catch (Exception e)
             {
@@ -71,6 +72,10 @@ namespace DataAccessLayer.DAL
                 var paypalTools = new PaypalUtil(_clientFactory);
                 string token = paypalTools.getPayPalAccessToken();
                 var inst = _context.Instituciones.FirstOrDefault(p => p.Id == insitucionId);
+                if (inst.Suscripcion == null)
+                {
+                    throw new AppException("La institucion aun no tiene facturas");
+                }
                 return paypalTools.getFacturasSuscripcion(token, inst.Suscripcion.Id, fechainicio, fechafin);
             }
             catch(Exception e)
@@ -83,6 +88,11 @@ namespace DataAccessLayer.DAL
         public void UpdateInstitucion(Institucion inst)
         {
             //nothing
+        }
+
+        public async Task UpdateInstitucionAzure(Institucion inst, string nombreViejo)
+        {
+            await DAL_FaceApi.ActualizarInstitucion(nombreViejo, inst.Name);
         }
     }
 }

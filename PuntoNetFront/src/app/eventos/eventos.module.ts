@@ -5,6 +5,7 @@ import { EventosAddComponent } from './eventos-add/eventos-add.component';
 import { EventosEditComponent } from './eventos-edit/eventos-edit.component';
 import { EventosListComponent } from './eventos-list/eventos-list.component';
 import { SharedModule } from '../shared/shared.module';
+import { NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 
 @NgModule({
@@ -17,6 +18,8 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     SharedModule,
     EventosRoutingModule
+  ],
+  providers:[
   ]
 })
 export class EventosModule { }

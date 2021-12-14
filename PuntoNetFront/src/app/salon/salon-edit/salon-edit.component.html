@@ -9,7 +9,7 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Numero</mat-label>
-            <input matInput [(ngModel)]="numero">
+            <input matInput type="number" min="1" [(ngModel)]="numero">
         </mat-form-field>
         <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="updateSalon()">Actualizar</button>

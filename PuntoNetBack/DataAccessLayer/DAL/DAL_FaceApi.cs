@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using Shared.ModeloDeDominio;
 
 namespace DataAccessLayer.DAL
 {
@@ -221,13 +222,15 @@ namespace DataAccessLayer.DAL
             }
         }
 
-        public static async Task CreatePersonGroup(string personGroupId)
+        public static async Task CreatePersonGroup(Institucion personGroupId)
         {
-            await client.PersonGroup.CreateAsync(personGroupId, personGroupId, recognitionModel: recognitionModel03);
+            await client.PersonGroup.CreateAsync(personGroupId.Id, personGroupId.Name, recognitionModel: recognitionModel03);
+            await client.PersonGroup.TrainAsync(personGroupId.Id);
+
         }
-        public static async Task DeletePersonGroup(string personGroupId)
+        public static async Task DeletePersonGroup(Institucion personGroupId)
         {
-            await client.PersonGroup.DeleteAsync(personGroupId);
+            await client.PersonGroup.DeleteAsync(personGroupId.Id);
         }
 
         private static async Task<List<DetectedFace>> DetectFaceRecognizeStream(IFaceClient faceClient, Stream imagen, string recognition_model)
@@ -245,9 +248,41 @@ namespace DataAccessLayer.DAL
         
         public static async Task<bool> AgregarPersona(string email, Stream stream, string PersonGroupId)
         {
-            PersonGroupId = PersonGroupId.ToLower();
+            MemoryStream ms = new MemoryStream();
+            stream.CopyTo(ms);
+            ms.Position = 0;
+            List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, ms, recognitionModel03);
+            if (!detectedFaces1.Any())
+            {
+                throw new AppException("La imagen ingresada debe contener al menos una cara");
+            }
+            if (detectedFaces1.Count > 1)
+            {
+                throw new AppException("Por favor ingrese la foto de UN SOLO individuo");
+            }
+            stream.Position = 0;
+            Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
+            List<Guid> cara = new List<Guid>();
+            cara.Add(sourceFaceId1);
+            var status = await client.PersonGroup.GetTrainingStatusAsync(PersonGroupId);
+            if(status.Status == TrainingStatusType.Failed || status.Status==TrainingStatusType.Nonstarted)
+            {
+                await client.PersonGroup.TrainAsync(PersonGroupId);
+            }
+            var identifyResults = await client.Face.IdentifyAsync(cara, PersonGroupId);
+            if (identifyResults.Any() && identifyResults[0].Candidates.Any())
+            {
+                throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
+            }
             Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, email);
-            PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(PersonGroupId, p1.PersonId, stream);
+            try
+            {
+                PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(PersonGroupId, p1.PersonId, stream);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("LLA");
+            }
             await client.PersonGroup.TrainAsync(PersonGroupId);
             return true;
         }
@@ -266,5 +301,65 @@ namespace DataAccessLayer.DAL
             return false;
         }
 
+        public static async Task<bool> ActualizarPersona(string documentoViejo, string documentoNuevo, string PersonGroupId, Stream stream)
+        {
+            PersonGroupId = PersonGroupId.ToLower();
+            var personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+            var person = personas.First(x => x.Name == documentoViejo);
+            if (person != null && await validateFace(stream, PersonGroupId))
+            {
+                stream.Position = 0;
+                var carasPersona = person.PersistedFaceIds;
+                if (carasPersona.Any())
+                {
+                    await client.PersonGroupPerson.DeleteFaceAsync(PersonGroupId, person.PersonId, carasPersona.FirstOrDefault());
+                }
+                await client.PersonGroupPerson.AddFaceFromStreamAsync(PersonGroupId, person.PersonId, stream);
+                await client.PersonGroup.TrainAsync(PersonGroupId);
+                return true;
+            }
+            return false;
+        }
+
+        public static async Task ActualizarInstitucion(string nombreViejo, string nombreNuevo)
+        {
+            nombreViejo = nombreViejo.ToLower();
+            nombreNuevo = nombreNuevo.ToLower();
+            await client.PersonGroup.UpdateAsync(nombreViejo, nombreNuevo);
+        }
+
+        public static async Task<bool> validateFace(Stream imagen, string personGroupId)
+        {
+            personGroupId = personGroupId.ToLower();
+            MemoryStream ms = new MemoryStream();
+            imagen.CopyTo(ms);
+            ms.Position = 0;
+            List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, ms, recognitionModel03);
+            if (!detectedFaces1.Any())
+            {
+                throw new AppException("La imagen ingresada debe contener al menos una cara");
+            }
+            if (detectedFaces1.Count > 1)
+            {
+                throw new AppException("Por favor ingrese la foto de UN SOLO individuo");
+            }
+            Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
+            List<Guid> cara = new List<Guid>();
+            cara.Add(sourceFaceId1);
+            var identifyResults = await client.Face.IdentifyAsync(cara, personGroupId);
+            return true;
+        }
+
+        public static async Task actualizarDocumentoAzure(string documentoViejo, string documentoNuevo, string personGroupId)
+        {
+            personGroupId = personGroupId.ToLower();
+            var personas = await client.PersonGroupPerson.ListAsync(personGroupId);
+            var person = personas.First(x => x.Name == documentoViejo);
+            if (person != null)
+            {
+                await client.PersonGroupPerson.UpdateAsync(personGroupId, person.PersonId, documentoNuevo);
+                await client.PersonGroup.TrainAsync(personGroupId);
+            }
+        }
     }
 }

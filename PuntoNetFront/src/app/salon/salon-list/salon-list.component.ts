@@ -51,7 +51,7 @@ export class SalonListComponent implements OnInit {
   
   openDialog(): void {
     const dialogRef = this.dialog.open(SalonAddComponent, {
-      width: '250px',
+      width: 'auto',
       data: {idedificio: this.idedificio}
     });
 
@@ -63,7 +63,7 @@ export class SalonListComponent implements OnInit {
 
   openDialogUpdate(salon:any): void {
     const dialogRef = this.dialog.open(SalonEditComponent, {
-      width: '250px',
+      width: 'auto',
       data: {id: salon.id, denominacion: salon.denominacion, numero: salon.numero}
     });
 
@@ -102,6 +102,7 @@ export interface Salon {
   id: string;
   denominacion: string;
   numero: string;
+  edificio: Edificio;
 }
 
 export interface Edificio{

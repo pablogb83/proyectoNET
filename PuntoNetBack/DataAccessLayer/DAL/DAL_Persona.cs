@@ -3,6 +3,7 @@ using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,17 @@ namespace DataAccessLayer.DAL
             }
             _context.Personas.Add(prs);
  
+        }
+
+        public async Task CreatePersonaConFoto(Persona prs, Stream stream, string tenantName)
+        {
+            if (prs == null)
+            {
+                throw new ArgumentNullException(nameof(prs));
+            }
+            _context.Personas.Add(prs);
+            await DAL_FaceApi.AgregarPersona(prs.nro_doc, stream, tenantName);
+            _context.SaveChanges();
         }
 
         public void DeletePersona(Persona prs)
@@ -76,9 +88,15 @@ namespace DataAccessLayer.DAL
             
         }
 
-        public void UpdatePersona(Persona prs)
+        public async Task UpdatePersona(Persona prs, string documentoViejo,string tenant)
+        {
+            await DAL_FaceApi.actualizarDocumentoAzure(documentoViejo, prs.nro_doc, tenant);
+        }
+
+        public async Task UpdatePersonaConFoto(string documentoViejo, string documentoNuevo, Stream imagen, string tenant)
         {
             //nothing
+            await DAL_FaceApi.ActualizarPersona(documentoViejo, documentoNuevo, tenant, imagen);
         }
     }
 }

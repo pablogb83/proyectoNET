@@ -7,6 +7,7 @@ using Shared.ModeloDeDominio;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NetCoreWebAPI.Controllers
 {
@@ -28,6 +29,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/puertas
         [HttpGet]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<IEnumerable<PuertaReadDto>> GetAllPuertas()
         {
             var puertas = _bl.GetAllPuertas();
@@ -36,6 +38,8 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/puertas/{id}
         [HttpGet("{id}", Name = "GetPuertaById")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
+
         public ActionResult<PuertaReadDto> GetPuertaById(int id)
         {
             var puerta = _bl.GetPuertaById(id);
@@ -48,6 +52,8 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/puertas
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+
         public ActionResult<PuertaReadDto> CreatePuerta(PuertaCreateDto puertaCreateDto)
         {
             var puertaModel = _mapper.Map<Puerta>(puertaCreateDto);
@@ -61,6 +67,8 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/puerta/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+
         public ActionResult DeletePuerta(int id)
         {
             var edificioModelFromRepo = _bl.GetPuertaById(id);
@@ -77,6 +85,8 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/salon/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+
         public ActionResult UpdatePuerta(int id, PuertaUpdateDto puertaUpdateDto)
         {
             var puertaModelFromRepo = _bl.GetPuertaById(id);

@@ -4,45 +4,62 @@ using DataAccessLayer.Dtos.Eventos;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModeloDeDominio;
-using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using System.Collections.Generic;
+using DataAccessLayer.Dtos.Salon;
+using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using DataAccessLayer.Dtos.Salon;
 
 namespace NetCoreWebAPI.Controllers
 {
     [Route("api/eventos")]
     [ApiController]
+    [Authorize(Roles = "ADMIN,GESTOR")]
+
     public class EventoController : ControllerBase
     {
         private readonly IBL_Evento _bl;
+        private readonly IBL_UsuarioEdificio _blUsrEd;
         private readonly IMapper _mapper;
 
 
-        public EventoController(IBL_Evento bl, IMapper mapper)
+        public EventoController(IBL_Evento bl, IMapper mapper, IBL_UsuarioEdificio blUsrEd)
         {
             _bl = bl;
             _mapper = mapper;
-
+            _blUsrEd = blUsrEd;
         }
 
 
         //GET api/eventos
         [HttpGet]
+
         public ActionResult<IEnumerable<EventosReadDto>> GetAllEventos()
         {
             var eventos = _bl.GetAllEventos();
             return Ok(_mapper.Map<IEnumerable<EventosReadDto>>(eventos));
         }
 
+        [HttpGet("edificio")]
+        public async Task<ActionResult<IEnumerable<EventosReadDto>>> GetAllEventosEdificio()
+        {
+            int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+            var edificioUsuario = await _blUsrEd.GetEdificioUsuario(idUsuario);
+            if (edificioUsuario != null)
+            {
+                var eventos = _bl.GetAllEventosEdificio(edificioUsuario.Id);
+                return Ok(_mapper.Map<IEnumerable<EventosReadDto>>(eventos));
+            }
+            else
+            {
+                return BadRequest(new { message = "El usuario no tiene edificio asignado" });
+            }
+        }
+
         //GET api/eventos/{id}
         [HttpGet("{id}", Name = "GetEventoById")]
+
         public ActionResult<EventosReadDto> GetEventoById(int id)
         {
             var evento = _bl.GetEventoById(id);
@@ -55,9 +72,26 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/evento
         [HttpPost]
-        public ActionResult<EventosReadDto> CreateEvento(EventoCreateDto eventoCreateDto)
+        public async Task<ActionResult<EventosReadDto>> CreateEvento(EventoCreateDto eventoCreateDto)
         {
+            
+           
+            if (eventoCreateDto.FechaInicioEvt > eventoCreateDto.FechaFinEvt || eventoCreateDto.FechaInicioEvt < DateTime.Now)
+            {
+                return BadRequest(new { message = "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
+            }
+            var cantHoras = eventoCreateDto.FechaFinEvt.Subtract(eventoCreateDto.FechaInicioEvt).Hours;
+            if ( cantHoras > 12)
+            {
+                return BadRequest(new { message = "El evento debe tener minimo una hora y maximo 12" });
+            }
             var eventoModel = _mapper.Map<Evento>(eventoCreateDto);
+            int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role=="GESTOR" && !await _bl.VerificarEventoGestor(eventoCreateDto.SalonId, idUsuario))
+            {
+                return BadRequest(new { message = "Solo puede crear eventos de su edificio" });
+            }
             _bl.CreateEvento(eventoModel, eventoCreateDto.SalonId);
 
             var eventoReadDto = _mapper.Map<EventosReadDto>(eventoModel);
@@ -69,13 +103,27 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost("salonesdisponibles")]
         public ActionResult<IEnumerable<EventosReadDto>> GetSalonesDisponibles(SalonesDisponiblesDto datos)
         {
+            if (datos.FechaInicioEvt > datos.FechaFinEvt || datos.FechaInicioEvt < DateTime.Now)
+            {
+                return BadRequest(new { message = "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
+            }
             var salones = _bl.GetSalonesDisponibles(datos);
             return Ok(_mapper.Map<IEnumerable<SalonReadDto>>(salones));
         }
 
         [HttpPost("recurrente")]
-        public ActionResult CreateEventoRecurrente(EventoRecurrenteCreateDto eventoCreateDto)
+        public async Task<ActionResult> CreateEventoRecurrente(EventoRecurrenteCreateDto eventoCreateDto)
         {
+            int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "GESTOR" && !await _bl.VerificarEventoGestor(eventoCreateDto.SalonId, idUsuario))
+            {
+                return BadRequest(new { message = "Solo puede crear eventos de su edificio" });
+            }
+            if (eventoCreateDto.FechaInicioEvt > eventoCreateDto.FechaFinEvt || eventoCreateDto.FechaInicioEvt < DateTime.Now)
+            {
+                return BadRequest(new { message = "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
+            }
             //poner aca alguna validacion y tirar las ecepciones
             _bl.CreateEventoRecurrente(eventoCreateDto, eventoCreateDto.SalonId);
             return Ok(new { message="Evento recurrente creado correctamente" });
@@ -83,15 +131,25 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateEvento(int id, EventoUpdateDto eventoUpdateDto)
+        public async Task<ActionResult> UpdateEvento(int id, EventoUpdateDto eventoUpdateDto)
         {
             var eventoModelFromRepo = _bl.GetEventoById(id);
+            if (eventoUpdateDto.FechaInicioEvt > eventoUpdateDto.FechaFinEvt || eventoUpdateDto.FechaInicioEvt < DateTime.Now)
+            {
+                return BadRequest(new {message= "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
+            }
             if (eventoModelFromRepo == null)
             {
                 return NotFound();
             }
+            int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "GESTOR" && !await _bl.VerificarEventoGestor(eventoModelFromRepo.Salon.Id, idUsuario))
+            {
+                return BadRequest(new { message = "Solo puede editar eventos de su edificio" });
+            }
             _mapper.Map(eventoUpdateDto, eventoModelFromRepo);
-            _bl.UpdateEvento(eventoModelFromRepo);
+            _bl.UpdateEvento(eventoModelFromRepo,eventoUpdateDto.SalonId);
             _bl.SaveChanges();
             return NoContent();
         }
@@ -113,16 +171,22 @@ namespace NetCoreWebAPI.Controllers
                 return ValidationProblem(ModelState);
             }
             _mapper.Map(eventoToPatch, eventoModelFromRepo);
-            _bl.UpdateEvento(eventoModelFromRepo);
+            //_bl.UpdateEvento(eventoModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
         }
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteEvento(int id)
+        public async Task<ActionResult> DeleteEvento(int id)
         {
             var eventoModelFromRepo = _bl.GetEventoById(id);
+            int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "GESTOR" && !await _bl.VerificarEventoGestor(eventoModelFromRepo.Salon.Id, idUsuario))
+            {
+                return BadRequest(new { message = "Solo puede eliminar eventos de su edificio" });
+            }
             if (eventoModelFromRepo == null)
             {
                 return NotFound();
@@ -131,25 +195,6 @@ namespace NetCoreWebAPI.Controllers
             _bl.SaveChanges();
             return NoContent();
         }
-
-   /*     [HttpPost]
-        public string SaveFile(FileUpload fileObj) {
-            Evento oEvent = JsonConvert.DeserializeObject<Evento>(fileObj.Evento);
-
-            if (fileObj.file.Length > 0) 
-            {
-                using (var ms = new MemoryStream())
-                {
-                    fileObj.file.CopyTo(ms);
-
-                    var fileBytes = ms.ToArray();
-
-                    oEvent.Photo = fileBytes;
-
-                    oEvent = _bl.CreateEvento(oEvent)
-                }
-            }
-        }*/
 
     }
 }

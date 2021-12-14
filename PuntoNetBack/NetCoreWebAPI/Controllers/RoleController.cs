@@ -2,6 +2,7 @@
 using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Roles;
 using DataAccessLayer.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace NetCoreWebAPI.Controllers
 {
     //api/roles
     [Route("api/roles")]
+    
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -31,6 +33,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/roles
         [HttpGet]
+        [Authorize(Roles = "SUPERADMIN, ADMIN")]
         public ActionResult<IEnumerable<RolesReadDto>> GetAllRoles()
         {
             var roles = _bl.GetAllRoles();
@@ -39,6 +42,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/roles/{id}
         [HttpGet("{id}", Name = "GetRoleById")]
+        [Authorize(Roles = "SUPERADMIN, ADMIN")]
         public ActionResult<RolesReadDto> GetRoleById(int id)
         {
             var role = _bl.GetRoleById(id);
@@ -51,6 +55,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
+        [Authorize(Roles = "SUPERADMIN")]
         public async Task<ActionResult<RolesReadDto>> CreateRolAsync(RoleCreateDto roleCreateDto)
         {
             var roleModel = _mapper.Map<Role>(roleCreateDto);
@@ -66,6 +71,8 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "SUPERADMIN")]
+
         public ActionResult UpdateRole(int id, RoleUpdateDto institucionUpdateDto)
         {
             var roleModelFromRepo = _bl.GetRoleById(id);
@@ -81,6 +88,8 @@ namespace NetCoreWebAPI.Controllers
 
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
+        [Authorize(Roles = "SUPERADMIN")]
+
         public ActionResult PartialRoleUpdtate(int id, JsonPatchDocument<RoleUpdateDto> patchDoc)
         {
             var roleModelFromRepo = _bl.GetRoleById(id);
@@ -103,6 +112,8 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "SUPERADMIN")]
+
         public ActionResult DeleteRole(int id)
         {
             var roleModelFromRepo = _bl.GetRoleById(id);

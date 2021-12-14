@@ -29,7 +29,7 @@ export class PersonaService {
   }
 
   putPersona(id:string, val:any){
-     return this.http.put(AUTH_API + id, val, httpOptions);
+     return this.http.put(AUTH_API + id, val);
   }
 
   deletePersona(id:string){

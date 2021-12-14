@@ -67,7 +67,13 @@ export class LoginComponent implements OnInit {
             }
         },
         error => {
-            this.notificationService.openSnackBar("Credenciales incorrectas");
+            console.log(error);
+            if(error.error && error.error.message){
+                this.notificationService.openSnackBar(error.error.message);
+            }
+            else{
+                this.notificationService.openSnackBar('Algo salio mal');
+            }
             this.loading = false;
         });
     }

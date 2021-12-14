@@ -21,6 +21,7 @@ namespace DataAccessLayer.Dtos.Eventos
         public TimeSpan HoraInicio { get; set; }
         public string PhotoFileName { get; set; }
         [Required(ErrorMessage = "La duracion del evento es requerida")]
+        [Range(minimum: 1, maximum: 12, ErrorMessage = "El evento debe tener minimo una hora y maximo 12")]
         public int Duracion { get; set; }
         [Required(ErrorMessage = "Los dias del evento son requerida")]
         public int[] Dias { get; set; }

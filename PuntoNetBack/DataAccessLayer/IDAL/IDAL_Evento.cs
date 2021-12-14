@@ -11,6 +11,7 @@ namespace DataAccessLayer.IDAL
     {
         bool SaveChanges();
         IEnumerable<Evento> GetAllEventos();
+        IEnumerable<Evento> GetAllEventosEdificio(int idedificio);
         Evento GetEventoById(int Id);
         void CreateEvento(Evento evt);
         void UpdateEvento(Evento evt);

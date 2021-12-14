@@ -8,6 +8,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Time } from '@angular/common';
 import moment from 'moment';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.service';
 
 @Component({
   selector: 'app-eventos-add',
@@ -27,7 +30,7 @@ export class EventosAddComponent implements OnInit {
   PhotoFilePath?:any;
   fecha = new Date();
   salones: any[] = [];
-  edificios: any[];
+  edificios: any[] = [];
   idEdificio: number;
 
   dias: any[] = [
@@ -75,16 +78,24 @@ export class EventosAddComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService,private fb: FormBuilder, private edificioService: EdificiosService) {
-    this.edificioService.getEdificios().subscribe(data=>{
-      console.log(data); 
-      this.edificios = data;
-     })
+  constructor(public dialogRef: MatDialogRef<EventosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:EventosService, private fileService:FileService, private edificioService: EdificiosService, private handleError: HandleErrorsService, private tokenService: TokenStorageService, private usuarioEdificioService: UsuarioEdificioService) {
+    if(tokenService.getRoleName()==="GESTOR"){
+      usuarioEdificioService.getEdificioUsuario().subscribe(data=>{
+        if(data){
+          this.edificios.push(data);
+        }
+      });
+    }
+    else{
+      this.edificioService.getEdificios().subscribe(data=>{
+        console.log(data); 
+        this.edificios = data;
+       })
+    }
    }
 
   ngOnInit() {
    // this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
-
   }
 
   diasSeleccionados(){
@@ -108,19 +119,19 @@ export class EventosAddComponent implements OnInit {
     // });
     if(this.tipoEvento==="simple"){
       const fechas = this.getFechaFin();
-      this.service.postEvento(this.nombre,this.descripcion, fechas.fechainicio.format("YYYY-MM-DDTHH:mm:ss"), fechas.fechafin.format("YYYY-MM-DDTHH:mm:ss"), this.idsalon).subscribe(res=>{
-        this.showSuccessAlert();
+      this.service.postEvento(this.nombre,this.descripcion, fechas.fechainicio.format("YYYY-MM-DDTHH:mm:ss"), fechas.fechafin.format("YYYY-MM-DDTHH:mm:ss"), this.idsalon).subscribe((res:any)=>{
+        this.handleError.showSuccessAlert(res.message);
       }, err =>{
         console.log(err);
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }
     else{
-      this.service.postEventoRecurrente(this.nombre,this.descripcion,this.fechainicio.value, this.fechafin.value,moment(this.hora).format("HH:mm") ,this.duracion,this.diasSeleccionados(),this.idsalon).subscribe(data=>{
-        this.showSuccessAlert();
+      this.service.postEventoRecurrente(this.nombre,this.descripcion,this.fechainicio.value, this.fechafin.value,moment(this.hora).format("HH:mm") ,this.duracion,this.diasSeleccionados(),this.idsalon).subscribe((data: any)=>{
+        this.handleError.showSuccessAlert(data.message)
       },err=>{
         console.log(err);
-        this.showErrorAlert();
+        this.handleError.showErrors(err);
       });
     }
    
@@ -139,7 +150,6 @@ export class EventosAddComponent implements OnInit {
   }
 
   updateSalones(){
-    console.log("BUENO ARRANCAMOS");
     const fechas = this.getFechaFin();
     console.log(fechas);
     if(this.tipoEvento === "simple"){
@@ -148,9 +158,11 @@ export class EventosAddComponent implements OnInit {
           console.log(data);
           this.habilitarAgregar = true;
           this.salones = data;
+        },err=>{
+          this.handleError.showErrors(err);
         });
       }else{
-          this.showErrorAlert2();
+          this.handleError.showErrorAlert(['Ingrese todos los datos']);
       }
     }else{
       if(fechas && this.idEdificio && this.duracion && this.hora && this.diasSeleccionados().length){
@@ -158,9 +170,11 @@ export class EventosAddComponent implements OnInit {
           console.log(data);
           this.habilitarAgregar = true;
           this.salones = data;
+        },err=>{
+          this.handleError.showErrors(err);
         });
       }else{
-          this.showErrorAlert2();
+        this.handleError.showErrorAlert(['Ingrese todos los datos']);
       }
     }
     
@@ -175,18 +189,6 @@ export class EventosAddComponent implements OnInit {
       fechainicio: fechahorainicio,
       fechafin: fechafin
     }
-  }
-
-  showSuccessAlert() {
-    Swal.fire('OK', 'Evento agregado con exito!', 'success');
-  }
-
-  showErrorAlert(msg?) {
-    Swal.fire('Error!', msg ? msg : 'Algo salió mal', 'error');
-  }
-
-  showErrorAlert2() {
-    Swal.fire('Error!', 'Ingrese todos los datos', 'error');
   }
 
 }
