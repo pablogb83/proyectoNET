@@ -238,12 +238,19 @@ namespace NetCoreWebAPI.Controllers
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream(), tenant.TenantInfo.Name);
+                var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream(), tenant.TenantInfo.Id);
                 if (result!=null)
                 {
                     Persona coincidencia = _blPersona.GetPersonaByDocumento(result.Name);
-                    var personaReadDto = _mapper.Map<PersonaReadDto>(coincidencia);
-                    return Ok(personaReadDto);
+                    if (coincidencia == null)
+                    {
+                        return BadRequest(new { message = "No se encontro la persona" });
+                    }
+                    else
+                    {
+                        var personaReadDto = _mapper.Map<PersonaReadDto>(coincidencia);
+                        return Ok(personaReadDto);
+                    }
                 }
                 else
                 {

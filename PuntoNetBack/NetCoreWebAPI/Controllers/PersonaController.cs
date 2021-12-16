@@ -71,9 +71,12 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PersonaReadDto>> CreatePersona([FromForm]PersonaCreateDto personaInfo)
         {
+            if (_bl.GetPersonaByDocumento(personaInfo.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
+            }
             var httpRequest = Request.Form;
             var postedFile = httpRequest.Files[0];
-            
             string filename = postedFile.FileName;
             var randomString = RandomString.RandomizeString(10);
             filename = randomString + filename;
@@ -83,10 +86,7 @@ namespace NetCoreWebAPI.Controllers
             {
                 postedFile.CopyTo(stream);
             }
-            if (_bl.GetPersonaByDocumento(personaInfo.nro_doc) != null)
-            {
-                throw new AppException("Ya hay una persona registrada con ese numero de documento");
-            }
+           
             var persona = _mapper.Map<Persona>(personaInfo);
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
 
@@ -107,7 +107,11 @@ namespace NetCoreWebAPI.Controllers
             var httpRequest = Request.Form;
             var personaModelFromRepo = _bl.GetPersonaById(id);
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
-            if (httpRequest.Files.Any())
+            if (personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
+            }
+            if (httpRequest.Files. Any())
             {
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
@@ -120,10 +124,6 @@ namespace NetCoreWebAPI.Controllers
                     postedFile.CopyTo(stream);
                 }
                 await _bl.UpdatePersonaConFoto(personaModelFromRepo.nro_doc, personaUpdateDto.nro_doc, postedFile.OpenReadStream(), tenant.TenantInfo.Id);
-            }
-            if(personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
-            {
-                throw new AppException("Ya hay una persona registrada con ese numero de documento");
             }
             string documentoViejo = personaModelFromRepo.nro_doc;
             _mapper.Map(personaUpdateDto, personaModelFromRepo);
