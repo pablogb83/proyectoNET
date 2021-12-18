@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.IBL;
 using DataAccessLayer;
+using DataAccessLayer.Helpers;
 using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
@@ -28,6 +29,11 @@ namespace BusinessLayer.BL
         {
             var usuario = await _dalusuario.GetUsuarioByIdAsync(usuarioId);
             var edificio = _daledificio.GetEdificioById(edificioId);
+            var userEdificio = GetEdificioUsuario(usuarioId);
+            if (userEdificio != null)
+            {
+                throw new AppException("El usuario ya tiene un edificio asignado");
+            }
             if(usuario.Role!=null && (usuario.Role=="GESTOR" || usuario.Role == "PORTERO"))
             {
                 var usuarioEdificio = new UsuarioEdificio();

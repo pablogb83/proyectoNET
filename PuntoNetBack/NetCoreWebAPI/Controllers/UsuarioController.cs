@@ -26,7 +26,6 @@ namespace NetCoreWebAPI.Controllers
     //api/Usuario
     [Route("api/usuarios")]
     [ApiController]
-    [Authorize(Roles = "ADMIN, SUPERADMIN")]
 
     public class UsuarioController : ControllerBase
     {
@@ -93,6 +92,7 @@ namespace NetCoreWebAPI.Controllers
         //GET api/usuarios
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetAllUsuariosAsync()
         {
             var Usuario = await _bl.GetAllUsuariosAsync();
@@ -100,6 +100,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("admin")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetUsuariosAdmin()
         {
             var Usuario = await _bl.GetUsuariosAdmin();
@@ -109,6 +110,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarios/{id}
         [HttpGet("{id}", Name = "GetUsuarioById")]
+        [Authorize(Roles = "ADMIN, SUPERADMIN")]
         public ActionResult<UsuarioReadDto> GetUsuarioById(int id)
         {
             var Usuario = _bl.GetUsuarioByIdAsync(id);
@@ -119,8 +121,22 @@ namespace NetCoreWebAPI.Controllers
             return NotFound();
         }
 
+        [HttpGet("institucion/{idinstitucion}")]
+        [Authorize(Roles = "SUPERADMIN")]
+        public async Task<ActionResult<IEnumerable<UsuarioReadDto>>> GetAdminsInstitucion(string idinstitucion)
+        {
+            var institucion = _blInst.GetInstitucionById(idinstitucion);
+            if (institucion==null)
+            {
+                BadRequest(new { message="No se encontro la institucion ingresada" });
+            }
+            var Usuario = await _bl.GetAdminsInstitucion(idinstitucion);
+            return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));
+        }
+
         //POST api/usuarios
         [HttpPost]
+        [Authorize(Roles = "ADMIN, SUPERADMIN")]
         public async Task<ActionResult<UsuarioReadDto>> CreateUsuarioAsync([FromBody] UsuarioCreateDto usuarioCreateDto)
         {
             var UsuarioModel = _mapper.Map<Usuario>(usuarioCreateDto);
@@ -141,6 +157,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpPost("admin")]
+        [Authorize(Roles = "SUPERADMIN")]
         public async Task<ActionResult> CreateAdminAsync(AdminCreateDto usuarioCreateDto)
         {
             Institucion falsoTenant = new Institucion { Name ="FalsaInstitucion", Id="12131",Identifier="12131",Activa=true,PlanId="121212",Direccion="BENGOA", Suscripcion=new Suscripcion(),Telefono="098776123" };
@@ -165,6 +182,7 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/usuarios/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN, SUPERADMIN")]
         public async Task<ActionResult> UpdateUsuarioAsync(int id, UsuarioUpdateDto UsuarioUpdateDto)
         {
             var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
@@ -178,8 +196,24 @@ namespace NetCoreWebAPI.Controllers
             return Ok();
         }
 
+        [HttpPut("admin/{id}")]
+        [Authorize(Roles = "SUPERADMIN")]
+        public async Task<ActionResult> UpdateAdminAsync(int id, UsuarioUpdateDto UsuarioUpdateDto)
+        {
+            var UsuarioModelFromRepo = await _bl.GetAdminByIdAsync(id);
+            if (UsuarioModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(UsuarioUpdateDto, UsuarioModelFromRepo);
+            _bl.UpdateUsuario(UsuarioModelFromRepo);
+            _bl.SaveChanges();
+            return Ok();
+        }
+
         //PATCH api/usuarios/{id}
         [HttpPatch("{id}")]
+        [Authorize(Roles = "ADMIN, SUPERADMIN")]
         public async Task<ActionResult> PartialUsuarioUpdtateAsync(int id, JsonPatchDocument<UsuarioUpdateDto> patchDoc)
         {
             var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
@@ -202,6 +236,7 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/usuarios/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN, SUPERADMIN")]
         public async Task<ActionResult> DeleteUsuarioAsync(int id)
         {
             var UsuarioModelFromRepo = await _bl.GetUsuarioByIdAsync(id);
@@ -214,8 +249,28 @@ namespace NetCoreWebAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete("admin/{id}")]
+        [Authorize(Roles = "SUPERADMIN")]
+        public async Task<ActionResult> DeleteAdminAsync(int id)
+        {
+            var tenantActual = HttpContext.GetMultiTenantContext<Institucion>();
+            var UsuarioModelFromRepo = await _bl.GetAdminByIdAsync(id);
+            var institucion = _blInst.GetInstitucionById(UsuarioModelFromRepo.TenantId);
+            HttpContext.TrySetTenantInfo(institucion, true);
+            var tenantActual2 = HttpContext.GetMultiTenantContext<Institucion>();
+            tenantActual2.StoreInfo = tenantActual.StoreInfo;
+            tenantActual2.StrategyInfo = tenantActual.StrategyInfo;
+            if (UsuarioModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            _bl.DeleteAdmin(UsuarioModelFromRepo);
+            return Ok(new { message="Admin eliminado" });
+        }
+
         //api/roles/addRoletoUser/
         [HttpPost("addRoletoUser")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult> AddRoleUserAsync([FromBody] UserIdRolId parametros)
         {
             try

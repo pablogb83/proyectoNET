@@ -23,6 +23,7 @@ import { FacturacionModule } from './facturacion/facturacion.module';
 import { NoticiasModule } from './noticias/noticias.module';
 import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
 import { PanelOpcionesModule } from './panel-opciones/panel-opciones.module';
+import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
 
 const appRoutes: Routes = [
     {
@@ -37,7 +38,7 @@ const appRoutes: Routes = [
     {
         path: 'users',
         loadChildren: ()=> UsersModule,
-        canActivate: [AuthGuard,AdminGuard]
+        canActivate: [AuthGuard,AdminSuperadminGuard]
     },
     {
         path: 'eventos',

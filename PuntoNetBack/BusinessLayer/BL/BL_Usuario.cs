@@ -89,5 +89,20 @@ namespace BusinessLayer.BL
         {
             await _dal.CreateAdminAsync(usr, password);
         }
+
+        public async Task<IEnumerable<Usuario>> GetAdminsInstitucion(string idinstitucion)
+        {
+            return await _dal.GetAdminsInstitucion(idinstitucion);
+        }
+
+        public async Task<Usuario> GetAdminByIdAsync(int Id)
+        {
+            return await _dal.GetAdminByIdAsync(Id);
+        }
+
+        public void DeleteAdmin(Usuario usr)
+        {
+            _dal.DeleteAdmin(usr);
+        }
     }
 }
