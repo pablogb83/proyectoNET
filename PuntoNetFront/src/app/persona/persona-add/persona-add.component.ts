@@ -16,7 +16,7 @@ export class PersonaAddComponent implements OnInit {
   apellidos?:string = "";
   telefono?:string = "";
   email?:string = "";
-  tipo_doc?: string = "";
+  tipo_doc?: any = 0;
   nro_doc?: string = "";
   PhotoFileName?:any = "";
   PhotoFilePath?:any;

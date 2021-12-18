@@ -26,3 +26,4 @@
 23. Quede probando los permisos
 26. Portal publico
 27. Crear interfaz al dal FaceApi
+28. La contraseña no cambia.

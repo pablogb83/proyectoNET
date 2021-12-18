@@ -44,6 +44,7 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<PersonaReadDto>> GetAllPersonas()
         {
             var personas = _bl.GetAllPersonas();
+            var user = HttpContext.User;
             if (personas != null)
             {
                 return Ok(_mapper.Map<IEnumerable<PersonaReadDto>>(personas));

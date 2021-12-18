@@ -35,6 +35,7 @@ namespace DataAccessLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Persona>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<UserRole>().HasKey(pk => new { pk.UserId, pk.RoleId });
             modelBuilder.Entity<Role>().HasData(new Role { Name = "SUPERADMIN", NormalizedName = "SUPERADMIN", ConcurrencyStamp = new Guid().ToString(), Id = roleId });
@@ -58,7 +59,6 @@ namespace DataAccessLayer
                 TenantId = defaultTenantId
             });
             modelBuilder.Entity<Persona>().Property<bool>("isDeleted");
-            modelBuilder.Entity<Persona>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId=adminId, RoleId= roleId });
             TenantMismatchMode = TenantMismatchMode.Ignore;
         }
