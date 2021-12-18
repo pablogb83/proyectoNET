@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Shared.ModeloDeDominio
 {
     [MultiTenant]
-    [Index(nameof(nro_doc), IsUnique = true)]
+    //[Index(nameof(nro_doc), IsUnique = true)]
     public class Persona
     {
         [Key]
@@ -32,7 +32,6 @@ namespace Shared.ModeloDeDominio
         public TipoDocumento tipo_doc { get; set; }
         [Required]
         public string nro_doc { get; set; }
-
         public string PhotoFileName { get; set; }
 
         public virtual ICollection<Acceso> Accesos { get; set; } = new List<Acceso>();

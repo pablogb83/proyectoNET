@@ -88,13 +88,13 @@ export class PersonaListComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deletePersona(item.id).subscribe(data=>{
-          this.getPersonas()
+          this.getPersonas();
+          Swal.fire(
+            'Borrado!',
+            'El registro ha sido eliminado.',
+            'success'
+          )
         })
-        Swal.fire(
-          'Borrado!',
-          'El registro ha sido eliminado.',
-          'success'
-        )
       }
     })
   }

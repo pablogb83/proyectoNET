@@ -106,12 +106,16 @@ namespace NetCoreWebAPI.Controllers
         {
             var httpRequest = Request.Form;
             var personaModelFromRepo = _bl.GetPersonaById(id);
+            if (string.IsNullOrEmpty(personaUpdateDto.PhotoFileName))
+            {
+                personaUpdateDto.PhotoFileName = personaModelFromRepo.PhotoFileName;
+            }
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
             if (personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
             {
                 throw new AppException("Ya hay una persona registrada con ese numero de documento");
             }
-            if (httpRequest.Files. Any())
+            if (httpRequest.Files.Any())
             {
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;

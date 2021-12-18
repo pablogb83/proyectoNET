@@ -46,7 +46,6 @@ namespace DataAccessLayer.DAL
             {
                 throw new ArgumentNullException(nameof(prs));
             }
-
             _context.Personas.Remove(prs);
         }
 

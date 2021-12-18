@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DataAccessLayer
@@ -54,9 +56,44 @@ namespace DataAccessLayer
                 AccessFailedCount = 0,
                 PasswordHash = "AQAAAAEAACcQAAAAEDScDguK3Sx4oLf+Zh+A8etz8lIrm2TH0yCx10v7asCjqErAXyq2gOad712ILTfrKg==",
                 TenantId = defaultTenantId
-            }); ;
+            });
+            modelBuilder.Entity<Persona>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Persona>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
             modelBuilder.Entity<UserRole>().HasData(new UserRole { UserId=adminId, RoleId= roleId });
             TenantMismatchMode = TenantMismatchMode.Ignore;
+        }
+
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                if(entry.Entity is Persona)
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.CurrentValues["isDeleted"] = false;
+                            break;
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified;
+                            entry.CurrentValues["isDeleted"] = true;
+                            break;
+                    }
+                }
+               
+            }
         }
 
 

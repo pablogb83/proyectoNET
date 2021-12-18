@@ -305,7 +305,13 @@ namespace DataAccessLayer.DAL
         {
             PersonGroupId = PersonGroupId.ToLower();
             var personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
-            var person = personas.First(x => x.Name == documentoViejo);
+            var person = personas.FirstOrDefault(x => x.Name == documentoViejo);
+            if (person == null)
+            {
+                Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, documentoNuevo);
+                personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+                person = personas.FirstOrDefault(x => x.Name == documentoNuevo);
+            }
             if (person != null && await validateFace(stream, PersonGroupId))
             {
                 stream.Position = 0;
@@ -347,6 +353,10 @@ namespace DataAccessLayer.DAL
             List<Guid> cara = new List<Guid>();
             cara.Add(sourceFaceId1);
             var identifyResults = await client.Face.IdentifyAsync(cara, personGroupId);
+            if (identifyResults.Any() && identifyResults[0].Candidates.Any())
+            {
+                throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
+            }
             return true;
         }
 

@@ -34,12 +34,6 @@
         <span *ngIf="rol === 'VISITANTE'"> Log in </span> 
       </a>
 
-      <a mat-menu-item (click)="logout()" *ngIf="rol!=='VISITANTE'" >
-        <mat-icon mat-list-icon>exit_to_app</mat-icon>
-        <span *ngIf="rol != 'VISITANTE'"> Log out </span>
-        <span *ngIf="rol === 'VISITANTE'"> Log in </span> 
-      </a>
-
     </mat-menu>
   </mat-toolbar>
 
@@ -114,7 +108,7 @@
           </mat-icon>
           <p mat-line> Eventos </p>
         </a>
-        <a mat-list-item [routerLink]="['/noticias']" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/noticias']"  *ngIf="(rol==='GESTOR'|| rol==='ADMIN') && instActive" routerLinkActive="active">
           <mat-icon mat-list-icon>
             list_alt
           </mat-icon>
