@@ -22,6 +22,7 @@ import { ProductosModule } from './productos/productos.module';
 import { FacturacionModule } from './facturacion/facturacion.module';
 import { NoticiasModule } from './noticias/noticias.module';
 import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
+import { PanelOpcionesModule } from './panel-opciones/panel-opciones.module';
 
 const appRoutes: Routes = [
     {
@@ -99,6 +100,11 @@ const appRoutes: Routes = [
     {
         path: 'accesos',
         loadChildren: ()=>AccesoModule,
+        canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
+        path: 'panelOpciones',
+        loadChildren: ()=>PanelOpcionesModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {

@@ -90,11 +90,6 @@ namespace NetCoreWebAPI.Controllers
             {
                 postedFile.CopyTo(stream);
             }
-<<<<<<< HEAD
-
-=======
-           
->>>>>>> origin/UpdateFront
             var persona = _mapper.Map<Persona>(personaInfo);
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
 

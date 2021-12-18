@@ -34,8 +34,6 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private media: MediaMatcher,
         public spinnerService: SpinnerService,
-        private authService: AuthenticationService,
-        private authGuard: AuthGuard,
         private tokenService: TokenStorageService,
         private usuarioEdificio: UsuarioEdificioService,
         private router: Router) {

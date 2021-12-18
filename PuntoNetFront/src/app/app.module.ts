@@ -18,6 +18,7 @@ import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.compo
 import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
 import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
 import { NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { PanelOpcionesComponent } from './panel-opciones/panel-opciones.component';
 
 
 
@@ -29,7 +30,8 @@ import { NgxMatNativeDateModule } from '@angular-material-components/datetime-pi
     WebcamSnapshotComponent,
     PersonaAddComponent,
 
-    VisitanteHomeComponent
+    VisitanteHomeComponent,
+      PanelOpcionesComponent
   ],
   entryComponents:[
     PersonaAddComponent,

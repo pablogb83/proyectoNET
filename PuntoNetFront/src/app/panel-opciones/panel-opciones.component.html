@@ -1,0 +1,100 @@
+<div class="contenedor">
+    <ng-container>
+        <a href="/users" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Usuarios</mat-card-title>
+                    <mat-card-subtitle>Gestión de usuarios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los usuarios del sistema, asignacion de roles y edificios.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/facturacion" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Facturacion</mat-card-title>
+                    <mat-card-subtitle>Gestión de facturas</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Visualize sus facturas pagas hasta la fecha.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/edificios" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Edificios</mat-card-title>
+                    <mat-card-subtitle>Gestión de edificios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione los edificios de su institución. Agregue salones y puertas de acceso.  
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+    </ng-container>
+</div>
+
+<div class="contenedor">
+    <ng-container>
+        <a href="/accesos" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Accesos</mat-card-title>
+                    <mat-card-subtitle>Gestión de accesos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Registro de los accesos a la instituciones.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/personas" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Personas</mat-card-title>
+                    <mat-card-subtitle>Gestión de usuarios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los usuarios del sistema, asignacion de roles y edificios.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+        <a href="/users" *ngIf="rol ==='ADMIN'">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Usuarios</mat-card-title>
+                    <mat-card-subtitle>Gestión de usuarios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los usuarios del sistema, asignacion de roles y edificios.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+    </ng-container>
+</div>
+
+
+

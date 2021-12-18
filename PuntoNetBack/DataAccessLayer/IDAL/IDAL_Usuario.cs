@@ -20,6 +20,5 @@ namespace DataAccessLayer.IDAL
         void DeleteUsuario(Usuario usr);
         Task<Usuario> AutenticarAsync(string email, string password);
         public Task AddRoleToUserAsync(Usuario userId, string Role);
-
     }
 }

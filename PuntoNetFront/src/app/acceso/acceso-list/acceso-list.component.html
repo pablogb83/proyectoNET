@@ -4,7 +4,8 @@
       <mat-card>
         <mat-card-content>
           <div *ngIf="permiso">
-            <h2>Ingresos a edificio {{edificio}} por acceso {{puerta}}</h2>
+            <h2 *ngIf="rol==='PORTERO'">Ingresos a edificio {{edificio}} por acceso {{puerta}}</h2>
+            <h2 *ngIf="rol==='ADMIN'">Ingresos</h2>
             <div class="tittle-button-row">
               <button *ngIf="rol==='PORTERO'" mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
               <button *ngIf="rol==='PORTERO'" mat-raised-button color="accent" (click)="openDialogFacial()">Agregar facialmente</button>
@@ -42,9 +43,12 @@
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
                 <td mat-cell *matCellDef="let element"> 
-                    <div class="example-button-row" *ngIf="rol==='PORTERO'">
-                        <button mat-icon-button color="warn" aria-label="Example icon button with a delete icon" (click)="deleteClick(element)">
+                    <div class="example-button-row">
+                        <button  *ngIf="rol==='PORTERO' || rol ==='ADMIN'" mat-icon-button color="warn" aria-label="Example icon button with a delete icon" (click)="deleteClick(element)">
                           <mat-icon>delete</mat-icon>
+                        </button>
+                        <button  *ngIf="rol ==='ADMIN'" mat-icon-button color="primary" aria-label="Example icon button with a delete icon" (click)="info(element)">
+                          <mat-icon>info</mat-icon>
                         </button>
                     </div>
                 </td>

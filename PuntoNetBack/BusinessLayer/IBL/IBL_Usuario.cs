@@ -21,6 +21,5 @@ namespace BusinessLayer.IBL
         Task<Usuario> Autenticar(string email, string password);
         Task<string> GetRolUsuario(Usuario user);
         public Task AddRoleToUserAsync(int rolId, int userId);
-
     }
 }

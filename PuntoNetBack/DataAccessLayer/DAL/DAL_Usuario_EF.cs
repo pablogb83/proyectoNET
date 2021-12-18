@@ -16,14 +16,16 @@ namespace DataAccessLayer.DAL
     public class DAL_Usuario_EF : IDAL_Usuario
     {
         private readonly WebAPIContext _context;
+        private readonly MultiTenantStoreDbContext _multiTenantContext;
         private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<Role> _roleManager;
 
-        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager, RoleManager<Role> roleManager)
+        public DAL_Usuario_EF(WebAPIContext context, UserManager<Usuario> userManager, RoleManager<Role> roleManager, MultiTenantStoreDbContext multiContext)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _multiTenantContext = multiContext;
         }
 
         public async Task<Usuario> AutenticarAsync(string email, string password)
