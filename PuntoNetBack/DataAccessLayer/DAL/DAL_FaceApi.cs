@@ -192,7 +192,11 @@ namespace DataAccessLayer.DAL
 
         public static async Task<Person> ReconocimientoFacial(Stream imagen,string PersonGroupId)
         {
-            //IList<Person> people = await client.PersonGroupPerson.ListAsync(personGroupId);
+            IList<Person> people = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+            if (people.Count <= 0)
+            {
+                throw new AppException("No hay personas registradas facialmente");
+            }
             PersonGroupId = PersonGroupId.ToLower();
             List<DetectedFace> detectedFaces1 = await DetectFaceRecognizeStream(client, imagen, recognitionModel03);
             if (detectedFaces1.Any())
@@ -261,27 +265,23 @@ namespace DataAccessLayer.DAL
                 throw new AppException("Por favor ingrese la foto de UN SOLO individuo");
             }
             stream.Position = 0;
-            Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
-            List<Guid> cara = new List<Guid>();
-            cara.Add(sourceFaceId1);
-            var status = await client.PersonGroup.GetTrainingStatusAsync(PersonGroupId);
-            if(status.Status == TrainingStatusType.Failed || status.Status==TrainingStatusType.Nonstarted)
+            var cantPersonas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+            if (cantPersonas.Count() > 0)
             {
-                await client.PersonGroup.TrainAsync(PersonGroupId);
-            }
-            var identifyResults = await client.Face.IdentifyAsync(cara, PersonGroupId);
-            if (identifyResults.Any() && identifyResults[0].Candidates.Any())
-            {
-                throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
+                Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
+                List<Guid> cara = new List<Guid>();
+                cara.Add(sourceFaceId1);
+
+                var identifyResults = await client.Face.IdentifyAsync(cara, PersonGroupId);
+                if (identifyResults.Any() && identifyResults[0].Candidates.Any())
+                {
+                    throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
+                }
             }
             Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, email);
-            try
+            if (stream != null)
             {
                 PersistedFace persistedFace = await client.PersonGroupPerson.AddFaceFromStreamAsync(PersonGroupId, p1.PersonId, stream);
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("LLA");
             }
             await client.PersonGroup.TrainAsync(PersonGroupId);
             return true;
@@ -305,7 +305,13 @@ namespace DataAccessLayer.DAL
         {
             PersonGroupId = PersonGroupId.ToLower();
             var personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
-            var person = personas.First(x => x.Name == documentoViejo);
+            var person = personas.FirstOrDefault(x => x.Name == documentoViejo);
+            if (person == null)
+            {
+                Person p1 = await client.PersonGroupPerson.CreateAsync(PersonGroupId, documentoNuevo);
+                personas = await client.PersonGroupPerson.ListAsync(PersonGroupId);
+                person = personas.FirstOrDefault(x => x.Name == documentoNuevo);
+            }
             if (person != null && await validateFace(stream, PersonGroupId))
             {
                 stream.Position = 0;
@@ -347,6 +353,10 @@ namespace DataAccessLayer.DAL
             List<Guid> cara = new List<Guid>();
             cara.Add(sourceFaceId1);
             var identifyResults = await client.Face.IdentifyAsync(cara, personGroupId);
+            if (identifyResults.Any() && identifyResults[0].Candidates.Any())
+            {
+                throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
+            }
             return true;
         }
 

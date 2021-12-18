@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.IDAL;
+using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Acceso> GetAccesosPersona(int idPersona)
         {
-            Persona prs = _context.Personas.FirstOrDefault(p => p.Id == idPersona);
+            Persona prs = _context.Personas.IgnoreQueryFilters().FirstOrDefault(p => p.Id == idPersona);
             if (prs != null)
             {
                 return prs.Accesos;
@@ -70,9 +71,10 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Acceso> GetAccesosPuerta(int idPuerta)
         {
-            Puerta pta = _context.Puertas.FirstOrDefault(p => p.Id == idPuerta);
+            Puerta pta = _context.Puertas.IgnoreQueryFilters().FirstOrDefault(p => p.Id == idPuerta);
             if (pta != null)
             {
+                var accesos = _context.Accesos.IgnoreQueryFilters().Include(i => i.Persona).Where(acc => acc.Puerta.Id == idPuerta).ToList();
                 return pta.Accesos;
             }
             return null;
@@ -80,7 +82,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Acceso> GetAllAccesos()
         {
-            return _context.Accesos.ToList();
+            return _context.Accesos.IgnoreQueryFilters().ToList();
         }
 
         public bool SaveChanges()

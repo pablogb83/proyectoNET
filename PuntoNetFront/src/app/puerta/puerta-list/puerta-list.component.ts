@@ -35,9 +35,14 @@ export class PuertaListComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
-        console.log(data);
-        this.edificio = new MatTableDataSource<Edificio>(data);
-        this.edificioNombre = this.edificio._data._value.nombre;
+       
+        this.edificio = data;
+        if(!this.idedificio){
+          this.idedificio = this.edificio.id;
+        }
+        this.edificioNombre = this.edificio.nombre;
+        this.getPuertas();
+
       });
     });
     this.rol = this.tokenService.getRoleName();
@@ -45,17 +50,14 @@ export class PuertaListComponent implements OnInit {
     if(this.rol === 'PORTERO'){
       this.usuarioPuertaService.getPuertaUser(this.userId).subscribe(data=>{
         this.puerta = new MatTableDataSource<Puerta>(data)
-        console.log(this.puerta);
         if(this.puerta._data._value){
           this.puertaid = this.puerta._data._value.id;
         }
-        console.log(this.puertaid);
       })
     }
   }
 
   ngOnInit() {
-    this.getPuertas();
   }
 
   refreshPage() {
@@ -63,8 +65,8 @@ export class PuertaListComponent implements OnInit {
    }
 
   getPuertas(): void{
+    console.log("EL EDIDICIO ES: ", this.edificio);
     this.service.getPuertasEdificio(this.idedificio).subscribe(data=>{
-      console.log(data);
       this.PuertaList = new MatTableDataSource<Puerta>(data);
       this.PuertaList.paginator = this.paginator;
     });
@@ -88,7 +90,6 @@ export class PuertaListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.getPuertas();
     });
   }
@@ -117,8 +118,6 @@ export class PuertaListComponent implements OnInit {
    }
 
    seleccionarPuerta(puerta:any):void{
-      console.log(puerta.id);
-      console.log(this.userId);
       this.usuarioPuertaService.addUserPuerta(this.userId, puerta.id).subscribe(data=>{
         console.log(data);
         this.showSuccessAlert();
@@ -131,11 +130,9 @@ export class PuertaListComponent implements OnInit {
 
    liberarPuerta():void{
      this.usuarioPuertaService.deletePuertaUser(this.userId).subscribe(data=>{
-      console.log(data) 
       this.showSuccessAlertLiberar();
       this.refreshPage();
      },err=>{
-       console.log(err)
        this.showErrorAlert(err.error);
        //this.refreshPage();
      })

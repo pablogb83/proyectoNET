@@ -108,7 +108,7 @@
           </mat-icon>
           <p mat-line> Eventos </p>
         </a>
-        <a mat-list-item [routerLink]="['/noticias']" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/noticias']"  *ngIf="(rol==='GESTOR'|| rol==='ADMIN') && instActive" routerLinkActive="active">
           <mat-icon mat-list-icon>
             list_alt
           </mat-icon>

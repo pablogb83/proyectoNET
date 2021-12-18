@@ -90,7 +90,11 @@ namespace NetCoreWebAPI.Controllers
             {
                 postedFile.CopyTo(stream);
             }
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> origin/UpdateFront
             var persona = _mapper.Map<Persona>(personaInfo);
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
 
@@ -110,6 +114,10 @@ namespace NetCoreWebAPI.Controllers
         {
             var httpRequest = Request.Form;
             var personaModelFromRepo = _bl.GetPersonaById(id);
+            if (string.IsNullOrEmpty(personaUpdateDto.PhotoFileName))
+            {
+                personaUpdateDto.PhotoFileName = personaModelFromRepo.PhotoFileName;
+            }
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
             if (personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
             {
@@ -129,7 +137,6 @@ namespace NetCoreWebAPI.Controllers
                 }
                 await _bl.UpdatePersonaConFoto(personaModelFromRepo.nro_doc, personaUpdateDto.nro_doc, postedFile.OpenReadStream(), tenant.TenantInfo.Id);
             }
-
             string documentoViejo = personaModelFromRepo.nro_doc;
             _mapper.Map(personaUpdateDto, personaModelFromRepo);
             await _bl.UpdatePersona(personaModelFromRepo, documentoViejo, tenant.TenantInfo.Id);

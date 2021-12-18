@@ -20,8 +20,8 @@ export class EdificiosService {
     return this.http.get<any>(AUTH_API);
   }
 
-  getEdificio(id: number):Observable<any[]>{
-    return this.http.get<any>(AUTH_API+id);
+  getEdificio(id?: number):Observable<any[]>{
+    return this.http.get<any>(AUTH_API+(id??1));
   }
 
   postEdificios(nombre: string, direccion: string, telefono: string, lng: string, lat: string){

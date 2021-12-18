@@ -21,15 +21,17 @@ namespace NetCoreWebAPI.Controllers
     public class EdificioController : ControllerBase
     {
         private readonly IBL_Edificio _bl;
+        private readonly IBL_UsuarioEdificio _blusrEd;
         private readonly IMapper _mapper;
         private readonly ILogger<EdificioController> _logger;
 
 
-        public EdificioController(IBL_Edificio bl, IMapper mapper, ILogger<EdificioController> logger)
+        public EdificioController(IBL_Edificio bl, IMapper mapper, ILogger<EdificioController> logger, IBL_UsuarioEdificio blusrEd)
         {
             _bl = bl;
             _mapper = mapper;
             _logger = logger;
+            _blusrEd = blusrEd;
         }
 
         //GET api/edificios
@@ -52,14 +54,25 @@ namespace NetCoreWebAPI.Controllers
         //GET api/edificios/{id}
         [HttpGet("{id}", Name = "GetEdificioById")]
         [Authorize(Roles = "ADMIN,PORTERO")]
-        public ActionResult<EdificiosReadDto> GetEdificioById(int id)
+        public async Task<ActionResult<EdificiosReadDto>> GetEdificioById(int id)
         {
-            var edificio = _bl.GetEdificioById(id);
-            if (edificio != null)
+           
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "SUPERADMIN")
             {
+                var edificio = _bl.GetEdificioById(id);
+                if (edificio != null)
+                {
+                    return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+                }
+                return NotFound();
+            }
+            else
+            {
+                int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+                var edificio = await _blusrEd.GetEdificioUsuario(idUsuario);
                 return Ok(_mapper.Map<EdificiosReadDto>(edificio));
             }
-            return NotFound();
         }
 
         //POST api/edificio
