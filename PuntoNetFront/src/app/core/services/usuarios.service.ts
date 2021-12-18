@@ -21,6 +21,14 @@ export class UsuariosService {
     return this.http.get(AUTH_API);
   }
 
+  getUsuariosAdmin(): Observable<any> {
+    return this.http.get(AUTH_API + 'admin');
+  }
+
+  getUsuariosInstitucion(institucion: string): Observable<any> {
+    return this.http.get(AUTH_API + `institucion/${institucion}`);
+  }
+
   getUsuario(id: number):Observable<any[]>{
     return this.http.get<any>(AUTH_API+id);
   }
@@ -47,8 +55,19 @@ export class UsuariosService {
      }, httpOptions);
   }
 
+  putAdmin(id:number, email: string, password: string){
+    return this.http.put(AUTH_API + `admin/${id}`, {
+     email,
+     password,
+    }, httpOptions);
+ }
+
   deleteUsuario(id:string){
     return this.http.delete(AUTH_API + id);
+  }
+
+  deleteAdmin(id:string){
+    return this.http.delete(AUTH_API + `admin/${id}`);
   }
 
   addRoleUser(RolId:string, UserId:string){

@@ -96,6 +96,17 @@ namespace DataAccessLayer.DAL
             _context.Usuarios.Remove(usr);
         }
 
+        public void DeleteAdmin(Usuario usr)
+        {
+            if (usr == null)
+            {
+                throw new ArgumentNullException(nameof(usr));
+            }
+            var deleteUser = _context.Usuarios.IgnoreQueryFilters().FirstOrDefault(x=>x.Id==usr.Id);
+            _context.Entry(deleteUser).State = EntityState.Deleted;
+            _context.SaveChanges();
+        }
+
         public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
         {
             var UsuariosPrueba = _context.Usuarios;
@@ -119,38 +130,6 @@ namespace DataAccessLayer.DAL
 
         public void UpdateUsuario(Usuario usr, string password = null)
         {
-            //nothing
-        }
-
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
-        {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
-            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
-
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != storedHash[i]) return false;
-                }
-            }
-
-            return true;
         }
 
         public async Task<string> GetRolUsuario(Usuario user)
@@ -178,9 +157,13 @@ namespace DataAccessLayer.DAL
 
         public async Task<IEnumerable<Usuario>> GetUsuariosAdmin()
         {
+            var usersWithoutAnyRole = _context.Usuarios
+            .Where(c => !_context.UserRoles
+            .Select(b => b.UserId).Distinct()
+            .Contains(c.Id)).ToList();
             var Porteros = await _userManager.GetUsersInRoleAsync("PORTERO");
             var Usuarios = Porteros.Concat(await _userManager.GetUsersInRoleAsync("GESTOR"));
-            return await AssignRoles(Usuarios);
+            return await AssignRoles(Usuarios.Concat(usersWithoutAnyRole));
         }
 
         private async Task<IEnumerable<Usuario>> AssignRoles(IEnumerable<Usuario> Usuarios)
@@ -193,5 +176,20 @@ namespace DataAccessLayer.DAL
             return Usuarios;
         }
 
+        public async Task<IEnumerable<Usuario>> GetAdminsInstitucion(string idinstitucion)
+        {
+            var Usuarios = await AssignRoles(_context.Users.IgnoreQueryFilters().Where(x => x.TenantId == idinstitucion && x.LockoutEnabled));
+            var usuariosFiltrados = Usuarios.Where(x => x.Role == "ADMIN");
+            return usuariosFiltrados;
+        }
+
+        public async Task<Usuario> GetAdminByIdAsync(int Id)
+        {
+            Usuario user = _context.Usuarios.IgnoreQueryFilters().FirstOrDefault(p => p.Id == Id);
+            var roles = await _userManager.GetRolesAsync(user);
+            user.Role = roles.FirstOrDefault();
+            _context.TenantMismatchMode = Finbuckle.MultiTenant.TenantMismatchMode.Ignore;
+            return user ;
+        }
     }
 }

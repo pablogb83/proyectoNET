@@ -25,3 +25,4 @@
 21. Default campo docuemtno cedula persona abm
 23. Quede probando los permisos
 26. Portal publico
+27. Crear interfaz al dal FaceApi

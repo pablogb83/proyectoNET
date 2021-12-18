@@ -24,9 +24,10 @@ export class AdminAddComponent implements OnInit {
   }
 
 
-  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private handleError: HandleErrorsService) {
+  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service:UsuariosService, private handleError: HandleErrorsService) {
     if(data){
-      this.institucion = data.id
+      console.log(data);
+      this.institucion = data.institucion;
     }
   }
 
