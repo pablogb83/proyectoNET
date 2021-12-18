@@ -6,6 +6,7 @@ import { FormControl } from '@angular/forms';
 import { FileService } from 'src/app/core/services/file.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class NoticiasAddComponent implements OnInit {
   fechapub = new FormControl();
   PhotoFileName?:any;
   PhotoFilePath?:any;
+  file:any;
   // fecha = new Date();
 
   onNoClick(): void {
@@ -32,7 +34,8 @@ export class NoticiasAddComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: DialogData, 
               private service:NoticiasService, 
               private Usrservice: TokenStorageService, 
-              private fileService:FileService) { }
+              private fileService:FileService,
+              private handleError: HandleErrorsService) { }
 
   ngOnInit() {
    // this.PhotoFilePath=this.service.PhotoUrl+this.PhotoFileName;
@@ -46,6 +49,10 @@ export class NoticiasAddComponent implements OnInit {
   agregarNoticia(){
     if(!this.nombre || !this.descripcion){
       return this.showErrorAlert("Complete todos los datos necesarios")
+    }
+    if(!this.file){
+      this.handleError.showErrorAlert(["Seleccione una imagen para la noticia"]);
+      return;
     }
       var fechapub = new Date ();
 
@@ -69,6 +76,7 @@ export class NoticiasAddComponent implements OnInit {
 
   uploadPhoto(event){
     var file=event.target.files[0];
+    this.file = event.target.files[0];
     const formData:FormData=new FormData();
     formData.append('uploadedFile',file,file.name);
 

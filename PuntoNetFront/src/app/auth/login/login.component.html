@@ -2,7 +2,7 @@
     <form [formGroup]="loginForm" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
         <mat-card>
             <mat-card-title>Proyecto .NET Login</mat-card-title>
-            <mat-card-subtitle>Log in to your account</mat-card-subtitle>
+            <mat-card-subtitle>Ingrese sus credenciales</mat-card-subtitle>
             <mat-card-content>
 
                 <mat-form-field class="full-width">
@@ -10,7 +10,7 @@
                         type="email">
 
                     <mat-error id="invalidEmailError" *ngIf="loginForm.controls['email'].hasError('email')">
-                        Please enter a valid email address
+                        Por favor ingrese una dirección de correo válida
                     </mat-error>
                     <mat-error id="requiredEmailError" *ngIf="loginForm.controls['email'].hasError('required')">
                         Email is
@@ -28,16 +28,11 @@
                     </mat-error>
                 </mat-form-field>
 
-                <div class="full-width">
-                    <mat-slide-toggle formControlName="rememberMe">Remember my email address</mat-slide-toggle>
-                </div>
-
             </mat-card-content>
 
             <mat-card-actions class="login-actions">
                 <button mat-raised-button id="login" color="primary" [disabled]="loginForm.invalid || loading"
                     (click)="login()">Login</button>
-                <button mat-button id="resetPassword" (click)="resetPassword()" type="button">Reset Password</button>
             </mat-card-actions>
 
         </mat-card>

@@ -72,7 +72,7 @@ export class PuertaListComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(PuertaAddComponent, {
-      width: '250px',
+      width: 'auto',
       data: {idedificio: this.idedificio}
     });
 
@@ -83,7 +83,7 @@ export class PuertaListComponent implements OnInit {
 
   openDialogUpdate(puerta:any): void {
     const dialogRef = this.dialog.open(PuertaEditComponent, {
-      width: '250px',
+      width: 'auto',
       data: {id: puerta.id, denominacion: puerta.denominacion}
     });
 
