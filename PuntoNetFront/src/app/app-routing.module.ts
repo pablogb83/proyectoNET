@@ -24,6 +24,7 @@ import { NoticiasModule } from './noticias/noticias.module';
 import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
 import { PanelOpcionesModule } from './panel-opciones/panel-opciones.module';
 import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
+import { NoticiasPublicasModule } from './noticias-publicas/noticias-publicas.module';
 
 const appRoutes: Routes = [
     {
@@ -49,6 +50,10 @@ const appRoutes: Routes = [
         path: 'noticias',
         loadChildren: ()=> NoticiasModule,
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'noticiaspublicas',
+        loadChildren: ()=> NoticiasPublicasModule,
     },
     {
         path: 'institucion',

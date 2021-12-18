@@ -32,7 +32,7 @@ import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
     PersonaAddComponent,
 
     VisitanteHomeComponent,
-      PanelOpcionesComponent
+      PanelOpcionesComponent,
   ],
   entryComponents:[
     PersonaAddComponent,

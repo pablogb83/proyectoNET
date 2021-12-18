@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.IDAL;
+using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,12 @@ namespace DataAccessLayer.DAL
 
         }
 
+        public IEnumerable<Noticias> GetAllNoticiasPublicas()
+        {
+            return _context.Noticias.IgnoreQueryFilters().OrderByDescending(not => not.FechaPublicacion).Take(5).ToList();
+
+        }
+
         public IEnumerable<Noticias> GetUltimasNoticias()
         {
             return _context.Noticias.OrderByDescending(not => not.FechaPublicacion).Take(5);
@@ -59,5 +66,9 @@ namespace DataAccessLayer.DAL
             //nothing
         }
 
+        public IEnumerable<Noticias> GetNoticiasByInstitucion(string idinstitucion)
+        {
+            return _context.Noticias.IgnoreQueryFilters().Where(x => x.TenantId == idinstitucion);
+        }
     }
 }

@@ -119,6 +119,12 @@
           </mat-icon>
           <p mat-line> Noticias </p>
         </a>
+        <a mat-list-item [routerLink]="['/noticiaspublicas']" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            newspaper
+          </mat-icon>
+          <p mat-line> Noticias Publicas </p>
+        </a>
         <div *ngIf="rol==='PORTERO' && instActive">
           <a mat-list-item [routerLink]="['/puertas']" [queryParams]="{idedificio: idedificio}" routerLinkActive="active">
             <mat-icon mat-list-icon>
