@@ -32,9 +32,19 @@ namespace BusinessLayer.BL
             return _dal.GetAllNoticias();
         }
 
+        public IEnumerable<Noticias> GetAllNoticiasPublicas()
+        {
+            return _dal.GetAllNoticiasPublicas();
+        }
+
         public Noticias GetNoticiaById(int Id)
         {
             return _dal.GetNoticiaById(Id);
+        }
+
+        public IEnumerable<Noticias> GetNoticiasByInstitucion(string idinstitucion)
+        {
+            return _dal.GetNoticiasByInstitucion(idinstitucion);
         }
 
         public IEnumerable<Noticias> GetUltimasNoticias()

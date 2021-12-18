@@ -30,7 +30,6 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/instituciones
         [HttpGet]
-        [Authorize(Roles = "SUPERADMIN")]
         public ActionResult<IEnumerable<InstitucionesReadDto>> GetAllInstituciones()
         {
             var instituciones = _bl.GetAllInstituciones();
