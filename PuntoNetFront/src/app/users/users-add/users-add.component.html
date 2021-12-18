@@ -12,8 +12,13 @@
             <input type="password" matInput="password" [(ngModel)]="passwordPlano">
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+            <mat-label>Verificar Password</mat-label>
+            <input type="password" matInput="password" [(ngModel)]="verifpass" (focusout)="checkpass()">
+        </mat-form-field>
+
         <div class="example-button-row">
-            <button mat-raised-button color="primary" (click)="agregarUsuario()">Agregar</button>
+            <button mat-raised-button color="primary" (click)="agregarUsuario()" [disabled]="!habilitarBoton">Agregar</button>
             <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
         </div>
   </div>

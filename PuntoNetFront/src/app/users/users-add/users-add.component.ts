@@ -16,16 +16,28 @@ export class UsersAddComponent implements OnInit {
   
   email?:string;
   passwordPlano?:string;
+  verifpass?:string;
   institucion?: string;
+  habilitarBoton: boolean = false;
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-
   constructor(public dialogRef: MatDialogRef<EdificiosAddComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private handleError: HandleErrorsService) {
     if(data){
       this.institucion = data.id
+    }
+  }
+
+  checkpass(){
+    if(this.passwordPlano){
+      if(this.passwordPlano != this.verifpass){
+        this.passwordDitinto();
+        this.habilitarBoton = false;
+      }else{
+        this.habilitarBoton = true;
+      }
     }
   }
 
@@ -52,6 +64,14 @@ export class UsersAddComponent implements OnInit {
         this.handleError.showErrors(err);
       });
     }
+  }
+
+  passwordDitinto(){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'No coincide el password!',
+    })
   }
 
 }
