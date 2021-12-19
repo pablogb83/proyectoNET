@@ -22,7 +22,7 @@ namespace NetCoreWebAPI
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Error)//LogEventLevel.Information
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.MongoDB(databaseUrl: "mongodb+srv://mongoNet:1234@cluster0.h9fxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", collectionName: "Logs")
+                .WriteTo.MongoDB(databaseUrl: "mongodb://localhost:27017/LogsDB", collectionName: "Logs")
                 .CreateLogger();
             try
             {
