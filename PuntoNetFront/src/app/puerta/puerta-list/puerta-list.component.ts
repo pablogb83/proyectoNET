@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { PuertaService } from 'src/app/core/services/puerta.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
@@ -31,18 +31,18 @@ export class PuertaListComponent implements OnInit {
   puerta?: any;
   puertaid:string;
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService) { 
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService, private router:Router) { 
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
-       
         this.edificio = data;
         if(!this.idedificio){
           this.idedificio = this.edificio.id;
         }
         this.edificioNombre = this.edificio.nombre;
         this.getPuertas();
-
+      },err=>{
+        this.router.navigate(["error"]);
       });
     });
     this.rol = this.tokenService.getRoleName();
@@ -65,8 +65,8 @@ export class PuertaListComponent implements OnInit {
    }
 
   getPuertas(): void{
-    console.log("EL EDIDICIO ES: ", this.edificio);
     this.service.getPuertasEdificio(this.idedificio).subscribe(data=>{
+      console.log("Puertas: ", data);
       this.PuertaList = new MatTableDataSource<Puerta>(data);
       this.PuertaList.paginator = this.paginator;
     });

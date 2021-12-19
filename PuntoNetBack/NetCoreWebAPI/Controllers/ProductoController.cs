@@ -56,12 +56,12 @@ namespace NetCoreWebAPI.Controllers
 
             [HttpGet("{plan_id}")]
             [Authorize(Roles = "SUPERADMIN,ADMIN")]
-            public ActionResult GetProducto(string id)
+            public ActionResult GetProducto(string plan_id)
             {
                 var role = User.Claims.Skip(2).FirstOrDefault().Value;
                 if (role == "SUPERADMIN")
                 {
-                    return Ok(_bl.GetProducto(id));
+                    return Ok(_bl.GetProducto(plan_id));
                 }
                 else
                 {

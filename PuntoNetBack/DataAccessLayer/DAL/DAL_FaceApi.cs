@@ -188,23 +188,16 @@ namespace DataAccessLayer.DAL
                 throw new AppException("Por favor ingrese la foto de UN SOLO individuo");
             }
             var personasConCaras = personas.FirstOrDefault(p => p.PersistedFaceIds.Count > 0);
-            try
+            if (personasConCaras!=null)
             {
-                if (personasConCaras!=null)
+                Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
+                List<Guid> cara = new List<Guid>();
+                cara.Add(sourceFaceId1);
+                var identifyResults = await client.Face.IdentifyAsync(cara, personGroupId);
+                if (identifyResults.Any() && identifyResults[0].Candidates.Any())
                 {
-                    Guid sourceFaceId1 = detectedFaces1[0].FaceId.Value;
-                    List<Guid> cara = new List<Guid>();
-                    cara.Add(sourceFaceId1);
-                    var identifyResults = await client.Face.IdentifyAsync(cara, personGroupId);
-                    if (identifyResults.Any() && identifyResults[0].Candidates.Any())
-                    {
-                        throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
-                    }
+                    throw new AppException("La persona presente en la imagen ya ha sido registrada en el sistema");
                 }
-            }
-            catch(Exception e)
-            {
-
             }
             return true;
         }

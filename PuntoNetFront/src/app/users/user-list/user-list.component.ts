@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdminAddComponent } from 'src/app/institucion/admin-add/admin-add.component';
 import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
@@ -51,7 +51,8 @@ export class UserListComponent implements OnInit {
     private usuariosEdificioService:UsuarioEdificioService,
     private tokenStorageService: TokenStorageService,
     public route: ActivatedRoute,
-    private handleError: HandleErrorsService
+    private handleError: HandleErrorsService,
+    private router: Router
   ) {
     this.route.queryParams.subscribe(data=>{
       console.log("La institucion es: ", data);
@@ -72,7 +73,7 @@ export class UserListComponent implements OnInit {
     this.role = this.tokenStorageService.getRoleName();
     if(this.role==="ADMIN"){
       this.edificioService.getEdificios().subscribe(data=>{
-        this.edificios = data
+        this.edificios = data;
       });
       this.titleService.setTitle('Usuarios');
       this.service.getUsuariosAdmin().subscribe(data=>{
@@ -82,8 +83,11 @@ export class UserListComponent implements OnInit {
     }
     else if(this.role==="SUPERADMIN"){
       this.service.getUsuariosInstitucion(this.institucion).subscribe(data=>{
+        console.log(data);
         this.UsuariosList = new MatTableDataSource<Usuarios>(data);
         this.UsuariosList.paginator = this.paginator;
+      },err=>{
+        this.router.navigate(["error"]);
       });
     }
     

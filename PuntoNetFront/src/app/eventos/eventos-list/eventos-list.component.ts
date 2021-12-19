@@ -87,16 +87,14 @@ export class EventosListComponent implements OnInit {
   }
 
   openDialogCalendar(): void {
-    this.service.getEventos().subscribe(data=>{
-      const dialogRef = this.dialog.open(CalendarioComponent, {
-        width: '80vw',
-        height:'95vh',
-        data: this.EventoList
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-        this.getEventos();
-      });
+    const dialogRef = this.dialog.open(CalendarioComponent, {
+      width: '80vw',
+      height:'95vh',
+      data: this.EventoList.data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getEventos();
     });
   }
 

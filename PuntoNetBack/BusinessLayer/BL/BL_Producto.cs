@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Productos;
 using DataAccessLayer.Helpers;
+using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace BusinessLayer.BL
     public class BL_Producto : IBL_Producto
     {
 
-        private readonly DataAccessLayer.IDAL.IDAL_Producto _dal;
+        private readonly IDAL_Producto _dal;
+        private readonly IDAL_Institucion _dalInst;
 
-        public BL_Producto(DataAccessLayer.IDAL.IDAL_Producto dal)
+        public BL_Producto(IDAL_Producto dal, IDAL_Institucion dalInst)
         {
             _dal = dal;
+            _dalInst = dalInst;
         }
 
         public void SaveChanges()
@@ -47,6 +50,11 @@ namespace BusinessLayer.BL
 
         public bool EliminarProducto(string plan_id)
         {
+            var inst = _dalInst.GetInstitucionesProducto(plan_id);
+            if (inst.Any())
+            {
+                throw new AppException("No se puede eliminar el producto, tiene instituciones asignadas");
+            }
             return _dal.EliminarProducto(plan_id);
         }
 

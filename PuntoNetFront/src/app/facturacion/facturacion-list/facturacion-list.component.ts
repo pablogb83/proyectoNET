@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { InstitucionService } from 'src/app/core/services/institucion.service';
 import { FacturacionDetalleComponent } from '../facturacion-detalle/facturacion-detalle.component';
@@ -26,13 +26,15 @@ export class FacturacionListComponent implements OnInit {
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
-  constructor(private service: InstitucionService,public dialog: MatDialog, private handleError: HandleErrorsService, private route: ActivatedRoute) { 
+  constructor(private service: InstitucionService,public dialog: MatDialog, private handleError: HandleErrorsService, private route: ActivatedRoute, private router: Router) { 
     this.route.queryParams.subscribe(params=>{
       if(params.id){
         this.service.getInstitucionById(params.id).subscribe((data:any)=>{
           this.inst = data;
           console.log(this.inst);
           this.getFacturacion(data.id);
+        },err=>{
+          router.navigate(["error"]);
         });
       }
       else{
