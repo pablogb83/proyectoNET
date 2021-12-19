@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { EmailService } from '../core/services/email.service';
 import { InstitucionService } from '../core/services/institucion.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
@@ -11,14 +12,13 @@ declare var paypal: any;
   templateUrl: './paypal-button.component.html',
   styleUrls: ['./paypal-button.component.css']
 })
-export class PaypalButtonComponent implements OnInit {
+export class PaypalButtonComponent implements AfterContentInit {
   @ViewChild('paypal', { static: true }) paypalElement!: ElementRef;
 
 
   constructor(private service: TokenStorageService, private institucionService: InstitucionService, private router: Router, private emailService: EmailService) {
    }
-
-  ngOnInit() {
+  ngAfterContentInit(): void {
     const tenant_id = this.service.getTenant();
     this.institucionService.getInstitucion().subscribe((institucionInfo: any)=>{
       console.log(institucionInfo);
@@ -34,6 +34,7 @@ export class PaypalButtonComponent implements OnInit {
         onClick: async (data,actions) =>{
           const status = await this.institucionService.isActive().toPromise();
           if(status){
+            Swal.fire("Listo","Ya ha realizado el pago correspondiente en PayPal, si aun no nota cambios en el sistema por favor vuelva a iniciar sesion","info");
             return actions.reject();
           }
         },
@@ -45,8 +46,13 @@ export class PaypalButtonComponent implements OnInit {
           });
         },
         onApprove: (data: any, actions: any) => {
-          //this.service.saveStatus(true);
-          this.emailService.sendEmail().subscribe();
+          //this.emailService.sendEmail().subscribe();
+          Swal.fire(
+            'Pago completado',
+            'El proceso de pago puede tomar algo de tiempo, recomendamos volver a iniciar sesion en la plataforma en unos minutos',
+            'info'
+          )
+          this.service.signOut();
           this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{
@@ -56,5 +62,9 @@ export class PaypalButtonComponent implements OnInit {
     }).render(this.paypalElement.nativeElement); 
     });
     
+  }
+
+  ngOnInit() {
+   
   }
 }

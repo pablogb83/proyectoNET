@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { PuertaService } from 'src/app/core/services/puerta.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
@@ -31,13 +31,18 @@ export class PuertaListComponent implements OnInit {
   puerta?: any;
   puertaid:string;
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService) { 
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService, private router:Router) { 
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
-        console.log(data);
-        this.edificio = new MatTableDataSource<Edificio>(data);
-        this.edificioNombre = this.edificio._data._value.nombre;
+        this.edificio = data;
+        if(!this.idedificio){
+          this.idedificio = this.edificio.id;
+        }
+        this.edificioNombre = this.edificio.nombre;
+        this.getPuertas();
+      },err=>{
+        this.router.navigate(["error"]);
       });
     });
     this.rol = this.tokenService.getRoleName();
@@ -45,17 +50,14 @@ export class PuertaListComponent implements OnInit {
     if(this.rol === 'PORTERO'){
       this.usuarioPuertaService.getPuertaUser(this.userId).subscribe(data=>{
         this.puerta = new MatTableDataSource<Puerta>(data)
-        console.log(this.puerta);
         if(this.puerta._data._value){
           this.puertaid = this.puerta._data._value.id;
         }
-        console.log(this.puertaid);
       })
     }
   }
 
   ngOnInit() {
-    this.getPuertas();
   }
 
   refreshPage() {
@@ -64,7 +66,7 @@ export class PuertaListComponent implements OnInit {
 
   getPuertas(): void{
     this.service.getPuertasEdificio(this.idedificio).subscribe(data=>{
-      console.log(data);
+      console.log("Puertas: ", data);
       this.PuertaList = new MatTableDataSource<Puerta>(data);
       this.PuertaList.paginator = this.paginator;
     });
@@ -72,7 +74,7 @@ export class PuertaListComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(PuertaAddComponent, {
-      width: '250px',
+      width: 'auto',
       data: {idedificio: this.idedificio}
     });
 
@@ -83,12 +85,11 @@ export class PuertaListComponent implements OnInit {
 
   openDialogUpdate(puerta:any): void {
     const dialogRef = this.dialog.open(PuertaEditComponent, {
-      width: '250px',
+      width: 'auto',
       data: {id: puerta.id, denominacion: puerta.denominacion}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.getPuertas();
     });
   }
@@ -117,8 +118,6 @@ export class PuertaListComponent implements OnInit {
    }
 
    seleccionarPuerta(puerta:any):void{
-      console.log(puerta.id);
-      console.log(this.userId);
       this.usuarioPuertaService.addUserPuerta(this.userId, puerta.id).subscribe(data=>{
         console.log(data);
         this.showSuccessAlert();
@@ -131,11 +130,9 @@ export class PuertaListComponent implements OnInit {
 
    liberarPuerta():void{
      this.usuarioPuertaService.deletePuertaUser(this.userId).subscribe(data=>{
-      console.log(data) 
       this.showSuccessAlertLiberar();
       this.refreshPage();
      },err=>{
-       console.log(err)
        this.showErrorAlert(err.error);
        //this.refreshPage();
      })

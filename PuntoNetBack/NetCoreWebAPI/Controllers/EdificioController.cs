@@ -3,6 +3,7 @@ using BusinessLayer.IBL;
 using DataAccessLayer.Dtos.Edificios;
 using DataAccessLayer.Dtos.PuertaAccesos;
 using DataAccessLayer.Dtos.Salon;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,19 +21,22 @@ namespace NetCoreWebAPI.Controllers
     public class EdificioController : ControllerBase
     {
         private readonly IBL_Edificio _bl;
+        private readonly IBL_UsuarioEdificio _blusrEd;
         private readonly IMapper _mapper;
         private readonly ILogger<EdificioController> _logger;
 
 
-        public EdificioController(IBL_Edificio bl, IMapper mapper, ILogger<EdificioController> logger)
+        public EdificioController(IBL_Edificio bl, IMapper mapper, ILogger<EdificioController> logger, IBL_UsuarioEdificio blusrEd)
         {
             _bl = bl;
             _mapper = mapper;
             _logger = logger;
+            _blusrEd = blusrEd;
         }
 
         //GET api/edificios
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<IEnumerable<EdificiosReadDto>> GetAllEdificios()
         {
             var edificios = _bl.GetAllEdificios();
@@ -49,18 +53,31 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/edificios/{id}
         [HttpGet("{id}", Name = "GetEdificioById")]
-        public ActionResult<EdificiosReadDto> GetEdificioById(int id)
+        [Authorize(Roles = "ADMIN,PORTERO")]
+        public async Task<ActionResult<EdificiosReadDto>> GetEdificioById(int id)
         {
-            var edificio = _bl.GetEdificioById(id);
-            if (edificio != null)
+           
+            var role = User.Claims.Skip(2).FirstOrDefault().Value;
+            if (role == "SUPERADMIN" || role=="ADMIN")
             {
+                var edificio = _bl.GetEdificioById(id);
+                if (edificio != null)
+                {
+                    return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+                }
+                return NotFound();
+            }
+            else
+            {
+                int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+                var edificio = await _blusrEd.GetEdificioUsuario(idUsuario);
                 return Ok(_mapper.Map<EdificiosReadDto>(edificio));
             }
-            return NotFound();
         }
 
         //POST api/edificio
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult<EdificiosReadDto> CreateEdificio(EdificioCreateDto edificioCreateDto)
         {
 
@@ -76,6 +93,7 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult UpdateEdificio(int id, EdificioUpdateDto edificioUpdateDto)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -95,12 +113,12 @@ namespace NetCoreWebAPI.Controllers
                                            " Dirección: " + edificioUpdateDto.Direccion + 
                                            " Teléfono: " + edificioUpdateDto.Telefono;
             _logger.LogInformation(message: "EdificioDespués: " + datosDespuesDelCambio);
-
             return NoContent();
         }
 
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult PartialEdificioUpdtate(int id, JsonPatchDocument<EdificioUpdateDto> patchDoc)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -123,6 +141,7 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/commands/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public ActionResult DeleteEdificio(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -140,6 +159,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("salones/{id}")]
+        [Authorize(Roles = "ADMIN, GESTOR")]
         public ActionResult <IEnumerable<SalonReadDto>> GetSalones(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);
@@ -152,6 +172,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("puertas/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
         public ActionResult<IEnumerable<SalonReadDto>> GetPuertas(int id)
         {
             var edificioModelFromRepo = _bl.GetEdificioById(id);

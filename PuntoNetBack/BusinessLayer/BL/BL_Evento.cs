@@ -20,11 +20,14 @@ namespace BusinessLayer.BL
 
         private readonly IDAL_Edificio _dalEdificio;
 
-        public BL_Evento(IDAL_Evento dal, IDAL_Salon dalSalon, IDAL_Edificio dalEdificio)
+        private readonly IBL_UsuarioEdificio _blUsrEd;
+
+        public BL_Evento(IDAL_Evento dal, IDAL_Salon dalSalon, IDAL_Edificio dalEdificio, IBL_UsuarioEdificio blUsrEd)
         {
             _dal = dal;
             _dalSalon = dalSalon;
             _dalEdificio = dalEdificio;
+            _blUsrEd = blUsrEd;
         }
 
         public void CreateEvento(Evento evt, int SalonId)
@@ -61,7 +64,6 @@ namespace BusinessLayer.BL
                 throw new AppException("El salon no existe");
 
             }
-
             foreach (DateTime day in EachDay(evt.FechaInicioEvt, evt.FechaFinEvt))
             {
                 if (evt.Dias.Contains<int>(((int)day.DayOfWeek)))
@@ -71,8 +73,11 @@ namespace BusinessLayer.BL
                     ev.Nombre = evt.Nombre;
                     ev.FechaInicioEvt = day.Date + evt.HoraInicio;
                     ev.FechaFinEvt = ev.FechaInicioEvt.AddHours(evt.Duracion);
-                    ev.Salon = salon;
-                    _dal.CreateEventoRecurrente(ev);
+                    if (SalonDisponible(salon.Id, ev.FechaInicioEvt, ev.FechaFinEvt))
+                    {
+                        ev.Salon = salon;
+                        _dal.CreateEventoRecurrente(ev);
+                    }
                 } 
             }
             SaveChanges();
@@ -104,9 +109,30 @@ namespace BusinessLayer.BL
             return _dal.SaveChanges();
         }
 
-        public void UpdateEvento(Evento evt)
+        public void UpdateEvento(Evento evt, int SalonId)
         {
+            Salon salon = _dalSalon.GetSalonById(SalonId);
+            if (salon == null)
+            {
+                throw new AppException("El salon no existe");
+            }
+            if (evt.Salon.edificio.Id != salon.edificio.Id)
+            {
+                throw new AppException("El evento debe estar en el mismo edificio");
+            }
+            if (!SalonDisponibleUpdate(SalonId, evt.FechaInicioEvt, evt.FechaFinEvt,evt.Id))
+            {
+                throw new AppException("El salon seleccionado esta ocupado en la fecha y hora indicada");
+            }
+            evt.Salon = salon;
             _dal.UpdateEvento(evt);
+        }
+
+        public bool SalonDisponibleUpdate(int salonId, DateTime fechaInicio, DateTime fechaFin, int eventoId)
+        {
+            var eventos = _dal.GetEventoSalonFecha(salonId, fechaInicio, fechaFin);
+            var eventosDistintos =  eventos.Where(ev => ev.Id != eventoId);
+            return (eventosDistintos == null || eventosDistintos.Count() == 0);
         }
 
         public bool SalonDisponible(int salonId, DateTime fechaInicio, DateTime fechaFin)
@@ -120,11 +146,12 @@ namespace BusinessLayer.BL
             Boolean primeraVueta = true;
             List<Salon> salonesDisponibles = new List<Salon>();
             List<Salon> salonesParciales = new List<Salon>();
+            int cantDiasCoincidentes = 0;
             if (_dalEdificio.GetEdificioById(datos.EdificioId) == null)
             {
                 throw new AppException("El edificio no existe");
             }
-            if(datos.TipoEvento == "simple")
+            if (datos.TipoEvento == "simple")
             {
                 salonesDisponibles = _dal.GetSalonesDisponibles(datos.FechaInicioEvt, datos.FechaFinEvt, datos.EdificioId).ToList();
             }
@@ -134,6 +161,7 @@ namespace BusinessLayer.BL
                 {
                     if (datos.dias.Contains<int>(((int)day.DayOfWeek)))
                     {
+                        cantDiasCoincidentes++;
                         var fechaIni = day.Date + datos.HoraInicio;
                         var fechaFin = fechaIni.AddHours(datos.Duracion);
                         if (primeraVueta)
@@ -152,11 +180,39 @@ namespace BusinessLayer.BL
                         }
                     }
                 }
+                if (cantDiasCoincidentes == 0)
+                {
+                    throw new AppException("No existen dias coincidentes en el rango de fecha ingresado");
+                }
             }
          
             return salonesDisponibles;
      
         }
 
+        public IEnumerable<Evento> GetAllEventosEdificio(int idedificio)
+        {
+            var edificio = _dalEdificio.GetEdificioById(idedificio);
+            if (edificio==null)
+            {
+                throw new AppException("El edificio ingresado no existe");
+            }
+            return _dal.GetAllEventosEdificio(idedificio);
+        }
+
+        public async Task<bool> VerificarEventoGestor(int salonId,int idUsuario)
+        {
+            var edificioUsuario = await _blUsrEd.GetEdificioUsuario(idUsuario);
+            if (edificioUsuario == null)
+            {
+                throw new AppException("El usuario no tiene edificio asignado");
+            }
+            var salon = _dalSalon.GetSalonById(salonId);
+            if (salon == null)
+            {
+                throw new AppException("El salon no existe");
+            }
+            return (salon.edificio.Id == edificioUsuario.Id);
+        }
     }
 }

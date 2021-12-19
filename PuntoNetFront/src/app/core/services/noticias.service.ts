@@ -19,6 +19,9 @@ export class NoticiasService {
     return this.http.get<any>(AUTH_API);
   }
 
+  getNoticiasPublicas(idinstitucion?: string):Observable<any[]>{
+    return this.http.get<any>(AUTH_API+`publicas?institucion=${idinstitucion??""}`);
+  }
   getUltimasNoticias():Observable<any[]>{
     return this.http.get<any>(AUTH_API + 'ultimas');
   }

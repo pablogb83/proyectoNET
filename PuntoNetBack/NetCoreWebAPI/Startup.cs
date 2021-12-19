@@ -26,8 +26,7 @@ using GlobalErrorHandling.Extensions;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
-using System.Resources;
-using System.Reflection;
+using NetCoreWebAPI.Middleware;
 
 namespace NetCoreWebAPI
 {
@@ -154,6 +153,8 @@ namespace NetCoreWebAPI
             services.AddScoped<IBL_Noticias, BL_Noticias>();
             services.AddScoped<IDAL_Producto, DataAccessLayer.DAL.DAL_Producto>();
             services.AddScoped<IBL_Producto, BL_Producto>();
+            services.AddScoped<IDAL_FaceApi, DataAccessLayer.DAL.DAL_FaceApi>();
+            services.AddScoped<IBL_FaceApi, BL_FaceApi>();
 
             services.AddSwaggerGen(c =>
             {
@@ -227,6 +228,8 @@ namespace NetCoreWebAPI
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<InstitucionActivaMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

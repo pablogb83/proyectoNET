@@ -17,6 +17,8 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     SharedModule,
     EventosRoutingModule
+  ],
+  providers:[
   ]
 })
 export class EventosModule { }

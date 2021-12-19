@@ -1,11 +1,11 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
     <div fxFlex="95%">
-  
+      <h1 *ngIf="!permiso">NO TIENE EDIFICIO ASIGNADO</h1>
       <mat-card>
         <mat-card-content>
           <h2>Eventos</h2>
-          <button mat-raised-button color="primary" (click)="openDialog()">Agregar</button>
-          <button mat-raised-button color="accent" (click)="openDialogCalendar()">Calendario</button>
+          <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="permiso">Agregar</button>
+          <button mat-raised-button color="accent" (click)="openDialogCalendar()" *ngIf="permiso">Calendario</button>
           <table mat-table  [dataSource]="EventoList" matSort>
   
             <ng-container matColumnDef="id">
@@ -37,9 +37,14 @@
                 <td mat-cell *matCellDef="let element"> {{element.fechaFinEvt | date:'dd/MM/yyyy'}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="hora">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora </th>
+            <ng-container matColumnDef="horainicio">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora inicio </th>
               <td mat-cell *matCellDef="let element"> {{element.fechaInicioEvt | date:'HH:mm'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="horafin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Hora fin </th>
+            <td mat-cell *matCellDef="let element"> {{element.fechaFinEvt | date:'HH:mm'}} </td>
           </ng-container>
 
             <ng-container matColumnDef="edificio">

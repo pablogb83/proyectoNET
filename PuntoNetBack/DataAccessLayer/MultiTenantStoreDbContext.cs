@@ -25,8 +25,6 @@ namespace DataAccessLayer
 
         public virtual DbSet<Suscripcion> Suscripciones { get; set; }
 
-        public virtual DbSet<Precio> Precio { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("CommanderConnection"));

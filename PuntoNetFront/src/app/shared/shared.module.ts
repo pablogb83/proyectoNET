@@ -13,7 +13,6 @@ import { CustomMaterialModule } from '../custom-material/custom-material.module'
 import { CalendarioComponent } from '../calendario/calendario.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
 @NgModule({
   imports: [
     RouterModule,
@@ -22,7 +21,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     ReactiveFormsModule,
     FlexLayoutModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
-
   ],
   declarations: [
     ConfirmDialogComponent,

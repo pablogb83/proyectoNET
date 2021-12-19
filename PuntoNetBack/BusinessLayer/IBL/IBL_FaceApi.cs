@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Helpers;
 using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,42 +13,14 @@ namespace BusinessLayer.IBL
 {
     public interface IBL_FaceApi
     {
-       
-        public Task<IList<DetectedFace>> GetFaceListAsync(FileStream stream);
-
-
-    
-        public Task<IList<PersonGroup>> GetAllPersonGroupsAsync();
-
-
-        public Task<IList<string>> GetAllPersonNamesAsync();
-
-
-        public Task GetOrCreatePersonGroupAsync();
-
-
-        public Task GetOrCreatePersonAsync(string name, ObservableCollection<ImageInfo> GroupInfos);
-
-
-        public Task AddFacesToPersonAsync(IList<ImageInfo> selectedItems, ObservableCollection<ImageInfo> GroupInfos);
-
-
-        
-        public Task<bool> MatchFaceAsync(Guid faceId, ImageInfo newImage);
-
-       
-        public Task DisplayFacesAsync(ObservableCollection<ImageInfo> GroupInfos);
-
-
-        public Task DeletePersonAsync(ObservableCollection<ImageInfo> GroupInfos,
-            ObservableCollection<string> GroupNames, bool askFirst = true);
-
-
-        public Task<bool> GetTrainingStatusAsync();
-
-        public Task<IList<string>> GetFaceImagePathsAsync();
-
-
-        public string ConfigurePersonName(string name);
+        Task<Person> ReconocimientoFacial(Stream imagen, string PersonGroupId);
+        Task CreatePersonGroup(Institucion personGroupId);
+        Task DeletePersonGroup(Institucion personGroupId);
+        Task<bool> VerificarCaras(Guid idCara1, Guid idPersona);
+        Task<bool> AgregarPersona(string email, Stream stream, string PersonGroupId);
+        Task<bool> BorrarPersona(string documento, string PersonGroupId);
+        Task<bool> ActualizarPersona(string documentoViejo, string documentoNuevo, string PersonGroupId, Stream stream);
+        Task ActualizarInstitucion(string nombreViejo, string nombreNuevo);
+        Task actualizarDocumentoAzure(string documentoViejo, string documentoNuevo, string personGroupId);
     }
 }

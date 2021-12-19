@@ -39,10 +39,10 @@
                           <mat-icon>update</mat-icon>
                       </button>
                       <!-- <ng-container *ngIf="!element.role"> -->
-                      <button mat-icon-button color="success" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarRol(element)" >
+                      <button mat-icon-button *ngIf="role==='ADMIN'" color="success" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarRol(element)" >
                         <mat-icon>sentiment_very_satisfied</mat-icon>
                       </button>
-                      <button mat-icon-button color="success" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarEdificio(element)" >
+                      <button mat-icon-button *ngIf="role==='ADMIN'" color="success" aria-label="Example icon button with a delete icon" (click)="openDialogAsignarEdificio(element)" >
                         <mat-icon>home</mat-icon>
                       </button>
                     </div>
@@ -56,7 +56,7 @@
           aria-label="Select page of periodic elements">
         </mat-paginator>
    
-        <mat-form-field appearance="fill" aling="end">
+        <mat-form-field appearance="fill" aling="end" *ngIf="role==='ADMIN'">
           <mat-label>Edificios</mat-label>
           <mat-select [(ngModel)]="selectedValue">
             <mat-option *ngFor="let edificio of edificios" [value]="edificio.id" (click)="listarPorEdificio(selectedValue)">

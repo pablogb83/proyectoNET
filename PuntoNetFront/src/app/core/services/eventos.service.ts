@@ -22,6 +22,10 @@ export class EventosService {
     return this.http.get<any>(AUTH_API);
   }
 
+  
+  getEventosEdificio():Observable<any[]>{
+    return this.http.get<any>(AUTH_API+"edificio");
+  }
    getSalonesDisponibles(FechaInicioEvt:string, FechaFinEvt: string, EdificioId:number, TipoEvento:string, dias: number[], duracion:number, horaInicio: string):Observable<any[]>{
     return this.http.post<any>(AUTH_API+'salonesdisponibles' ,{
       FechaInicioEvt,
@@ -62,13 +66,14 @@ export class EventosService {
   }
 
 
-  putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: Date, FechaFinEvt: Date, PhotoFileName: string){
+  putEvento(Id:number, Nombre: string, Descripcion: string, FechaInicioEvt: string, FechaFinEvt: string, PhotoFileName: string, SalonId: number){
      return this.http.put(AUTH_API + Id, {
       Nombre,
       Descripcion,
       FechaInicioEvt,
       FechaFinEvt,
-      PhotoFileName
+      PhotoFileName,
+      SalonId
      }, httpOptions);
   }
 

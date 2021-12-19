@@ -9,12 +9,14 @@ using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NetCoreWebAPI.Controllers
 {
     //api/instituciones
     [Route("api/instituciones")]
     [ApiController]
+    
     public class InstitucionController : ControllerBase
     {
         private readonly IBL_Institucion _bl;
@@ -36,6 +38,7 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/instituciones/{id}
         [HttpGet("{id}", Name = "GetInstitucionById")]
+        [Authorize(Roles = "SUPERADMIN")]
         public ActionResult<InstitucionesReadDto> GetInstitucionById(string id)
         {
             var institucion = _bl.GetInstitucionById(id);
@@ -48,6 +51,7 @@ namespace NetCoreWebAPI.Controllers
 
         //POST api/commands
         [HttpPost]
+        [Authorize(Roles = "SUPERADMIN")]
         public ActionResult<InstitucionesReadDto> CreateInstitucion(InstitucionCreateDto instituionCreateDto)
         {
             Console.WriteLine(HttpContext);
@@ -62,43 +66,50 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/commands/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateInstitucion(string id, InstitucionUpdateDto institucionUpdateDto)
+        [Authorize(Roles = "SUPERADMIN")]
+        public async Task<ActionResult> UpdateInstitucion(string id, InstitucionUpdateDto institucionUpdateDto)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)
             {
                 return NotFound();
             }
+            string nombreViejo = institucionModelFromRepo.Name;
             _mapper.Map(institucionUpdateDto, institucionModelFromRepo);
-            _bl.UpdateInstitucion(institucionModelFromRepo);
+             _bl.UpdateInstitucion(institucionModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
         }
 
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialInstitucionUpdtate(string id, JsonPatchDocument<InstitucionUpdateDto> patchDoc)
+        [Authorize(Roles = "SUPERADMIN")]
+        public ActionResult PartialInstitucionUpdtate(string id, InstitucionUpdateDto patchDoc)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)
             {
                 return NotFound();
             }
+            var cfg = new MapperConfiguration(c => {
+                c.CreateMap<InstitucionUpdateDto, Institucion>()
+                .AddTransform<string>(s => string.IsNullOrEmpty(s) ? null : s)
+                .ForAllOtherMembers(o =>
+                    o.Condition((src, dest, srcmember, destmember) => srcmember != null || destmember.GetType() == typeof(string)));
+            });
 
-            var institucionToPatch = _mapper.Map<InstitucionUpdateDto>(institucionModelFromRepo);
-            patchDoc.ApplyTo(institucionToPatch, ModelState);
-            if (!TryValidateModel(institucionToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(institucionToPatch, institucionModelFromRepo);
+            var map = cfg.CreateMapper();
+
+            var mappedo = map.Map(patchDoc, institucionModelFromRepo);
+
+            //var institucionToPatch = _mapper.Map<InstitucionUpdateDto>(institucionModelFromRepo);
             _bl.UpdateInstitucion(institucionModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
         }
 
         [HttpGet("active", Name = "IsActive")]
-        [Authorize(Roles = "ADMIN, PORTERO, GESTOR")]  
+        [Authorize(Roles = "SUPERADMIN,ADMIN,GESTOR,PORTERO")]
         public ActionResult<bool> IsActive()
         {
             var tenant = User.Claims.Skip(1).FirstOrDefault();
@@ -112,7 +123,7 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("facturacion")]
-        //[Authorize(Roles = "ADMIN, PORTERO, GESTOR")]
+        [Authorize(Roles = "SUPERADMIN,ADMIN")]
         public ActionResult<bool> GetFacturacion(string id, DateTime fechainicio, DateTime fechafin)
         {
             var role = User.Claims.Skip(2).FirstOrDefault().Value;
@@ -149,18 +160,19 @@ namespace NetCoreWebAPI.Controllers
         }
 
 
-        //DELETE api/commands/{id}
-        [HttpDelete("{id}")]
-        public ActionResult DeleteInstitucion(string id)
-        {
-            var institucionModelFromRepo = _bl.GetInstitucionById(id);
-            if (institucionModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _bl.DeleteInstitucion(institucionModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
+        ////DELETE api/commands/{id}
+        //[HttpDelete("{id}")]
+        //[Authorize(Roles = "SUPERADMIN")]
+        //public ActionResult DeleteInstitucion(string id)
+        //{
+        //    var institucionModelFromRepo = _bl.GetInstitucionById(id);
+        //    if (institucionModelFromRepo == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _bl.DeleteInstitucion(institucionModelFromRepo);
+        //    _bl.SaveChanges();
+        //    return NoContent();
+        //}
     }
 }

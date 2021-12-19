@@ -13,6 +13,8 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/schematics": "^13.0.2",
+    "@angular-material-components/datetime-picker": "^6.0.1",
+    "@angular-material-components/file-input": "^6.0.0",
     "@angular/animations": "~12.2.0",
     "@angular/cdk": "^12.2.13",
     "@angular/common": "~12.2.0",

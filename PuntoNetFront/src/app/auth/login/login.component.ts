@@ -59,15 +59,21 @@ export class LoginComponent implements OnInit {
                 this.service.isActive().subscribe(status=>{
                     this.tokenService.saveStatus(Boolean(status))
                     this.loading = false;
-                    this.router.navigate(['dashboard']);
+                    this.router.navigate(['panelOpciones']);
                 });
             }
             else{
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['panelOpciones']);
             }
         },
         error => {
-            this.notificationService.openSnackBar("Credenciales incorrectas");
+            console.log(error);
+            if(error.error && error.error.message){
+                this.notificationService.openSnackBar(error.error.message);
+            }
+            else{
+                this.notificationService.openSnackBar('Algo salio mal');
+            }
             this.loading = false;
         });
     }

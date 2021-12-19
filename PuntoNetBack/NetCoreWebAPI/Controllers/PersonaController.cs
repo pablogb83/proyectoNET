@@ -1,39 +1,40 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using CsvHelper;
-using CsvHelper.Configuration;
-using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
 using DataAccessLayer.Helpers;
 using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
-using Shared.Enum;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NetCoreWebAPI.Controllers
 {
     [Route("api/personas")]
     [ApiController]
+    [Authorize(Roles = "ADMIN,PORTERO")]
+
     public class PersonaController : ControllerBase
     {
         private readonly IBL_Persona _bl;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
+        private readonly IBL_FaceApi _blFace;
 
-        public PersonaController(IBL_Persona bl, IMapper mapper, IWebHostEnvironment env)
+        public PersonaController(IBL_Persona bl, IMapper mapper, IWebHostEnvironment env, IBL_FaceApi blFace)
         {
             _bl = bl;
             _mapper = mapper;
             _env = env;
+            _blFace = blFace;
         }
 
         //GET api/personas
@@ -41,6 +42,7 @@ namespace NetCoreWebAPI.Controllers
         public ActionResult<IEnumerable<PersonaReadDto>> GetAllPersonas()
         {
             var personas = _bl.GetAllPersonas();
+            var user = HttpContext.User;
             if (personas != null)
             {
                 return Ok(_mapper.Map<IEnumerable<PersonaReadDto>>(personas));
@@ -68,9 +70,16 @@ namespace NetCoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PersonaReadDto>> CreatePersona([FromForm]PersonaCreateDto personaInfo)
         {
+            if (_bl.GetPersonaByDocumento(personaInfo.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
+            }
             var httpRequest = Request.Form;
+            if (!httpRequest.Files.Any())
+            {
+                throw new AppException("Debe subir una foto");
+            }
             var postedFile = httpRequest.Files[0];
-            
             string filename = postedFile.FileName;
             var randomString = RandomString.RandomizeString(10);
             filename = randomString + filename;
@@ -81,11 +90,12 @@ namespace NetCoreWebAPI.Controllers
                 postedFile.CopyTo(stream);
             }
             var persona = _mapper.Map<Persona>(personaInfo);
-            _bl.CreatePersona(persona);
-            _bl.SaveChanges();
-
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
-            await DAL_FaceApi.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
+
+            await _bl.CreatePersonaConFoto(persona, postedFile.OpenReadStream(), tenant.TenantInfo.Id);
+            //_bl.SaveChanges();
+
+           // await _blFace.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
 
             var personaReadDto = _mapper.Map<PersonaReadDto>(persona);
 
@@ -94,15 +104,36 @@ namespace NetCoreWebAPI.Controllers
 
         //PUT api/personas/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdatePersona(int id, PersonaUpdateDto personaUpdateDto)
+        public async Task<ActionResult> UpdatePersona(int id, [FromForm]PersonaUpdateDto personaUpdateDto)
         {
+            var httpRequest = Request.Form;
             var personaModelFromRepo = _bl.GetPersonaById(id);
-            if (personaModelFromRepo == null)
+            if (string.IsNullOrEmpty(personaUpdateDto.PhotoFileName))
             {
-                return NotFound();
+                personaUpdateDto.PhotoFileName = personaModelFromRepo.PhotoFileName;
             }
+            var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+            if (personaModelFromRepo.nro_doc != personaUpdateDto.nro_doc && _bl.GetPersonaByDocumento(personaUpdateDto.nro_doc) != null)
+            {
+                throw new AppException("Ya hay una persona registrada con ese numero de documento");
+            }
+            if (httpRequest.Files.Any())
+            {
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var randomString = RandomString.RandomizeString(10);
+                filename = randomString + filename;
+                personaUpdateDto.PhotoFileName = filename;
+                var physicalPath = _env.ContentRootPath + "/Files/Photos/" + filename;
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+                await _bl.UpdatePersonaConFoto(personaModelFromRepo.nro_doc, personaUpdateDto.nro_doc, postedFile.OpenReadStream(), tenant.TenantInfo.Id);
+            }
+            string documentoViejo = personaModelFromRepo.nro_doc;
             _mapper.Map(personaUpdateDto, personaModelFromRepo);
-            _bl.UpdatePersona(personaModelFromRepo);
+            await _bl.UpdatePersona(personaModelFromRepo, documentoViejo, tenant.TenantInfo.Id);
             _bl.SaveChanges();
             return NoContent();
         }
@@ -123,7 +154,7 @@ namespace NetCoreWebAPI.Controllers
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
             try
             {
-                DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Name).Wait();
+               _blFace.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Id).Wait();
             }
             catch(Exception e)
             {

@@ -18,19 +18,33 @@ export class AdminAddComponent implements OnInit {
   passwordPlano?:string;
   institucion?: string;
   administrador?: any;
+  verifpass?:string;
+  habilitarBoton: boolean = false;
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
 
-  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData, private service:UsuariosService, private handleError: HandleErrorsService) {
+  constructor(private dialogRef: MatDialogRef<InstitucionListComponent>, @Inject(MAT_DIALOG_DATA) public data: any, private service:UsuariosService, private handleError: HandleErrorsService) {
     if(data){
-      this.institucion = data.id
+      console.log(data);
+      this.institucion = data.institucion;
     }
   }
 
   ngOnInit() {
+  }
+
+  checkpass(){
+    if(this.passwordPlano){
+      if(this.passwordPlano != this.verifpass){
+        //this.passwordDitinto();
+        this.habilitarBoton = false;
+      }else{
+        this.habilitarBoton = true;
+      }
+    }
   }
 
   agregarAdministrador(){
@@ -53,6 +67,14 @@ export class AdminAddComponent implements OnInit {
 
   showErrorAlert() {
     Swal.fire('Error!', 'Algo salió mal!', 'error');
+  }
+
+  passwordDitinto(){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'No coincide el password!',
+    })
   }
 
 

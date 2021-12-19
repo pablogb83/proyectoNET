@@ -15,8 +15,6 @@ namespace DataAccessLayer.Dtos.Instituciones
 
         public string Name { get; set; }
 
-        public string ConnectionString { get; set; }
-
         public string Direccion { get; set; }
 
         public string Telefono { get; set; }

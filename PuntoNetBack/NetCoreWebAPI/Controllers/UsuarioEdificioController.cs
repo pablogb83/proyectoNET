@@ -16,6 +16,7 @@ namespace NetCoreWebAPI.Controllers
 {
     [Route("api/usuarioEdificio")]
     [ApiController]
+
     public class UsuarioEdificioController : ControllerBase
     {
         private readonly IBL_UsuarioEdificio _bl;
@@ -29,15 +30,18 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+
         public async Task<ActionResult<IEnumerable<UsuarioEdificioReadDto>>> GetAllUsuariosEdificios()
         {
             var usuarioEdificios =await _bl.GetAllUsuarioEdificio(); ;
             return Ok(_mapper.Map<IEnumerable<UsuarioEdificioReadDto>>(usuarioEdificios));
         }
 
-        [Authorize(Roles = "ADMIN")]
         //POST api/usuarioEdificio
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+
         public async Task<ActionResult<UsuarioEdificioReadDto>> CreateUsuarioEdificioAsync(UsuarioEdificioCreateDto usuarioEdificioCreateDto)
         {
             //var usuarioEdificioModel = _mapper.Map<UsuarioEdificio>(UsuarioEdificioCreateDto);
@@ -71,12 +75,25 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio/id
         [HttpGet("edificio/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO,GESTOR")]
+
         public async Task<ActionResult<IEnumerable<EdificiosReadDto>>> GetEdificioUsuario(int id)
         {
             try
             {
-                var edificio = await _bl.GetEdificioUsuario(id);
-                return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+                
+                var role = User.Claims.Skip(2).FirstOrDefault().Value;
+                if (role == "SUPERADMIN")
+                {
+                    var edificio = await _bl.GetEdificioUsuario(id);
+                    return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+                }
+                else
+                {
+                    int idUsuario = int.Parse(User.Claims.FirstOrDefault().Value);
+                    var edificio = await _bl.GetEdificioUsuario(idUsuario);
+                    return Ok(_mapper.Map<EdificiosReadDto>(edificio));
+                }
             }
             catch
             {

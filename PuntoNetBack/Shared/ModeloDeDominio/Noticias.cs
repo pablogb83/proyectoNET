@@ -16,18 +16,17 @@ namespace Shared.ModeloDeDominio
     {
         [Key]
         public int Id { get; set; }
-
         [Required]
         public string Nombre { get; set; }
         [Required]
         public string Descripcion { get; set; }
-
         [Required]
         public string PublicadoPor { get; set; }
-
         [Required]
         public DateTime FechaPublicacion { get; set; }
-
         public string PhotoFileName { get; set; }
+        public string TenantId { get; set; }
+        [NotMapped]
+        public string Institucion { get; set; }
     }
 }

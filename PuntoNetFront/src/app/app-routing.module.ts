@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AccesoModule } from './acceso/acceso.module';
-import { AccountModule } from './account/account.module';
 import { AuthModule } from './auth/auth.module';
 
-import { CustomersModule } from './customers/customers.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { EdificiosModule } from './edificios/edificios.module';
 import { EventosModule } from './eventos/eventos.module';
@@ -23,8 +21,11 @@ import { SuperAdminGuard } from './core/guards/superadmin.guard';
 import { ProductosModule } from './productos/productos.module';
 import { FacturacionModule } from './facturacion/facturacion.module';
 import { NoticiasModule } from './noticias/noticias.module';
-import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
 import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
+import { PanelOpcionesModule } from './panel-opciones/panel-opciones.module';
+import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
+import { NoticiasPublicasModule } from './noticias-publicas/noticias-publicas.module';
+import { ErrorModule } from './error/error.module';
 
 const appRoutes: Routes = [
     {
@@ -37,14 +38,9 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'customers',
-        loadChildren: ()=> CustomersModule,
-        canActivate: [AuthGuard]
-    },
-    {
         path: 'users',
         loadChildren: ()=> UsersModule,
-        canActivate: [AuthGuard,AdminGuard]
+        canActivate: [AuthGuard,AdminSuperadminGuard]
     },
     {
         path: 'eventos',
@@ -55,6 +51,10 @@ const appRoutes: Routes = [
         path: 'noticias',
         loadChildren: ()=> NoticiasModule,
         canActivate: [AuthGuard]
+    },
+    {
+        path: 'noticiaspublicas',
+        loadChildren: ()=> NoticiasPublicasModule,
     },
     {
         path: 'institucion',
@@ -108,6 +108,14 @@ const appRoutes: Routes = [
         path: 'accesos',
         loadChildren: ()=>AccesoModule,
         canActivate: [AuthGuard/*, AdminGuard*/]
+    },
+    {
+        path: 'panelOpciones',
+        loadChildren: ()=>PanelOpcionesModule,
+    },
+    {
+        path: 'error',
+        loadChildren: ()=>ErrorModule,
     },
     {
         path: 'visitantehome',

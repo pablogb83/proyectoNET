@@ -57,6 +57,13 @@ export class AccesoListComponent implements OnInit {
         }
       })
     }
+    if(this.rol === "ADMIN"){
+      this.accesoService.getAccesos().subscribe(data=>{
+        this.AccesosList = new MatTableDataSource<Acceso>(data);
+        this.AccesosList.paginator = this.paginator;
+        console.log(this.AccesosList);
+      })
+    }
   }
 
   ngOnInit() {
@@ -109,6 +116,16 @@ export class AccesoListComponent implements OnInit {
        }
      })
    }
+
+   info(item:any){
+    Swal.fire(
+      'Edificio: ' + item.puerta.edificio.nombre,
+      'Acceso: ' + item.puerta.denominacion,
+      'info'
+    )
+   }
+
+
 }
 
 export interface Data {

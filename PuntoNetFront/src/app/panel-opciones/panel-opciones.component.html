@@ -1,0 +1,249 @@
+<div class="contenedor">
+    <ng-container>
+        <a href="/users" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Usuarios</mat-card-title>
+                    <mat-card-subtitle>Gestión de usuarios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/users.png" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los usuarios del sistema, asignacion de roles y edificios.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/noticiaspublicas" >
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Noticias publicas</mat-card-title>
+                    <mat-card-subtitle>Noticias publicas de distintas instituciones </mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/Noticias.jpg" alt="Imagen de noticias">
+                <mat-card-content>
+                    <p>
+                        Acceda a las ultimas noticias publicadas por las instituciones de nuestra plataforma
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+
+        <a href="/facturacion" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Facturacion</mat-card-title>
+                    <mat-card-subtitle>Gestión de facturas</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/facturas.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Visualize sus facturas pagas hasta la fecha.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/edificios" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Edificios</mat-card-title>
+                    <mat-card-subtitle>Gestión de edificios</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione los edificios de su institución. Agregue salones y puertas de acceso.  
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <!--PORTERO-->
+
+        <a [routerLink]="['/puertas']" [queryParams]="{idedificio: idedificio}" routerLinkActive="active" *ngIf="rol ==='PORTERO' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Puertas</mat-card-title>
+                    <mat-card-subtitle>Selección de puerta</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Seleccione la puerta donde registrar los accesos.  
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/accesos" *ngIf="rol ==='PORTERO' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Accesos</mat-card-title>
+                    <mat-card-subtitle>Gestión de accesos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/accesos.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Registro de los accesos a la instituciones.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/personas" *ngIf="rol ==='PORTERO' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Personas</mat-card-title>
+                    <mat-card-subtitle>Gestión de personas</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/personas.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a personas registradas en el sistema. Alta masiva.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+
+        <!--PORTERO-->
+
+        <!--GESTOR-->
+
+        <a href="/eventos" *ngIf="rol ==='GESTOR' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Eventos</mat-card-title>
+                    <mat-card-subtitle>Gestión de eventos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/evento.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los eventos, recurrentes o puntuales. Calendario
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/noticias" *ngIf="rol ==='GESTOR' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Noticias</mat-card-title>
+                    <mat-card-subtitle>Gestión de noticias</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/noticias.jpeg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Publique nuevas noticias
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <!--GESTOR-->
+
+        <!--SUPERADMIN-->
+
+        <a href="/institucion" *ngIf="rol ==='SUPERADMIN'">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Instituciones</mat-card-title>
+                    <mat-card-subtitle>Gestión de instituciones</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/visitor.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Cree nuevas instituciones y asignele sus administradores. 
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/productos" *ngIf="rol ==='SUPERADMIN'">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Productos</mat-card-title>
+                    <mat-card-subtitle>Gestión de productos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/income.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Cree nuevos productos para asociar a las instituciones. 
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/roles" *ngIf="rol ==='SUPERADMIN'">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Roles</mat-card-title>
+                    <mat-card-subtitle>Gestión de roles</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/users.png" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione los roles del sistema. 
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <!--SUPERADMIN-->
+
+    </ng-container>
+</div>
+
+<div class="contenedor">
+    <ng-container>
+        <a href="/accesos" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Accesos</mat-card-title>
+                    <mat-card-subtitle>Gestión de accesos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/accesos.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Registro de los accesos a la instituciones.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+        <a href="/personas" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Personas</mat-card-title>
+                    <mat-card-subtitle>Gestión de personas</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/personas.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a personas registradas en el sistema. Alta masiva.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+        <a href="/eventos" *ngIf="rol ==='ADMIN' && instActive">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Eventos</mat-card-title>
+                    <mat-card-subtitle>Gestión de eventos</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/evento.jpg" alt="Imagen de bus">
+                <mat-card-content>
+                    <p>
+                        Gestione todo lo relacionado a los eventos, recurrentes o puntuales. Calendario
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+    </ng-container>
+</div>
+
+
+

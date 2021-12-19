@@ -9,6 +9,7 @@ namespace NetCoreWebAPI.Controllers
     using BusinessLayer.IBL;
     using DataAccessLayer.Dtos.Productos;
     using DataAccessLayer.Dtos.Salon;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Shared.ModeloDeDominio;
@@ -39,6 +40,7 @@ namespace NetCoreWebAPI.Controllers
 
             //POST api/salon
             [HttpPost]
+            [Authorize(Roles = "SUPERADMIN")]
             public ActionResult<SalonReadDto> CreateProducto(ProductoCreateDto productCreateDto)
             {
                 var result = _bl.CreateProduct(productCreateDto);
@@ -53,12 +55,13 @@ namespace NetCoreWebAPI.Controllers
             }
 
             [HttpGet("{plan_id}")]
-            public ActionResult GetProducto(string id)
+            [Authorize(Roles = "SUPERADMIN,ADMIN")]
+            public ActionResult GetProducto(string plan_id)
             {
                 var role = User.Claims.Skip(2).FirstOrDefault().Value;
                 if (role == "SUPERADMIN")
                 {
-                    return Ok(_bl.GetProducto(id));
+                    return Ok(_bl.GetProducto(plan_id));
                 }
                 else
                 {
@@ -69,12 +72,14 @@ namespace NetCoreWebAPI.Controllers
             }
 
             [HttpGet]
+            [Authorize(Roles = "SUPERADMIN")]
             public ActionResult GetProductos()
             {
                 return Ok(_bl.GetProductos());
             }
 
             [HttpPut]
+            [Authorize(Roles = "SUPERADMIN")]
             public ActionResult UpdateProduct(string plan_id, double precio)
             {
                 if (_bl.UpdateProductoPrecio(precio, plan_id))
@@ -87,6 +92,7 @@ namespace NetCoreWebAPI.Controllers
                 }
             }
             [HttpDelete("{plan_id}")]
+            [Authorize(Roles = "SUPERADMIN")]
             public ActionResult DeleteProduct(string plan_id)
             {
                 if (_bl.EliminarProducto(plan_id))

@@ -1,10 +1,10 @@
 ﻿using DataAccessLayer.IDAL;
+using Microsoft.EntityFrameworkCore;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.DAL
 {
@@ -55,32 +55,35 @@ namespace DataAccessLayer.DAL
                     }
                 }
             }
-            return accesos;
+            return accesos.Where(x => x.TenantId == _context.TenantInfo.Id); ;
         }
 
         public IEnumerable<Acceso> GetAccesosPersona(int idPersona)
         {
-            Persona prs = _context.Personas.FirstOrDefault(p => p.Id == idPersona);
+            Persona prs = _context.Personas.IgnoreQueryFilters().FirstOrDefault(p => p.Id == idPersona);
             if (prs != null)
             {
-                return prs.Accesos;
+                return prs.Accesos.Where(x => x.TenantId == _context.TenantInfo.Id); ;
             }
             return null;
         }
 
         public IEnumerable<Acceso> GetAccesosPuerta(int idPuerta)
         {
-            Puerta pta = _context.Puertas.FirstOrDefault(p => p.Id == idPuerta);
+            Puerta pta = _context.Puertas.IgnoreQueryFilters().FirstOrDefault(p => p.Id == idPuerta);
             if (pta != null)
             {
-                return pta.Accesos;
+                var accesos = _context.Accesos.IgnoreQueryFilters().Include(i => i.Persona).Where(acc => acc.Puerta.Id == idPuerta).ToList();
+                return pta.Accesos.Where(x => x.TenantId == _context.TenantInfo.Id);
             }
             return null;
         }
 
         public IEnumerable<Acceso> GetAllAccesos()
         {
-            return _context.Accesos.ToList();
+            var accesos = _context.Accesos.IgnoreQueryFilters().Include(i => i.Persona).ToList();
+            Debug.WriteLine(_context.TenantInfo);
+            return accesos.Where(x=>x.TenantId==_context.TenantInfo.Id);
         }
 
         public bool SaveChanges()

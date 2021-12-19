@@ -27,6 +27,8 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
+
         public async Task<ActionResult<IEnumerable<UsuarioPuertaReadDto>>> GetAllUsuarioPuerta()
         {
             var usuarioPuerta =await _bl.GetAllUsuarioPuertaAsync();
@@ -54,6 +56,8 @@ namespace NetCoreWebAPI.Controllers
 
         //GET api/usuarioEdificio/id
         [HttpGet("{id}", Name = "GetUsuarioPuerta")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
+
         public async Task<ActionResult<UsuarioReadDto>> GetUsuarioPuerta(int id)
         {
             try
@@ -70,6 +74,8 @@ namespace NetCoreWebAPI.Controllers
 
         //DELETE api/usuarios/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
+
         public ActionResult DeleteUsuarioPuerta(int id)
         {
             try
@@ -87,6 +93,8 @@ namespace NetCoreWebAPI.Controllers
         }
 
         [HttpGet("puerta/{id}")]
+        [Authorize(Roles = "ADMIN,PORTERO")]
+
         public ActionResult<PuertaReadDto> GetPuertaUsuario(int id)
         {
             var puerta = _bl.GetPuertaUsuario(id);

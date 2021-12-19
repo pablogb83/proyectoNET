@@ -30,18 +30,35 @@ namespace DataAccessLayer.DAL
             bool auth =paypal.authorizePayment(headers,body, token);
             if (auth && body.event_type.Equals("BILLING.SUBSCRIPTION.ACTIVATED"))
             {
-                Institucion inst =  _context.Instituciones.FirstOrDefault(p => p.Id == body.resource.custom_id);
-                inst.Activa = true;
-                if(inst.Suscripcion == null)
+                var inst = UpdateInstitucion(true, body);
+                if(inst!=null && inst.Suscripcion == null)
                 {
                     var suscripcion = new Suscripcion();
                     suscripcion.Id = body.resource.id;
                     suscripcion.estado = body.resource.status;
                     inst.Suscripcion = suscripcion;
                 }
-                _context.SaveChanges();
             }
+            else if((body.event_type.Equals("BILLING.SUBSCRIPTION.CANCELLED") || body.event_type.Equals("BILLING.SUBSCRIPTION.SUSPENDED")))
+            {
+                UpdateInstitucion(false, body);
+            }
+            _context.SaveChanges();
             return auth;
+        }
+
+        Institucion UpdateInstitucion(bool estado, PaypalSuscriptionActivated body)
+        {
+            Institucion inst = _context.Instituciones.FirstOrDefault(p => p.Id == body.resource.custom_id);
+            if (inst != null)
+            {
+                inst.Activa = estado;
+                if (inst.Suscripcion != null)
+                {
+                    inst.Suscripcion.estado = body.resource.status;
+                }
+            }
+            return inst;
         }
     } 
        

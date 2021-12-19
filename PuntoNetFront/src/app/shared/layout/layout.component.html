@@ -15,22 +15,6 @@
 
     <span class="navbar-spacer"></span>
 
-    <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
-      <mat-icon matBadge="2" matBadgeColor="accent">notifications</mat-icon>
-    </button>
-    <mat-menu #notificationMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
-
-      <a mat-menu-item>
-        <span>You have new tasks</span>
-      </a>
-      <a mat-menu-item>
-        <span>You have a new message</span>
-      </a>
-
-    </mat-menu>
-
-
-
     <button mat-button [matMenuTriggerFor]="userMenu">
       <mat-icon>person</mat-icon>
       <span fxShow fxHide.xs>
@@ -39,13 +23,18 @@
     </button>
     <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
 
-      <a mat-menu-item [routerLink]="['/account/profile']">
-        <mat-icon>person</mat-icon>
-        <span>Account</span>
+      <a mat-menu-item [routerLink]="['/auth/login']"  *ngIf="rol==='VISITANTE'">
+        <mat-icon mat-list-icon>exit_to_app</mat-icon>
+        <span> Login </span>
+      </a>
+
+      <a mat-menu-item (click)="logout()" *ngIf="rol!=='VISITANTE'" >
+        <mat-icon mat-list-icon>exit_to_app</mat-icon>
+        <span *ngIf="rol != 'VISITANTE'"> Log out </span>
+        <span *ngIf="rol === 'VISITANTE'"> Log in </span> 
       </a>
 
     </mat-menu>
-
   </mat-toolbar>
 
   <mat-sidenav-container class="navbar-sidenav-container">
@@ -56,7 +45,7 @@
       <mat-nav-list>
         <h3 mat-subheader>Home</h3>
 
-        <a mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active" *ngIf="rol!='VISITANTE' && instActive">
+        <a mat-list-item [routerLink]="['/panelOpciones']" routerLinkActive="active" *ngIf="rol!='VISITANTE' && instActive">
           <mat-icon mat-list-icon>
             dashboard
           </mat-icon>
@@ -97,25 +86,20 @@
             </mat-icon>
             <p mat-line> Usuarios </p>
           </a>
-  
           <a mat-list-item [routerLink]="['/edificios']" routerLinkActive="active">
             <mat-icon mat-list-icon>
               business
             </mat-icon>
             <p mat-line> Edificios </p>
           </a>
-          <a mat-list-item [routerLink]="['/eventos']" routerLinkActive="active">
+   
+          <a mat-list-item [routerLink]="['/accesos']" routerLinkActive="active">
             <mat-icon mat-list-icon>
-              event
+              directions_walk
             </mat-icon>
-            <p mat-line> Eventos </p>
+            <p mat-line> Accesos </p>
           </a>
-          <a mat-list-item [routerLink]="['/noticias']" routerLinkActive="active">
-            <mat-icon mat-list-icon>
-              list_alt
-            </mat-icon>
-            <p mat-line> Noticias </p>
-          </a>
+    
           <a mat-list-item [routerLink]="['/personas']" routerLinkActive="active">
             <mat-icon mat-list-icon>
               people
@@ -123,7 +107,24 @@
             <p mat-line> Personas </p>
           </a>
         </div>
-
+        <a mat-list-item [routerLink]="['/eventos']" *ngIf="(rol==='GESTOR'|| rol==='ADMIN') && instActive" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            event
+          </mat-icon>
+          <p mat-line> Eventos </p>
+        </a>
+        <a mat-list-item [routerLink]="['/noticias']"  *ngIf="(rol==='GESTOR'|| rol==='ADMIN') && instActive" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            list_alt
+          </mat-icon>
+          <p mat-line> Noticias </p>
+        </a>
+        <a mat-list-item [routerLink]="['/noticiaspublicas']" routerLinkActive="active">
+          <mat-icon mat-list-icon>
+            newspaper
+          </mat-icon>
+          <p mat-line> Noticias Publicas </p>
+        </a>
         <div *ngIf="rol==='PORTERO' && instActive">
           <a mat-list-item [routerLink]="['/puertas']" [queryParams]="{idedificio: idedificio}" routerLinkActive="active">
             <mat-icon mat-list-icon>
@@ -174,7 +175,7 @@
     <mat-sidenav-content class="sidenav-content">
 
       <div class="progress-bar-container">
-        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async">
+        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="loading">
         </mat-progress-bar> 
         <!-- <mat-spinner class="spinner" [diameter]="50" *ngIf="showSpinner"></mat-spinner> -->
       </div>

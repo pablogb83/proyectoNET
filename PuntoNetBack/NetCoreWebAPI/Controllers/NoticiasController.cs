@@ -17,11 +17,13 @@ namespace NetCoreWebAPI.Controllers
     public class NoticiasController : ControllerBase
     {
         private readonly IBL_Noticias _bl;
+        private readonly IBL_Institucion _blInst;
         private readonly IMapper _mapper;
 
-        public NoticiasController(IBL_Noticias bl, IMapper mapper)
+        public NoticiasController(IBL_Noticias bl, IMapper mapper, IBL_Institucion blInst)
         {
             _bl = bl;
+            _blInst = blInst;
             _mapper = mapper;
         }
 
@@ -39,7 +41,38 @@ namespace NetCoreWebAPI.Controllers
             {
                 return NotFound();
             }
-            
+        }
+        [HttpGet("publicas")]
+        public ActionResult<IEnumerable<NoticiaReadDto>> GetAllNoticiasPublicas(string institucion)
+        {
+            IEnumerable<Noticias> noticias;
+            if (string.IsNullOrEmpty(institucion))
+            {
+                noticias = _bl.GetAllNoticiasPublicas();
+            }
+            else
+            {
+                var inst = _blInst.GetInstitucionById(institucion);
+                if (inst == null)
+                {
+                    BadRequest(new { message = "La institucion no existe" });
+                }
+                noticias = _bl.GetNoticiasByInstitucion(institucion);
+            }
+            if (noticias != null)
+            {
+                foreach(var not in noticias)
+                {
+                    not.Institucion = _blInst.GetInstitucionById(not.TenantId).Name;
+                }
+                return Ok(_mapper.Map<IEnumerable<NoticiaReadDto>>(noticias));
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
 
         [HttpGet("ultimas")]

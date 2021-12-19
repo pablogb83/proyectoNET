@@ -19,5 +19,6 @@ namespace Shared.ModeloDeDominio
         public virtual Puerta Puerta { get; set; }
         [Required]
         public virtual Persona Persona { get; set; }
+        public string TenantId { get; set; }
     }
 }

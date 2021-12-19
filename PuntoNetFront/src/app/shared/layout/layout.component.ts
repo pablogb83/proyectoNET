@@ -25,21 +25,18 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     isAdmin: boolean;
     rol:string;
     instActive: boolean;
-
     idedificio:number;
     idUsuario:string;
+    loading=false;
 
     private autoLogoutSubscription: Subscription;
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
         private media: MediaMatcher,
         public spinnerService: SpinnerService,
-        private authService: AuthenticationService,
-        private authGuard: AuthGuard,
         private tokenService: TokenStorageService,
         private usuarioEdificio: UsuarioEdificioService,
         private router: Router) {
-
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         // tslint:disable-next-line: deprecation
@@ -51,7 +48,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
         this.rol = this.tokenService.getRoleName();
         this.instActive = this.tokenService.getStatus();
         this.idUsuario = this.tokenService.getUserId();
-        // Auto log-out subscription
+        
         console.log(this.idUsuario);
         if(this.rol==='PORTERO' && this.idUsuario){
             this.usuarioEdificio.getEdificioUsuario(this.idUsuario).subscribe(data=>{
@@ -63,7 +60,10 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.changeDetectorRef.detectChanges();
+        this.spinnerService.visibility.subscribe(isLoading=>{
+            this.loading = isLoading;
+            this.changeDetectorRef.detectChanges();
+        })
     }
 
     logout(){

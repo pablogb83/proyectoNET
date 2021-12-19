@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
-import { NGXLogger } from 'ngx-logger';
 import { UsuariosService } from 'src/app/core/services/usuarios.service';
 import { UserRoleComponent } from '../user-role/user-role.component';
 import Swal from 'sweetalert2';
@@ -13,6 +11,10 @@ import { UsuarioEdificioService } from 'src/app/core/services/usuario-edificio.s
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { TokenStorageService } from 'src/app/core/services/token-storage.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AdminAddComponent } from 'src/app/institucion/admin-add/admin-add.component';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 
 
 export interface DialogData {
@@ -36,6 +38,8 @@ export class UserListComponent implements OnInit {
   edificios: any=[];
   selectedValue: string;
   todos:string;
+  institucion: string;
+  role: string;
 
   displayedColumns: string[] = ['id','email', 'rol', 'acciones'];
 
@@ -44,38 +48,52 @@ export class UserListComponent implements OnInit {
     private service: UsuariosService,
     public dialog: MatDialog,
     private edificioService:EdificiosService,
-    private usuariosEdificioService:UsuarioEdificioService
+    private usuariosEdificioService:UsuarioEdificioService,
+    private tokenStorageService: TokenStorageService,
+    public route: ActivatedRoute,
+    private handleError: HandleErrorsService,
+    private router: Router
   ) {
-    this.edificioService.getEdificios().subscribe(data=>{
-      this.edificios = data
+    this.route.queryParams.subscribe(data=>{
+      console.log("La institucion es: ", data);
+      this.institucion = data.institucion;
     });
+ 
+
    }
 
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
 
   ngOnInit() {
-    this.titleService.setTitle('Usuarios');
     this.getUsuarios();
   }
 
   getUsuarios(): void{
-    this.service.getUsuarios().subscribe(data=>{
-      console.log(data);
-      var usuariosFilter = data.filter(function (x){
-        return x.role === 'PORTERO' || x.role === 'GESTOR' || x.role==='UNDEFINED';
+
+    this.role = this.tokenStorageService.getRoleName();
+    if(this.role==="ADMIN"){
+      this.edificioService.getEdificios().subscribe(data=>{
+        this.edificios = data;
       });
-      // for(let usr in usuariosFilter){
-      //   if(usr.role === 'UNDEFINED'){
-      //     usr.role = "Sin rol asignado";
-      //   }
-      // }
-      this.UsuariosList = new MatTableDataSource<Usuarios>(usuariosFilter);
-      this.UsuariosList.paginator = this.paginator;
-    });
+      this.titleService.setTitle('Usuarios');
+      this.service.getUsuariosAdmin().subscribe(data=>{
+        this.UsuariosList = new MatTableDataSource<Usuarios>(data);
+        this.UsuariosList.paginator = this.paginator;
+      });
+    }
+    else if(this.role==="SUPERADMIN"){
+      this.service.getUsuariosInstitucion(this.institucion).subscribe(data=>{
+        console.log(data);
+        this.UsuariosList = new MatTableDataSource<Usuarios>(data);
+        this.UsuariosList.paginator = this.paginator;
+      },err=>{
+        this.router.navigate(["error"]);
+      });
+    }
+    
   }
 
   listarPorEdificio(idEdificio:any){
-    console.log(idEdificio);
     if(idEdificio===0){
       this.getUsuarios();
     }
@@ -94,7 +112,6 @@ export class UserListComponent implements OnInit {
       data: {user: user}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.getUsuarios();
     }); 
   }
@@ -105,20 +122,31 @@ export class UserListComponent implements OnInit {
       data: {user: user}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.getUsuarios();
     }); 
   }
   
   openDialog(): void {
-    const dialogRef = this.dialog.open(UsersAddComponent, {
-      width: 'auto',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.getUsuarios();
-    }); 
+    if(this.role==="ADMIN"){
+      const dialogRef = this.dialog.open(UsersAddComponent, {
+        width: 'auto',
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        this.getUsuarios();
+      }); 
+    }
+    else if(this.role==="SUPERADMIN"){
+      const dialogRef = this.dialog.open(AdminAddComponent, {
+        width: 'auto',
+        data:{institucion: this.institucion}
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        this.getUsuarios();
+      }); 
+    }
+  
   }
 
   openDialogUpdate(user:any): void {
@@ -128,7 +156,6 @@ export class UserListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.getUsuarios();
     });
   }
@@ -144,21 +171,24 @@ export class UserListComponent implements OnInit {
       confirmButtonText: 'Si, borrar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.deleteUsuario(item.id).subscribe(data=>{
-          this.getUsuarios()
-        })
-        Swal.fire(
-          'Borrado!',
-          'El usuario ha sido eliminado.',
-          'success'
-        )
+        if(this.role==="ADMIN"){
+          this.service.deleteUsuario(item.id).subscribe((data:any)=>{
+            this.handleError.showSuccessAlert(data.message)
+            this.getUsuarios()
+          })
+        }
+        else if(this.role==="SUPERADMIN"){
+          this.service.deleteAdmin(item.id).subscribe((data:any)=>{
+            this.handleError.showSuccessAlert(data.message)
+            this.getUsuarios()
+          })
+        }
+     
       }
     })
   }
 
 }
-
-
 
 export interface Usuarios {
   id: number,

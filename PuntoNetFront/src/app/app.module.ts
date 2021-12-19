@@ -17,6 +17,9 @@ import { WebcamModule } from 'ngx-webcam';
 import { WebcamSnapshotComponent } from './webcam-snapshot/webcam-snapshot.component';
 import { PersonaAddComponent } from './persona/persona-add/persona-add.component';
 import { VisitanteHomeComponent } from './visitante-home/visitante-home.component';
+import { NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { PanelOpcionesComponent } from './panel-opciones/panel-opciones.component';
+import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
 
 
 
@@ -28,7 +31,8 @@ import { VisitanteHomeComponent } from './visitante-home/visitante-home.componen
     WebcamSnapshotComponent,
     PersonaAddComponent,
 
-    VisitanteHomeComponent
+    VisitanteHomeComponent,
+      PanelOpcionesComponent
   ],
   entryComponents:[
     PersonaAddComponent,
@@ -44,6 +48,8 @@ import { VisitanteHomeComponent } from './visitante-home/visitante-home.componen
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
     WebcamModule,
+    NgxMatNativeDateModule,
+    
   ],
   bootstrap: [AppComponent],
   providers:[
@@ -52,9 +58,10 @@ import { VisitanteHomeComponent } from './visitante-home/visitante-home.componen
     DatePipe,
     NGXMapperService,
     NGXLoggerHttpService,
-    AdminGuard
+    NgxMatNativeDateModule,
+    AdminSuperadminGuard
   ],
-  exports:[WebcamModule]
+  exports:[WebcamModule,NgxMatNativeDateModule]
 
 })
 export class AppModule {
