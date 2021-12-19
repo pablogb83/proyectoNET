@@ -33,7 +33,7 @@ export class UsersAddComponent implements OnInit {
   checkpass(){
     if(this.passwordPlano){
       if(this.passwordPlano != this.verifpass){
-        this.passwordDitinto();
+        //this.passwordDitinto();
         this.habilitarBoton = false;
       }else{
         this.habilitarBoton = true;

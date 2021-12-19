@@ -14,8 +14,9 @@
 
         <mat-form-field appearance="fill">
             <mat-label>Verificar Password</mat-label>
-            <input type="password" matInput="password" [(ngModel)]="verifpass" (focusout)="checkpass()">
+            <input type="password" matInput="password" [(ngModel)]="verifpass" (keyup)="checkpass()">
         </mat-form-field>
+        <p class="alerta" *ngIf="!habilitarBoton && passwordPlano"> Las contraseñas <strong>no coinciden</strong></p>
 
         <div class="example-button-row">
             <button mat-raised-button color="primary" (click)="agregarUsuario()" [disabled]="!habilitarBoton">Agregar</button>

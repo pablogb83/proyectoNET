@@ -115,7 +115,7 @@ namespace NetCoreWebAPI.Controllers
                 var producto = _blProd.GetProducto(planId);
                 var user = await _bl.GetUsuarioByIdAsync(userId);
                 EmailSender.sendEmail(user.Email, user.UserName, producto);
-                return Ok("Email enviado");
+                return Ok(new { message = "Email enviado" });
             }
             catch (Exception e)
             {

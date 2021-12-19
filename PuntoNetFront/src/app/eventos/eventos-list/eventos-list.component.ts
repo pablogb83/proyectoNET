@@ -91,7 +91,7 @@ export class EventosListComponent implements OnInit {
       const dialogRef = this.dialog.open(CalendarioComponent, {
         width: '80vw',
         height:'95vh',
-        data: data
+        data: this.EventoList
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');

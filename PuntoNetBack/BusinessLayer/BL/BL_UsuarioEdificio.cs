@@ -29,6 +29,10 @@ namespace BusinessLayer.BL
         {
             var usuario = await _dalusuario.GetUsuarioByIdAsync(usuarioId);
             var edificio = _daledificio.GetEdificioById(edificioId);
+            if(edificio == null)
+            {
+                throw new AppException("No existe el edificio o no fue indicado");
+            }
             var userEdificio = await GetEdificioUsuario(usuarioId);
             if (userEdificio != null)
             {

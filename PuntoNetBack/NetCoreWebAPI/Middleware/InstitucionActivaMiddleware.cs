@@ -43,7 +43,7 @@ namespace NetCoreWebAPI.Middleware
         }
         private bool IsPublic(string path)
         {
-            string[] publicDomains = { "authenticate", "Photos", "registro/confirm", "publicas","instituciones" };
+            string[] publicDomains = { "authenticate", "Photos", "registro/confirm", "publicas","instituciones", "email/simple" };
             return publicDomains.FirstOrDefault(x => path.Contains(x)) != null;
         }
 

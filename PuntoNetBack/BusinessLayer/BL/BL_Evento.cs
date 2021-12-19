@@ -73,8 +73,11 @@ namespace BusinessLayer.BL
                     ev.Nombre = evt.Nombre;
                     ev.FechaInicioEvt = day.Date + evt.HoraInicio;
                     ev.FechaFinEvt = ev.FechaInicioEvt.AddHours(evt.Duracion);
-                    ev.Salon = salon;
-                    _dal.CreateEventoRecurrente(ev);
+                    if (SalonDisponible(salon.Id, ev.FechaInicioEvt, ev.FechaFinEvt))
+                    {
+                        ev.Salon = salon;
+                        _dal.CreateEventoRecurrente(ev);
+                    }
                 } 
             }
             SaveChanges();

@@ -16,7 +16,7 @@ namespace NetCoreWebAPI.Controllers
 {
     //api/roles
     [Route("api/roles")]
-    
+
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -53,79 +53,5 @@ namespace NetCoreWebAPI.Controllers
             return NotFound();
         }
 
-        //POST api/commands
-        [HttpPost]
-        [Authorize(Roles = "SUPERADMIN")]
-        public async Task<ActionResult<RolesReadDto>> CreateRolAsync(RoleCreateDto roleCreateDto)
-        {
-            var roleModel = _mapper.Map<Role>(roleCreateDto);
-            await _bl.CreateRoleAsync(roleModel);
-            //_bl.SaveChanges();
-            //var result = await _roleManager.CreateAsync(roleModel);
-
-            var roleReadDto = _mapper.Map<RolesReadDto>(roleModel);
-
-            return CreatedAtRoute(nameof(GetRoleById), new { Id = roleReadDto.Id }, roleReadDto);
-            //return Ok(commandReadDto);
-        }
-
-        //PUT api/commands/{id}
-        [HttpPut("{id}")]
-        [Authorize(Roles = "SUPERADMIN")]
-
-        public ActionResult UpdateRole(int id, RoleUpdateDto institucionUpdateDto)
-        {
-            var roleModelFromRepo = _bl.GetRoleById(id);
-            if (roleModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(institucionUpdateDto, roleModelFromRepo);
-            _bl.UpdateRole(roleModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
-
-        //PATCH api/commands/{id}
-        [HttpPatch("{id}")]
-        [Authorize(Roles = "SUPERADMIN")]
-
-        public ActionResult PartialRoleUpdtate(int id, JsonPatchDocument<RoleUpdateDto> patchDoc)
-        {
-            var roleModelFromRepo = _bl.GetRoleById(id);
-            if (roleModelFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            var institucionToPatch = _mapper.Map<RoleUpdateDto>(roleModelFromRepo);
-            patchDoc.ApplyTo(institucionToPatch, ModelState);
-            if (!TryValidateModel(institucionToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(institucionToPatch, roleModelFromRepo);
-            _bl.UpdateRole(roleModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
-
-        //DELETE api/commands/{id}
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "SUPERADMIN")]
-
-        public ActionResult DeleteRole(int id)
-        {
-            var roleModelFromRepo = _bl.GetRoleById(id);
-            if (roleModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _bl.DeleteRole(roleModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
-
-       
-    }
+    }   
 }

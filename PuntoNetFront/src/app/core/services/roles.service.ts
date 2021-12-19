@@ -23,22 +23,4 @@ export class RolesService {
   getRole(id: number):Observable<any[]>{
     return this.http.get<any>(AUTH_API+id);
   }
-
-  postRole(name: string){
-    return this.http.post(AUTH_API , {
-      name,
-    },httpOptions);
-  }
-
-  putRole(id:number, name: string){
-     return this.http.put(AUTH_API + id, {
-      name,
-     }, httpOptions);
-  }
-
-  deleteRole(id:string){
-    return this.http.delete(AUTH_API + id);
-  }
-
-  
 }
