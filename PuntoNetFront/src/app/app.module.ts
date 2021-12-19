@@ -48,7 +48,8 @@ import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
     WebcamModule,
-    NgxMatNativeDateModule
+    NgxMatNativeDateModule,
+    
   ],
   bootstrap: [AppComponent],
   providers:[

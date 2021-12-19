@@ -13,12 +13,14 @@ namespace DataAccessLayer.DAL
     {
         private readonly MultiTenantStoreDbContext _context;
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IDAL_FaceApi _dalFace;
 
 
-        public DAL_Institucion_EF(MultiTenantStoreDbContext context, IHttpClientFactory clientFactory)
+        public DAL_Institucion_EF(MultiTenantStoreDbContext context, IHttpClientFactory clientFactory, IDAL_FaceApi dalFace)
         {
             _context = context;
             _clientFactory = clientFactory;
+            _dalFace = dalFace;
         }
 
         public void CreateInstitucion(Institucion inst)
@@ -32,7 +34,7 @@ namespace DataAccessLayer.DAL
             try
             {
                 //DAL_FaceApi.DeletePersonGroup(inst).GetAwaiter();
-                DAL_FaceApi.CreatePersonGroup(inst).Wait();
+                _dalFace.CreatePersonGroup(inst).Wait();
             }
             catch (Exception e)
             {
@@ -92,7 +94,7 @@ namespace DataAccessLayer.DAL
 
         public async Task UpdateInstitucionAzure(Institucion inst, string nombreViejo)
         {
-            await DAL_FaceApi.ActualizarInstitucion(nombreViejo, inst.Name);
+            await _dalFace.ActualizarInstitucion(nombreViejo, inst.Name);
         }
     }
 }

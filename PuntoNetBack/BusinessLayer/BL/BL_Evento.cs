@@ -143,6 +143,7 @@ namespace BusinessLayer.BL
             Boolean primeraVueta = true;
             List<Salon> salonesDisponibles = new List<Salon>();
             List<Salon> salonesParciales = new List<Salon>();
+            int cantDiasCoincidentes = 0;
             if (_dalEdificio.GetEdificioById(datos.EdificioId) == null)
             {
                 throw new AppException("El edificio no existe");
@@ -157,6 +158,7 @@ namespace BusinessLayer.BL
                 {
                     if (datos.dias.Contains<int>(((int)day.DayOfWeek)))
                     {
+                        cantDiasCoincidentes++;
                         var fechaIni = day.Date + datos.HoraInicio;
                         var fechaFin = fechaIni.AddHours(datos.Duracion);
                         if (primeraVueta)
@@ -174,6 +176,10 @@ namespace BusinessLayer.BL
                             }
                         }
                     }
+                }
+                if (cantDiasCoincidentes == 0)
+                {
+                    throw new AppException("No existen dias coincidentes en el rango de fecha ingresado");
                 }
             }
          

@@ -15,6 +15,22 @@
             </mat-card>
         </a>
 
+        <a href="/noticiaspublicas" >
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>Noticias publicas</mat-card-title>
+                    <mat-card-subtitle>Noticias publicas de distintas instituciones </mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="../../assets/Noticias.jpg" alt="Imagen de noticias">
+                <mat-card-content>
+                    <p>
+                        Acceda a las ultimas noticias publicadas por las instituciones de nuestra plataforma
+                    </p>
+                </mat-card-content>
+            </mat-card>
+        </a>
+
+
         <a href="/facturacion" *ngIf="rol ==='ADMIN' && instActive">
             <mat-card class="example-card">
                 <mat-card-header>

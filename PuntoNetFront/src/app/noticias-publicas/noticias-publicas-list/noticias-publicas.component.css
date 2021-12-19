@@ -18,3 +18,21 @@
     background-image: url(../../../assets/avatar.png);
     background-size: cover;
 }
+
+.complete{
+    display:none;
+}
+
+.more{
+    background:lightblue;
+    color:navy;
+    font-size:13px;
+    padding:3px;
+    cursor:pointer;
+}
+
+.titulo{
+    font-weight: bold;
+    font-size: xx-large;
+    text-decoration: underline;
+}

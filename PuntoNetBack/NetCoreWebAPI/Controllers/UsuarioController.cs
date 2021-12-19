@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
-using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
 using DataAccessLayer.Dtos.Usuarios;
 using DataAccessLayer.Helpers;
@@ -9,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.ModeloDeDominio;
@@ -32,12 +30,13 @@ namespace NetCoreWebAPI.Controllers
         private readonly IBL_Usuario _bl;
         private readonly IBL_Persona _blPersona;
         private readonly IBL_Institucion _blInst;
+        private readonly IBL_FaceApi _blFace;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
 
-        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager,IBL_Institucion blInst, IBL_Persona blPersona)
+        public UsuarioController(IBL_Usuario bl, IMapper mapper, IOptions<AppSettings> appSettings, UserManager<Usuario> userManager, SignInManager<Usuario> signInManager,IBL_Institucion blInst, IBL_Persona blPersona, IBL_FaceApi blFace)
         {
             _bl = bl;
             _blInst = blInst;
@@ -45,7 +44,8 @@ namespace NetCoreWebAPI.Controllers
             _appSettings = appSettings.Value;
             _userManager = userManager;
             _signInManager = signInManager;
-            _blPersona = blPersona; 
+            _blPersona = blPersona;
+            _blFace = blFace;
         }
 
         [HttpPost("authenticate")]
@@ -293,25 +293,24 @@ namespace NetCoreWebAPI.Controllers
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var result = await DAL_FaceApi.ReconocimientoFacial(postedFile.OpenReadStream(), tenant.TenantInfo.Id);
-                if (result!=null)
+            var result = await _blFace.ReconocimientoFacial(postedFile.OpenReadStream(), tenant.TenantInfo.Id);
+            if (result!=null)
+            {
+                Persona coincidencia = _blPersona.GetPersonaByDocumento(result.Name);
+                if (coincidencia == null)
                 {
-                    Persona coincidencia = _blPersona.GetPersonaByDocumento(result.Name);
-                    if (coincidencia == null)
-                    {
-                        return BadRequest(new { message = "No se encontro la persona" });
-                    }
-                    else
-                    {
-                        var personaReadDto = _mapper.Map<PersonaReadDto>(coincidencia);
-                        return Ok(personaReadDto);
-                    }
+                    return BadRequest(new { message = "No se encontro la persona" });
                 }
                 else
                 {
-                    return BadRequest(new { message = "No se encontro la persona"});
+                    var personaReadDto = _mapper.Map<PersonaReadDto>(coincidencia);
+                    return Ok(personaReadDto);
                 }
-          
+            }
+            else
+            {
+                return BadRequest(new { message = "No se encontro la persona"});
+            }
         }
     }
 }

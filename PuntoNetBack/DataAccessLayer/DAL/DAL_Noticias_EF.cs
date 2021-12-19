@@ -42,7 +42,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Noticias> GetAllNoticiasPublicas()
         {
-            return _context.Noticias.IgnoreQueryFilters().OrderByDescending(not => not.FechaPublicacion).Take(5).ToList();
+            return _context.Noticias.IgnoreQueryFilters().OrderByDescending(not => not.FechaPublicacion).Take(10).ToList();
 
         }
 
@@ -68,7 +68,7 @@ namespace DataAccessLayer.DAL
 
         public IEnumerable<Noticias> GetNoticiasByInstitucion(string idinstitucion)
         {
-            return _context.Noticias.IgnoreQueryFilters().Where(x => x.TenantId == idinstitucion);
+            return _context.Noticias.IgnoreQueryFilters().Where(x => x.TenantId == idinstitucion).OrderByDescending(not => not.FechaPublicacion).Take(10);
         }
     }
 }

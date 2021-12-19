@@ -13,10 +13,12 @@ namespace DataAccessLayer.DAL
     public class DAL_Persona : IDAL_Persona
     {
         private readonly WebAPIContext _context;
+        private readonly IDAL_FaceApi _dalFace;
 
-        public DAL_Persona(WebAPIContext context)
+        public DAL_Persona(WebAPIContext context, IDAL_FaceApi dalFace)
         {
             _context = context;
+            _dalFace = dalFace;
         }
 
         public void CreatePersona(Persona prs)
@@ -36,7 +38,7 @@ namespace DataAccessLayer.DAL
                 throw new ArgumentNullException(nameof(prs));
             }
             _context.Personas.Add(prs);
-            await DAL_FaceApi.AgregarPersona(prs.nro_doc, stream, tenantName);
+            await _dalFace.AgregarPersona(prs.nro_doc, stream, tenantName);
             _context.SaveChanges();
         }
 
@@ -89,13 +91,13 @@ namespace DataAccessLayer.DAL
 
         public async Task UpdatePersona(Persona prs, string documentoViejo,string tenant)
         {
-            await DAL_FaceApi.actualizarDocumentoAzure(documentoViejo, prs.nro_doc, tenant);
+            await _dalFace.actualizarDocumentoAzure(documentoViejo, prs.nro_doc, tenant);
         }
 
         public async Task UpdatePersonaConFoto(string documentoViejo, string documentoNuevo, Stream imagen, string tenant)
         {
             //nothing
-            await DAL_FaceApi.ActualizarPersona(documentoViejo, documentoNuevo, tenant, imagen);
+            await _dalFace.ActualizarPersona(documentoViejo, documentoNuevo, tenant, imagen);
         }
     }
 }

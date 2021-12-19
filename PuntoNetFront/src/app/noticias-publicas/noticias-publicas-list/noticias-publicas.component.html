@@ -16,12 +16,10 @@
     </mat-card-header>
     <img mat-card-image [src]="fileService.PhotoUrl+noticia.photoFileName">
     <mat-card-content>
+        <p class="titulo">{{noticia.nombre}}</p>
         <p>
         {{noticia.descripcion}}
         </p>
     </mat-card-content>
 </mat-card>
-
-
-
 

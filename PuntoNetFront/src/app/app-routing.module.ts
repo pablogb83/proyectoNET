@@ -111,7 +111,6 @@ const appRoutes: Routes = [
     {
         path: 'panelOpciones',
         loadChildren: ()=>PanelOpcionesModule,
-        canActivate: [AuthGuard/*, AdminGuard*/]
     },
     {
         path: 'visitantehome',

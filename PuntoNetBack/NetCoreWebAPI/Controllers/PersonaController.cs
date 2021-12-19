@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.IBL;
 using CsvHelper;
-using CsvHelper.Configuration;
-using DataAccessLayer.DAL;
 using DataAccessLayer.Dtos.Persona;
 using DataAccessLayer.Helpers;
 using Finbuckle.MultiTenant;
@@ -10,14 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreWebAPI.Helpers;
-using Shared.Enum;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NetCoreWebAPI.Controllers
@@ -31,12 +27,14 @@ namespace NetCoreWebAPI.Controllers
         private readonly IBL_Persona _bl;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _env;
+        private readonly IBL_FaceApi _blFace;
 
-        public PersonaController(IBL_Persona bl, IMapper mapper, IWebHostEnvironment env)
+        public PersonaController(IBL_Persona bl, IMapper mapper, IWebHostEnvironment env, IBL_FaceApi blFace)
         {
             _bl = bl;
             _mapper = mapper;
             _env = env;
+            _blFace = blFace;
         }
 
         //GET api/personas
@@ -97,7 +95,7 @@ namespace NetCoreWebAPI.Controllers
             await _bl.CreatePersonaConFoto(persona, postedFile.OpenReadStream(), tenant.TenantInfo.Id);
             //_bl.SaveChanges();
 
-            //await DAL_FaceApi.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
+           // await _blFace.AgregarPersona(persona.nro_doc, postedFile.OpenReadStream(),tenant.TenantInfo.Name);
 
             var personaReadDto = _mapper.Map<PersonaReadDto>(persona);
 
@@ -156,7 +154,7 @@ namespace NetCoreWebAPI.Controllers
             var tenant = HttpContext.GetMultiTenantContext<Institucion>();
             try
             {
-                DAL_FaceApi.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Id).Wait();
+               _blFace.BorrarPersona(personaModelFromRepo.nro_doc, tenant.TenantInfo.Id).Wait();
             }
             catch(Exception e)
             {
