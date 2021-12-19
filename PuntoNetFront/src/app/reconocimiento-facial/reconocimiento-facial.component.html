@@ -16,10 +16,7 @@
         </div>
         <div class="example-button-row">
             <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
-            <div *ngIf="noEncontrado">
-                <p>Persona no registrada</p>
-                <button mat-raised-button color="primary" (click)="redireccionar()">Registrar</button>
-            </div>
+            <button *ngIf="noEncontrado" mat-raised-button color="primary" (click)="redireccionar()">Registrar</button>
         </div>
 
     </div>

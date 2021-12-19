@@ -25,6 +25,7 @@ import { VisitanteHomeModule } from './visitante-home/visitante-home.module';
 import { PanelOpcionesModule } from './panel-opciones/panel-opciones.module';
 import { AdminSuperadminGuard } from './core/guards/adminsuperadmin.guard';
 import { NoticiasPublicasModule } from './noticias-publicas/noticias-publicas.module';
+import { ErrorModule } from './error/error.module';
 
 const appRoutes: Routes = [
     {
@@ -111,6 +112,10 @@ const appRoutes: Routes = [
     {
         path: 'panelOpciones',
         loadChildren: ()=>PanelOpcionesModule,
+    },
+    {
+        path: 'error',
+        loadChildren: ()=>ErrorModule,
     },
     {
         path: 'visitantehome',

@@ -79,7 +79,6 @@ export class CalendarioComponent {
         title: ev.descripcion,
         color: colors.blue
       })
-      console.log(ev);
     }
   }
 

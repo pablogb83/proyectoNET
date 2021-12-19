@@ -58,7 +58,7 @@ namespace NetCoreWebAPI.Controllers
         {
            
             var role = User.Claims.Skip(2).FirstOrDefault().Value;
-            if (role == "SUPERADMIN")
+            if (role == "SUPERADMIN" || role=="ADMIN")
             {
                 var edificio = _bl.GetEdificioById(id);
                 if (edificio != null)
@@ -113,7 +113,6 @@ namespace NetCoreWebAPI.Controllers
                                            " Dirección: " + edificioUpdateDto.Direccion + 
                                            " Teléfono: " + edificioUpdateDto.Telefono;
             _logger.LogInformation(message: "EdificioDespués: " + datosDespuesDelCambio);
-
             return NoContent();
         }
 

@@ -84,21 +84,25 @@ namespace NetCoreWebAPI.Controllers
         //PATCH api/commands/{id}
         [HttpPatch("{id}")]
         [Authorize(Roles = "SUPERADMIN")]
-        public ActionResult PartialInstitucionUpdtate(string id, JsonPatchDocument<InstitucionUpdateDto> patchDoc)
+        public ActionResult PartialInstitucionUpdtate(string id, InstitucionUpdateDto patchDoc)
         {
             var institucionModelFromRepo = _bl.GetInstitucionById(id);
             if (institucionModelFromRepo == null)
             {
                 return NotFound();
             }
+            var cfg = new MapperConfiguration(c => {
+                c.CreateMap<InstitucionUpdateDto, Institucion>()
+                .AddTransform<string>(s => string.IsNullOrEmpty(s) ? null : s)
+                .ForAllOtherMembers(o =>
+                    o.Condition((src, dest, srcmember, destmember) => srcmember != null || destmember.GetType() == typeof(string)));
+            });
 
-            var institucionToPatch = _mapper.Map<InstitucionUpdateDto>(institucionModelFromRepo);
-            patchDoc.ApplyTo(institucionToPatch, ModelState);
-            if (!TryValidateModel(institucionToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-            _mapper.Map(institucionToPatch, institucionModelFromRepo);
+            var map = cfg.CreateMapper();
+
+            var mappedo = map.Map(patchDoc, institucionModelFromRepo);
+
+            //var institucionToPatch = _mapper.Map<InstitucionUpdateDto>(institucionModelFromRepo);
             _bl.UpdateInstitucion(institucionModelFromRepo);
             _bl.SaveChanges();
             return NoContent();
@@ -156,19 +160,19 @@ namespace NetCoreWebAPI.Controllers
         }
 
 
-        //DELETE api/commands/{id}
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "SUPERADMIN")]
-        public ActionResult DeleteInstitucion(string id)
-        {
-            var institucionModelFromRepo = _bl.GetInstitucionById(id);
-            if (institucionModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            _bl.DeleteInstitucion(institucionModelFromRepo);
-            _bl.SaveChanges();
-            return NoContent();
-        }
+        ////DELETE api/commands/{id}
+        //[HttpDelete("{id}")]
+        //[Authorize(Roles = "SUPERADMIN")]
+        //public ActionResult DeleteInstitucion(string id)
+        //{
+        //    var institucionModelFromRepo = _bl.GetInstitucionById(id);
+        //    if (institucionModelFromRepo == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _bl.DeleteInstitucion(institucionModelFromRepo);
+        //    _bl.SaveChanges();
+        //    return NoContent();
+        //}
     }
 }

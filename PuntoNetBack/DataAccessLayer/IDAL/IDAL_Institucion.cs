@@ -14,6 +14,7 @@ namespace DataAccessLayer.IDAL
 
         IEnumerable<Institucion> GetAllInstituciones();
         Institucion GetInstitucionById(string Id);
+        IEnumerable<Institucion> GetInstitucionesProducto(string planId);
         void CreateInstitucion(Institucion inst);
         void UpdateInstitucion(Institucion inst);
         Task UpdateInstitucionAzure(Institucion inst, string nombreViejo);

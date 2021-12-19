@@ -61,6 +61,11 @@ namespace DataAccessLayer.DAL
             return _context.Instituciones.FirstOrDefault(p => p.Id == Id);
         }
 
+        public IEnumerable<Institucion> GetInstitucionesProducto(string planId)
+        {
+            return _context.Instituciones.Where(x => x.PlanId == planId);
+        }
+
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);

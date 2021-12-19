@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
 import { SalonService } from 'src/app/core/services/salon.service';
 import Swal from 'sweetalert2';
@@ -25,19 +25,20 @@ export class SalonListComponent implements OnInit {
   edificioNombre: string;
   SalonList:any=[];
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute, private salonService: SalonService) {
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute, private salonService: SalonService, private router:Router) {
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
         console.log(data);
         this.edificio = new MatTableDataSource<Edificio>(data);
         this.edificioNombre = this.edificio._data._value.nombre;
+      },err=>{
+        router.navigate(["error"]);
       });
     });
    }
 
   ngOnInit() {
-    //console.log(this.idedificio)
     this.getSalones();
   }
 

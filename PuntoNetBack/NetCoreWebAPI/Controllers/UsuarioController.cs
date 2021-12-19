@@ -56,7 +56,11 @@ namespace NetCoreWebAPI.Controllers
 
             if (user == null)
                 return BadRequest(new { message = "Usuario o password incorrectos" });
-
+            var inst = _blInst.GetInstitucionById(user.TenantId);
+            if (inst == null)
+            {
+                return BadRequest(new { message = "La institucion no" });
+            }
             var role = await _bl.GetRolUsuario(user);
             if (role == null)
                return BadRequest(new { message = "Usuario sin rol asignado, contacte a su administrador" });
@@ -128,7 +132,7 @@ namespace NetCoreWebAPI.Controllers
             var institucion = _blInst.GetInstitucionById(idinstitucion);
             if (institucion==null)
             {
-                BadRequest(new { message="No se encontro la institucion ingresada" });
+                return BadRequest(new { message="No se encontro la institucion ingresada" });
             }
             var Usuario = await _bl.GetAdminsInstitucion(idinstitucion);
             return Ok(_mapper.Map<IEnumerable<UsuarioReadDto>>(Usuario));

@@ -1,5 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { EmailService } from '../core/services/email.service';
 import { InstitucionService } from '../core/services/institucion.service';
 import { TokenStorageService } from '../core/services/token-storage.service';
@@ -33,6 +34,7 @@ export class PaypalButtonComponent implements AfterContentInit {
         onClick: async (data,actions) =>{
           const status = await this.institucionService.isActive().toPromise();
           if(status){
+            Swal.fire("Listo","Ya ha realizado el pago correspondiente en PayPal, si aun no nota cambios en el sistema por favor vuelva a iniciar sesion","info");
             return actions.reject();
           }
         },
@@ -44,8 +46,13 @@ export class PaypalButtonComponent implements AfterContentInit {
           });
         },
         onApprove: (data: any, actions: any) => {
-          //this.service.saveStatus(true);
-          this.emailService.sendEmail().subscribe();
+          //this.emailService.sendEmail().subscribe();
+          Swal.fire(
+            'Pago completado',
+            'El proceso de pago puede tomar algo de tiempo, recomendamos volver a iniciar sesion en la plataforma en unos minutos',
+            'info'
+          )
+          this.service.signOut();
           this.router.navigate(['/']);
         },
         onCancel: (data:any)=>{
