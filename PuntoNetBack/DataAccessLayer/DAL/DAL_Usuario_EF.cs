@@ -132,6 +132,8 @@ namespace DataAccessLayer.DAL
 
         public void UpdateUsuario(Usuario usr, string password = null)
         {
+            if (_context.Usuarios.IgnoreQueryFilters().Any(x => x.Email == usr.Email))
+                throw new AppException("Email " + usr.Email + " ya esta registrado");
         }
 
         public async Task<string> GetRolUsuario(Usuario user)

@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { SalonService } from 'src/app/core/services/salon.service';
 import Swal from 'sweetalert2';
 import { SalonAddComponent } from '../salon-add/salon-add.component';
@@ -25,7 +26,7 @@ export class SalonListComponent implements OnInit {
   edificioNombre: string;
   SalonList:any=[];
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute, private salonService: SalonService, private router:Router) {
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute, private salonService: SalonService, private router: Router, private handleError: HandleErrorsService) {
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
@@ -85,14 +86,13 @@ export class SalonListComponent implements OnInit {
       confirmButtonText: 'Si, borrar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.salonService.deleteSalon(item.id).subscribe(data=>{
+        this.salonService.deleteSalon(item.id).subscribe((data:any)=>{
+          this.handleError.showSuccessAlert(data.message)
           this.getSalones()
+        },err=>{
+          this.handleError.showErrors(err);
         })
-        Swal.fire(
-          'Borrado!',
-          'El Salon ha sido eliminado.',
-          'success'
-        )
+       
       }
     })
   }

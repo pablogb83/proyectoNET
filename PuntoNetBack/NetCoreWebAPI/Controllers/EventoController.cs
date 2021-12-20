@@ -80,7 +80,7 @@ namespace NetCoreWebAPI.Controllers
             {
                 return BadRequest(new { message = "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
             }
-            var cantHoras = eventoCreateDto.FechaFinEvt.Subtract(eventoCreateDto.FechaInicioEvt).Hours;
+            var cantHoras = eventoCreateDto.FechaFinEvt.Subtract(eventoCreateDto.FechaInicioEvt).TotalHours;
             if ( cantHoras > 12)
             {
                 return BadRequest(new { message = "El evento debe tener minimo una hora y maximo 12" });
@@ -137,6 +137,11 @@ namespace NetCoreWebAPI.Controllers
             if (eventoUpdateDto.FechaInicioEvt > eventoUpdateDto.FechaFinEvt || eventoUpdateDto.FechaInicioEvt < DateTime.Now)
             {
                 return BadRequest(new {message= "La fecha de inicio debe ser anterior a la fecha de fin y mayor a la fecha actual" });
+            }
+            var cantHoras = eventoUpdateDto.FechaFinEvt.Subtract(eventoUpdateDto.FechaInicioEvt);
+            if (cantHoras.TotalHours > 12)
+            {
+                return BadRequest(new { message = "El evento debe tener minimo una hora y maximo 12" });
             }
             if (eventoModelFromRepo == null)
             {

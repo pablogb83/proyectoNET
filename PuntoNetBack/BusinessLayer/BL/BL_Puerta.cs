@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.IBL;
+using DataAccessLayer.Helpers;
+using DataAccessLayer.IDAL;
 using Shared.ModeloDeDominio;
 using System;
 using System.Collections.Generic;
@@ -11,13 +13,15 @@ namespace BusinessLayer.BL
     public class BL_Puerta : IBL_Puerta
     {
 
-        private readonly DataAccessLayer.IDAL.IDAL_Puerta _dal;
-        private readonly DataAccessLayer.IDAL.IDAL_Edificio _dalEdi;
+        private readonly IDAL_Puerta _dal;
+        private readonly IDAL_Edificio _dalEdi;
+        private readonly IDAL_Acceso _dalAcc;
 
-        public BL_Puerta(DataAccessLayer.IDAL.IDAL_Puerta dal, DataAccessLayer.IDAL.IDAL_Edificio dalEdi)
+        public BL_Puerta(IDAL_Puerta dal, IDAL_Edificio dalEdi, IDAL_Acceso dalAcc)
         {
             _dal = dal;
-            _dalEdi = dalEdi; 
+            _dalEdi = dalEdi;
+            _dalAcc = dalAcc;
         }
 
         public void CreatePuerta(Puerta puertaacceso, int idEdificio)
@@ -29,6 +33,11 @@ namespace BusinessLayer.BL
 
         public void DeletePuerta(Puerta idPuertaAcceso)
         {
+            var accesosPuerta = _dalAcc.GetAccesosPuerta(idPuertaAcceso.Id);
+            if (accesosPuerta.Any())
+            {
+                throw new AppException("La puerta ya tiene accesos registrados");
+            }
             _dal.DeletePuerta(idPuertaAcceso);
         }
 

@@ -20,5 +20,7 @@ namespace Shared.ModeloDeDominio
         public int Numero { get; set; }
 
         public virtual Edificio edificio { get; set; }
+
+        public virtual ICollection<Evento> Eventos { get; set; }
     }
 }
