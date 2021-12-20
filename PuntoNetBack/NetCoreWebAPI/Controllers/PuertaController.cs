@@ -17,14 +17,16 @@ namespace NetCoreWebAPI.Controllers
     public class PuertaController : ControllerBase
     {
         private readonly IBL_Puerta _bl;
+        private readonly IBL_Acceso _blAcc;
         private readonly IMapper _mapper;
         private readonly ILogger<PuertaController> _logger;
 
-        public PuertaController(IBL_Puerta bl, IMapper mapper, ILogger<PuertaController> logger)
+        public PuertaController(IBL_Puerta bl, IMapper mapper, ILogger<PuertaController> logger, IBL_Acceso blAcc)
         {
             _bl = bl;
             _mapper = mapper;
             _logger = logger;
+            _blAcc = blAcc;
         }
 
         //GET api/puertas
@@ -80,7 +82,7 @@ namespace NetCoreWebAPI.Controllers
             _bl.SaveChanges();
             string puertaEliminada = " Denominacion: " + edificioModelFromRepo.Denominacion;
             _logger.LogInformation(message: "PuertaEliminada: " + puertaEliminada);
-            return NoContent();
+            return Ok(new { message = "Eliminado correctamente" });
         }
 
         //PUT api/salon/{id}

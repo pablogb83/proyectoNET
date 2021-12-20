@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import { PuertaService } from 'src/app/core/services/puerta.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { UsuarioPuertaService } from 'src/app/core/services/usuario-puerta.service';
@@ -31,7 +32,7 @@ export class PuertaListComponent implements OnInit {
   puerta?: any;
   puertaid:string;
 
-  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService, private router:Router) { 
+  constructor(private service: EdificiosService,public dialog: MatDialog,private route: ActivatedRoute,private puertaService: PuertaService, private tokenService: TokenStorageService, private usuarioPuertaService: UsuarioPuertaService, private router:Router, private handleError: HandleErrorsService) { 
     this.route.queryParams.subscribe(params => {
       this.idedificio=params.idedificio;
       this.service.getEdificio(this.idedificio).subscribe(data=>{
@@ -106,13 +107,11 @@ export class PuertaListComponent implements OnInit {
      }).then((result) => {
        if (result.isConfirmed) {
          this.puertaService.deletePuerta(item.id).subscribe(data=>{
+           this.handleError.showSuccessAlert("Se elimino la puerta correctamente");
            this.getPuertas()
+         },err=>{
+           this.handleError.showErrors(err);
          })
-         Swal.fire(
-           'Borrado!',
-           'La puerta ha sido eliminada.',
-           'success'
-         )
        }
      })
    }

@@ -155,7 +155,7 @@ namespace NetCoreWebAPI.Controllers
                              " Direccion: " + edificioModelFromRepo.Direccion +
                              " Telefono:" + edificioModelFromRepo.Telefono;
             _logger.LogInformation(message: "EdificioBorrado: " + datosAntesDelcambio);
-            return NoContent();
+            return Ok(new { message="Edificio eliminado" });
         }
 
         [HttpGet("salones/{id}")]

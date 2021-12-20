@@ -190,7 +190,6 @@ namespace NetCoreWebAPI.Controllers
                 }
                 //fin chequear headers
                 var records = csv.GetRecords<PersonaCreateDto>().ToList();
-
                 _bl.AltaMasivaPersona(records);
                 return Ok(records);
             }

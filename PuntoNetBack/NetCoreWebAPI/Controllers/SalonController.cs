@@ -73,12 +73,17 @@ namespace NetCoreWebAPI.Controllers
             {
                 return NotFound();
             }
+            var eventos = salonModelFromRepo.Eventos;
+            if (eventos.Any())
+            {
+                return BadRequest(new { message = "El Salon ya esta asignado a eventos" });
+            }
             _bl.DeleteSalon(salonModelFromRepo);
             _bl.SaveChanges();
             string salonEliminado = " Denominacion: " + salonModelFromRepo.Denominacion +
                                     " Numero:" + salonModelFromRepo.Numero;
             _logger.LogInformation(message: "SalonEliminado: " + salonEliminado);
-            return NoContent();
+            return Ok(new { message="Eliminado correctamente" });
         }
 
         //PUT api/salon/{id}

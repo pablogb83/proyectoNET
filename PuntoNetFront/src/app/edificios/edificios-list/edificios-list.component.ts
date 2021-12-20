@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { EdificiosService } from 'src/app/core/services/edificios.service';
+import { HandleErrorsService } from 'src/app/core/services/handle.errors.service';
 import Swal from 'sweetalert2';
 import { EdificiosAddComponent } from '../edificios-add/edificios-add.component';
 import { EdificiosEditComponent } from '../edificios-edit/edificios-edit.component';
@@ -19,7 +20,7 @@ export class EdificiosListComponent implements OnInit {
 
   displayedColumns: string[] = ['id','nombre', 'direccion', 'telefono', 'acciones'];
 
-  constructor(private service: EdificiosService,public dialog: MatDialog, private router: Router) {
+  constructor(private service: EdificiosService,public dialog: MatDialog, private router: Router, private handleError: HandleErrorsService) {
     this.getEdificios();
   }
 
@@ -73,14 +74,12 @@ export class EdificiosListComponent implements OnInit {
       confirmButtonText: 'Si, borrar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.deleteEdificio(item.id).subscribe(data=>{
-          this.getEdificios()
+        this.service.deleteEdificio(item.id).subscribe((data:any)=>{
+          this.handleError.showSuccessAlert(data.message)
+          this.getEdificios();
+        },err=>{
+          this.handleError.showErrors(err);
         })
-        Swal.fire(
-          'Borrado!',
-          'El edificio ha sido eliminado.',
-          'success'
-        )
       }
     })
   }

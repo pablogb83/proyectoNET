@@ -39,8 +39,8 @@ export class PersonaAltaMasivaComponent implements OnInit {
     this.service.altaMasiva(this.PhotoFileName).subscribe(data=>{
       this.showSuccessAlert();
     },err=>{
-      console.log(err)
-      this.showErrorAlert(err.error.Message);
+      console.log(err.error.message)
+      this.showErrorAlert(err.error.message);
     });
   }
 
