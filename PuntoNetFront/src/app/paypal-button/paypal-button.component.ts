@@ -46,7 +46,9 @@ export class PaypalButtonComponent implements AfterContentInit {
           });
         },
         onApprove: (data: any, actions: any) => {
-          this.emailService.sendEmail().subscribe();
+          //console.log("SUSCRI",  data);
+          //parametro provisorio para la demo 
+          this.emailService.sendEmail(data.subscriptionID).subscribe();
           Swal.fire(
             'Pago completado',
             'El proceso de pago puede tomar algo de tiempo, recomendamos volver a iniciar sesion en la plataforma en unos minutos',

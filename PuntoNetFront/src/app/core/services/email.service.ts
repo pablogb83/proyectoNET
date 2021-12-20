@@ -15,7 +15,7 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  sendEmail(){
-    return this.http.post(AUTH_API + 'simple', {}, httpOptions);
+  sendEmail(subId:string){
+    return this.http.post(AUTH_API + 'simple/' + subId, {}, httpOptions);
   }
 }

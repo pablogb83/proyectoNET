@@ -23,11 +23,13 @@ namespace NetCoreWebAPI.Controllers
 
         private readonly IBL_Usuario _bl;
         private readonly IBL_Producto _blProd;
+        private readonly IBL_Institucion _blInst;
 
-        public EmailController(IBL_Usuario bl, IBL_Producto blProd)
+        public EmailController(IBL_Usuario bl, IBL_Producto blProd, IBL_Institucion blInst)
         {
             _bl = bl;
             _blProd = blProd;
+            _blInst = blInst;
         }     
 
 
@@ -103,14 +105,22 @@ namespace NetCoreWebAPI.Controllers
 
         }
 
-        [HttpPost ("simple")]
+        [HttpPost ("simple/{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<ActionResult> SendSimpleEmail()
+        public async Task<ActionResult> SendSimpleEmail(string id)
         {
             try
             {
                 int userId = int.Parse(User.Claims.FirstOrDefault().Value);
                 var tenant = HttpContext.GetMultiTenantContext<Institucion>();
+                //provisorio para la demo de la defensa, se necesita internet libre
+                tenant.TenantInfo.Activa = true;
+                var susc = new Suscripcion();
+                susc.Id = id;
+                susc.estado = "ACTIVE";
+                tenant.TenantInfo.Suscripcion = susc; 
+                _blInst.SaveChanges();
+                //******************************//
                 string planId = tenant.TenantInfo.PlanId;
                 var producto = _blProd.GetProducto(planId);
                 var user = await _bl.GetUsuarioByIdAsync(userId);

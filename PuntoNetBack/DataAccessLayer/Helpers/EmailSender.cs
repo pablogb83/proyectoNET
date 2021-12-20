@@ -18,7 +18,7 @@ namespace DataAccessLayer.Helpers
     {
         public static void sendEmail(string emailTo, string name, ProductoReadDto producto)
         {
-            if (!Configuration.Default.ApiKey.ContainsKey("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"))
+            if (!Configuration.Default.ApiKey.ContainsKey("api-key"))
             {
                 Configuration.Default.ApiKey.Add("api-key", "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");
             }
